@@ -30,6 +30,12 @@ def TitleImage():
     label_title.place(x=400, y =100)
 #subfunction to display
 
+def StartPage():
+    startimage1=Image.open("StartImage.png")
+    startimage = ImageTk.PhotoImage(startimage1)
+    label_startimage = tk.Label(image=startimage)
+    label_startimage.image = startimage
+    label_startimage.place(x=400, y =100)
 
 def LoginPage():
     TitleImage()
