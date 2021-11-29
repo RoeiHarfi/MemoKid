@@ -4,6 +4,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 import sqlite3
 from sqlite3 import Error
+import time
 
 
 root = tk.Tk()
@@ -52,6 +53,7 @@ def LoginPage():
         loginbutton.destroy()
         signupbutton.destroy()
         forgotpwbutton.destroy()
+        SignUpPage()
 
     #function for forgotPW button
     def ForgotPWButton():
@@ -78,76 +80,6 @@ def LoginPage():
 
     #Login button
     loginbutton = tk.Button(root, text ="התחבר", command=LoginButton)
-    loginbutton.place(x=600, y=400, width=55)
-    
-    
-    
-def SignUpPage():
-    # title image
-     TitleImage()
-
-    #Name Title
-    SignUpLabel1 = Label(root, bg='#17331b', fg='white', text = "שם מלא", )
-    SignUpLabel1.place(x=920,y=300,width=75)
-    #Name TextBox
-    Name = tk.Entry(root, bg='#17331b',fg = 'white')
-    Name.place(x=800,y=300,width=100)
-
-    # ID Title
-    SignUpLabel2 = Label(root, bg='#17331b', fg='white', text = "תעודת זהות", )
-    SignUpLabel2.place(x=920, y=350, width=75)
-    # ID TextBox
-    ID = tk.Entry(root, bg='#17331b', fg='white')
-    ID.place(x=800, y=350, width=100)
-
-    # City Title
-    SignUpLabel3 = Label(root, bg='#17331b', fg='white', text="עיר מגורים", )
-    SignUpLabel3.place(x=920, y=400, width=75)
-    # City TextBox
-    City = tk.Entry(root, bg='#17331b', fg='white')
-    City.place(x=800, y=400, width=100)
-
-    # School Title
-    SignUpLabel4 = Label(root, bg='#17331b', fg='white', text="שם בית הספר", )
-    SignUpLabel4.place(x=920, y=450, width=75)
-    # School TextBox
-    School = tk.Entry(root, bg='#17331b', fg='white')
-    School.place(x=800, y=450, width=100)
-
-    # Grade Title
-    SignUpLabel5 = Label(root, bg='#17331b', fg='white', text="שכבה", )
-    SignUpLabel5.place(x=920, y=500, width=75)
-    # Grade TextBox
-    Grade = tk.Entry(root, bg='#17331b', fg='white')
-    Grade.place(x=850, y=500, width=50)
-
-    # GradeNumber Title
-    SignUpLabel6 = Label(root, bg='#17331b', fg='white', text="כיתה", )
-    SignUpLabel6.place(x=920, y=550, width=75)
-    # GradeNumber TextBox
-    GradeNumber = tk.Entry(root, bg='#17331b', fg='white')
-    GradeNumber.place(x=850, y=550, width=50)
-
-    # PasswordFirst Title
-    SignUpLabel7 = Label(root, bg='#17331b', fg='white', text="סיסמא אישית", )
-    SignUpLabel7.place(x=520, y=280, width=175,height=35)
-    # PasswordFirst TextBox
-    PasswordFirst = tk.Entry(root, bg='#17331b', fg='white')
-    PasswordFirst.place(x=520, y=320, width=174,height=25)
-
-    # PasswordSecond Title
-    SignUpLabel8 = Label(root, bg='#17331b', fg='white', text="אימות סיסמא", )
-    SignUpLabel8.place(x=520, y=370, width=175, height=35)
-    # PasswordSecond TextBox
-    PasswordSecond = tk.Entry(root, bg='#17331b', fg='white')
-    PasswordSecond.place(x=520, y=410, width=174)
-
-    def RegisterButton():
-        pass
-
-    #Register Button
-    RegisterButton = tk.Button(root, text ="הרשם", command = RegisterButton)
-    RegisterButton.place(x=520, y=510, width=174, height=25)
     loginbutton.place(x=580, y=400, width=55)
 
     #SignUp button
@@ -158,6 +90,107 @@ def SignUpPage():
     forgotpwbutton = tk.Button(root, text ="שכחתי סיסמה", command=ForgotPWButton)
     forgotpwbutton.place(x=570, y=480, width=80)
 
+
+def SignUpPage():
+    # title image
+    TitleImage()
+
+    def RegisterButton():
+        name_user=Name.get()
+        ID_user=ID.get()
+        city_user=City.get()
+        school_user=School.get()
+        grade_user=Grade.get()
+        user_gradenumber=GradeNumber.get()
+        user_password=PasswordFirst.get()
+        user_password2=PasswordSecond.get()
+        if user_password==user_password2 and user_password and user_password2:
+            SignUpLabel1.destroy()
+            Name.destroy()
+            SignUpLabel2.destroy()
+            ID.destroy()
+            SignUpLabel3.destroy()
+            City.destroy()
+            SignUpLabel4.destroy()
+            School.destroy()
+            SignUpLabel5.destroy()
+            Grade.destroy()
+            SignUpLabel6.destroy()
+            GradeNumber.destroy()
+            SignUpLabel7.destroy()
+            PasswordFirst.destroy()
+            SignUpLabel8.destroy()
+            PasswordSecond.destroy()
+            RegisterButton.destroy()
+            RetryLabel.destroy()
+
+        else:
+            RetryLabel.place(x=520, y=470, width=200, height=35)
+
+
+        pass
+    #Retry Title
+    RetryLabel = Label(root, bg='#17331b', fg='white', text="סיסמאות לא תואמות אנא נסה שנית")
+
+    #Name Title
+    SignUpLabel1 = Label(root, bg='#17331b', fg='white', text = "שם מלא", )
+    SignUpLabel1.place(x=920,y=300,width=75)
+    #Name TextBox
+    Name = tk.Entry(root, width = 35)
+    Name.place(x=800,y=300,width=100)
+
+    # ID Title
+    SignUpLabel2 = Label(root, bg='#17331b', fg='white', text = "תעודת זהות", )
+    SignUpLabel2.place(x=920, y=350, width=75)
+    # ID TextBox
+    ID = tk.Entry(root, width = 35)
+    ID.place(x=800, y=350, width=100)
+
+    # City Title
+    SignUpLabel3 = Label(root, bg='#17331b', fg='white', text="עיר מגורים", )
+    SignUpLabel3.place(x=920, y=400, width=75)
+    # City TextBox
+    City = tk.Entry(root, width = 35)
+    City.place(x=800, y=400, width=100)
+
+    # School Title
+    SignUpLabel4 = Label(root, bg='#17331b', fg='white', text="שם בית הספר", )
+    SignUpLabel4.place(x=920, y=450, width=75)
+    # School TextBox
+    School = tk.Entry(root, width = 35)
+    School.place(x=800, y=450, width=100)
+
+    # Grade Title
+    SignUpLabel5 = Label(root, bg='#17331b', fg='white', text="שכבה", )
+    SignUpLabel5.place(x=920, y=500, width=75)
+    # Grade TextBox
+    Grade = tk.Entry(root, width = 35)
+    Grade.place(x=850, y=500, width=50)
+
+    # GradeNumber Title
+    SignUpLabel6 = Label(root, bg='#17331b', fg='white', text="כיתה", )
+    SignUpLabel6.place(x=920, y=550, width=75)
+    # GradeNumber TextBox
+    GradeNumber = tk.Entry(root, width = 35)
+    GradeNumber.place(x=850, y=550, width=50)
+
+    # PasswordFirst Title
+    SignUpLabel7 = Label(root, bg='#17331b', fg='white', text="סיסמא אישית", )
+    SignUpLabel7.place(x=520, y=280, width=175,height=35)
+    # PasswordFirst TextBox
+    PasswordFirst = tk.Entry(root, width = 35)
+    PasswordFirst.place(x=520, y=320, width=174,height=25)
+
+    # PasswordSecond Title
+    SignUpLabel8 = Label(root, bg='#17331b', fg='white', text="אימות סיסמא", )
+    SignUpLabel8.place(x=520, y=370, width=175, height=35)
+    # PasswordSecond TextBox
+    PasswordSecond = tk.Entry(root, width = 35)
+    PasswordSecond.place(x=520, y=410, width=174)
+
+    #Register Button
+    RegisterButton = tk.Button(root, text ="הרשם", command = RegisterButton)
+    RegisterButton.place(x=580, y=510, width=80, height=25)
 
 
 def ForgotPWPage():
