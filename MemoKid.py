@@ -6,10 +6,11 @@ import sqlite3
 from sqlite3 import Error
 import time
 
-sqlconnect=sqlite3.connect('MemoKidDB.db')
+#connect to db
+sqlconnect = sqlite3.connect('MemoKidDB.db')
 cursor = sqlconnect.cursor()
 
-
+#Create the screen
 root = tk.Tk()
 root.geometry("1280x720")
 root.title("Login Page")
@@ -30,20 +31,36 @@ def TitleImage():
     label_title.place(x=400, y =100)
 #subfunction to display
 
+#Function for stat page
 def StartPage():
-    startimage1=Image.open("StartImage.png")
+    #press on continue go to login page
+    def ContinueButton():
+        #clear screen
+        continuebutton.destroy()
+        label_startimage.destroy()
+        LoginPage()
+
+    #Loadup startup image
+    startimage1 = Image.open("StartImage.png")
     startimage = ImageTk.PhotoImage(startimage1)
     label_startimage = tk.Label(image=startimage)
     label_startimage.image = startimage
     label_startimage.place(x=400, y =100)
 
+    #Continue button
+    continuebutton = tk.Button(root, text ="התחל", command=ContinueButton)
+    continuebutton.place(x=580, y=500, width=75)
+
+#Function for Login Page
 def LoginPage():
     TitleImage()
-    #function for login button
+    #function for login button, displayes name if login successful (for now)
     def LoginButton():
+        #save userID and password
         user = ID.get()
-        passw = password.get()
+        pw = password.get()
 
+        #clear screen
         lblfrstrow.destroy()
         ID.destroy()
         lblsecrow.destroy()
@@ -51,10 +68,32 @@ def LoginPage():
         loginbutton.destroy()
         signupbutton.destroy()
         forgotpwbutton.destroy()
-        print("UserID is", user, "PW is", passw)
+
+        #search for user in db
+        sql_select_query = "SELECT password FROM userslist WHERE id =?"
+        idlist = (user,)
+        cursor.execute(sql_select_query, idlist)
+        pwdb = cursor.fetchone()
+        if(pwdb): #if user was found (any data from password col)
+            if pw == pwdb[0]: #check if the password entered match db
+                sql_select_query = "SELECT name FROM userslist WHERE id =?"
+                idlist = (user,)
+                cursor.execute(sql_select_query, idlist)
+                namedb = cursor.fetchone()
+                text = namedb #save name from db
+            else:
+                text = "סיסמא לא נכונה" #display wrong password if passwords didn't match
+        else:
+            text= "משתמש לא קיים" #display nonexistent user if no data was found
+
+        #display message (or name)
+        label_PW = tk.Label(root, bg='#17331b', fg='white', text=text)
+        label_PW.place(x=550, y=450, width=200)
+        #so far login only displays name (in the future levels will be here)
 
     #function for signup button
     def SignUpButton():
+        #clear screen
         lblfrstrow.destroy()
         ID.destroy()
         lblsecrow.destroy()
@@ -62,10 +101,13 @@ def LoginPage():
         loginbutton.destroy()
         signupbutton.destroy()
         forgotpwbutton.destroy()
+
+        #send to signup page
         SignUpPage()
 
     #function for forgotPW button
     def ForgotPWButton():
+        #clear screen
         lblfrstrow.destroy()
         ID.destroy()
         lblsecrow.destroy()
@@ -73,15 +115,16 @@ def LoginPage():
         loginbutton.destroy()
         signupbutton.destroy()
         forgotpwbutton.destroy()
+        #send to ForgotPWPage
         ForgotPWPage()
 
-    #ID TextBox
+    #ID TextBox and label
     lblfrstrow=tk.Label(root, bg='#17331b', fg='white', text = "תעודת זהות", )
     lblfrstrow.place(x=650, y= 300)
     ID = tk.Entry(root, width = 35)
     ID.place(x=550, y=300, width = 100)
 
-    #PW TextBox
+    #PW TextBox and label
     lblsecrow = tk.Label(root, bg='#17331b', fg='white', text="סיסמה")
     lblsecrow.place(x=650, y=350)
     password = tk.Entry(root, width=35)
@@ -103,8 +146,15 @@ def LoginPage():
 def SignUpPage():
     # title image
     TitleImage()
-
+    #function for register button press
     def RegisterButton():
+
+        #RegisterCompleteButton
+        def RegisterCompleteButton():# clear screen and go to login page
+            registercompletebutton.destroy()
+            LoginPage()
+
+        #save data
         name_user=Name.get()
         ID_user=ID.get()
         city_user=City.get()
@@ -113,7 +163,10 @@ def SignUpPage():
         user_gradenumber=GradeNumber.get()
         user_password=PasswordFirst.get()
         user_password2=PasswordSecond.get()
+
+        #check if both passwords match (and not empty)
         if user_password==user_password2 and user_password and user_password2:
+            #clear screen
             SignUpLabel1.destroy()
             Name.destroy()
             SignUpLabel2.destroy()
@@ -132,17 +185,23 @@ def SignUpPage():
             PasswordSecond.destroy()
             RegisterButton.destroy()
             RetryLabel.destroy()
+
+            #insert data into db (default values for gender type points question and answer for now, will be fixed later)
             sql_insert_query= "INSERT INTO userslist VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             val = (name_user , ID_user, city_user, school_user, "male", grade_user, "student" , user_password , "0", "exampleQ", "exampleA" )
             cursor.execute(sql_insert_query,val)
             sqlconnect.commit()
 
-        else:
+            # register succesful and button to go to login page
+            Successlabel = Label(root, bg='#17331b', fg='white', text="ההרשמה הצליחה , אנא התחברו", )
+            Successlabel.place(x=570, y=300, width=180)
+            registercompletebutton = tk.Button(root, text="התחבר", command=RegisterCompleteButton)
+            registercompletebutton.place(x=570, y=350, width=80)
+
+        else: #if passwords didn't match place the label (unmatching passwords try again)
             RetryLabel.place(x=520, y=470, width=200, height=35)
 
-
-        pass
-    #Retry Title
+    #Retry Title (not placing unless passwords didn't match)
     RetryLabel = Label(root, bg='#17331b', fg='white', text="סיסמאות לא תואמות אנא נסה שנית")
 
     #Name Title
@@ -205,44 +264,74 @@ def SignUpPage():
     RegisterButton = tk.Button(root, text ="הרשם", command = RegisterButton)
     RegisterButton.place(x=580, y=510, width=80, height=25)
 
-
+#function for ForggotPWPage
 def ForgotPWPage():
     TitleImage()
 
+    #function for pressing the button (after entering ID)
     def ForgotPWButton():
 
+        #function for pressing send button (after answering question)
         def SendButton():
 
+            #function for return to login button
+            def returntologin():
+                #clear screen
+                returntologinbutton.destroy()
+                label_PW.destroy()
+                label_Question.destroy()
+                label_ID.destroy()
+                QuestBox.destroy()
+                sendbutton.destroy()
+                ID.destroy()
+                #send to login
+                LoginPage()
+
+            #save answer
             answer=QuestBox.get()
+
+            #compare answer to db
             sql_select_query = "SELECT answer FROM userslist WHERE id =?"
             idlist = (userID,)
             cursor.execute(sql_select_query, idlist)
             answerdb = cursor.fetchone()
-            if answer == answerdb[0]:
+            if answer == answerdb[0]: #if answers match
                 sql_select_query = "SELECT password FROM userslist WHERE id =?"
                 idlist = (userID,)
                 cursor.execute(sql_select_query, idlist)
                 pwdb = cursor.fetchone()
-                text= pwdb
-            else:
-                text= "תשובה לא נכונה"
+                text= pwdb #save password from db to text variable
+            else: #if passwords didn't match
+                text=  "תשובה לא נכונה" #save message to text variable
 
+            #lable to display text var (msg or pw)
             label_PW = tk.Label(root, bg='#17331b', fg='white', text=text)
             label_PW.place(x=550, y=450, width=200)
 
+            returntologinbutton = tk.Button(root, text="התחבר", command=returntologin)
+            returntologinbutton.place(x=550, y=500, width=80)
 
+        #save data
         userID = ID.get()
+
+        #clear screen
         label_ID.destroy()
         ID.destroy()
         loginbutton.destroy()
+
+        #get question from db
         sql_select_query = "SELECT question FROM userslist WHERE id =?"
         idlist=(userID,)
         cursor.execute(sql_select_query,idlist)
         question= cursor.fetchone()
+
+        #display question and textbox for answer
         label_Question = tk.Label(root, bg='#17331b', fg='white', text=question)
         label_Question.place(x=550,y=300,width=200)
         QuestBox=tk.Entry(root, width=200)
         QuestBox.place(x=550,y=350, width=200)
+
+        #send button
         sendbutton = tk.Button(root, text="שלח", command=SendButton)
         sendbutton.place(x=600, y=400, width=75)
 
@@ -257,8 +346,8 @@ def ForgotPWPage():
     loginbutton = tk.Button(root, text ="שחזר סיסמא", command=ForgotPWButton)
     loginbutton.place(x=580, y=350, width=75)
 
-
-LoginPage()
+StartPage()
+#LoginPage()
 #SignUpPage()
 
 
