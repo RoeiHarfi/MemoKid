@@ -6,6 +6,9 @@ import sqlite3
 from sqlite3 import Error
 import time
 
+sqlconnect=sqlite3.connect('MemoKidDB.db')
+cursor = sqlconnect.cursor()
+
 
 root = tk.Tk()
 root.geometry("1280x720")
@@ -123,6 +126,10 @@ def SignUpPage():
             PasswordSecond.destroy()
             RegisterButton.destroy()
             RetryLabel.destroy()
+            sql_insert_query= "INSERT INTO userslist VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            val = (name_user , ID_user, city_user, school_user, "male", grade_user, "student" , user_password , "0", "exampleQ", "exampleA" )
+            cursor.execute(sql_insert_query,val)
+            sqlconnect.commit()
 
         else:
             RetryLabel.place(x=520, y=470, width=200, height=35)
@@ -199,9 +206,18 @@ def ForgotPWPage():
     def ForgotPWButton():
 
         def SendButton():
+
             answer=QuestBox.get()
-            if answer=='חתול':
-                text= "הסיסמא שלך היא: 1234"
+            sql_select_query = "SELECT answer FROM userslist WHERE id =?"
+            idlist = (userID,)
+            cursor.execute(sql_select_query, idlist)
+            answerdb = cursor.fetchone()
+            if answer == answerdb[0]:
+                sql_select_query = "SELECT password FROM userslist WHERE id =?"
+                idlist = (userID,)
+                cursor.execute(sql_select_query, idlist)
+                pwdb = cursor.fetchone()
+                text= pwdb
             else:
                 text= "תשובה לא נכונה"
 
@@ -213,8 +229,10 @@ def ForgotPWPage():
         label_ID.destroy()
         ID.destroy()
         loginbutton.destroy()
-
-        question="שאלת אבטחה לדוגמא"
+        sql_select_query = "SELECT question FROM userslist WHERE id =?"
+        idlist=(userID,)
+        cursor.execute(sql_select_query,idlist)
+        question= cursor.fetchone()
         label_Question = tk.Label(root, bg='#17331b', fg='white', text=question)
         label_Question.place(x=550,y=300,width=200)
         QuestBox=tk.Entry(root, width=200)
