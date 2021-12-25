@@ -84,7 +84,7 @@ def LoginPage():
             else:
                 text = "סיסמא לא נכונה" #display wrong password if passwords didn't match
         else:
-            text= "משתמש לא קיים" #display nonexistent user if no data was found
+            text = "משתמש לא קיים" #display nonexistent user if no data was found
 
         #display message (or name)
         label_PW = tk.Label(root, bg='#17331b', fg='white', text=text)
