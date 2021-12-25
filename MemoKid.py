@@ -3,6 +3,9 @@ import pygame as pg
 from tkinter import *
 from PIL import Image, ImageTk
 import sqlite3
+import random
+
+
 from sqlite3 import Error
 import time
 
@@ -346,9 +349,55 @@ def ForgotPWPage():
     loginbutton = tk.Button(root, text ="שחזר סיסמא", command=ForgotPWButton)
     loginbutton.place(x=580, y=350, width=75)
 
-StartPage()
+#StartPage()
 #LoginPage()
-#SignUpPage()
+#SignUpPage
+
+
+#level 1
+def Level1():
+    #Create matches
+    matches = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6]
+    # shuffle our matches
+    random.shuffle(matches)
+
+    # Create button frame
+    my_frame = Frame(root)
+    my_frame.pack(pady=10)
+
+    def something():
+        pass
+
+    # define our buttons
+    b0 = Button(my_frame, text=' ', font=("Helvatica",20),height = 3, width=6,command= something)
+    b1 = Button(my_frame, text=' ', font=("Helvatica",20),height = 3, width=6,command= something)
+    b2 = Button(my_frame, text=' ', font=("Helvatica",20),height = 3, width=6,command= something)
+    b3 = Button(my_frame, text=' ', font=("Helvatica",20),height = 3, width=6,command= something)
+    b4 = Button(my_frame, text=' ', font=("Helvatica",20),height = 3, width=6,command= something)
+    b5 = Button(my_frame, text=' ', font=("Helvatica",20),height = 3, width=6,command= something)
+    b6 = Button(my_frame, text=' ', font=("Helvatica",20),height = 3, width=6,command= something)
+    b7 = Button(my_frame, text=' ', font=("Helvatica",20),height = 3, width=6,command= something)
+    b8 = Button(my_frame, text=' ', font=("Helvatica",20),height = 3, width=6,command= something)
+    b9 = Button(my_frame, text=' ', font=("Helvatica",20),height = 3, width=6,command= something)
+    b10 = Button(my_frame, text=' ', font=("Helvatica",20),height = 3, width=6,command= something)
+    b11 = Button(my_frame, text=' ', font=("Helvatica",20),height = 3, width=6,command= something)
+
+    # Grid the buttons
+    b0.grid(row=0, column=0)
+    b1.grid(row=0, column=1)
+    b2.grid(row=0, column=2)
+    b3.grid(row=0, column=3)
+
+    b4.grid(row=1, column=0)
+    b5.grid(row=1, column=1)
+    b6.grid(row=1, column=2)
+    b7.grid(row=1, column=3)
+
+    b8.grid(row=2, column=0)
+    b9.grid(row=2, column=1)
+    b10.grid(row=2, column=2)
+    b11.grid(row=2, column=3)
+
 
 
 
