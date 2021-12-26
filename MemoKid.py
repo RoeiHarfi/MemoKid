@@ -320,6 +320,8 @@ def SignUpPage():
 #function for ForggotPWPage
 def ForgotPWPage():
     TitleImage()
+    label_UserNotFound = tk.Label(root, bg="#17331b", fg='white', text="משתמש לא קיים, נסה שנית")
+
 
     #function for pressing the button (after entering ID)
     def ForgotPWButton():
@@ -341,7 +343,7 @@ def ForgotPWPage():
                 LoginPage()
 
             #save answer
-            answer=QuestBox.get()
+            answer = QuestBox.get()
 
             #compare answer to db
             sql_select_query = "SELECT answer FROM userslist WHERE id =?"
@@ -355,38 +357,48 @@ def ForgotPWPage():
                 pwdb = cursor.fetchone()
                 text= pwdb #save password from db to text variable
             else: #if passwords didn't match
-                text=  "תשובה לא נכונה" #save message to text variable
+                text= "תשובה לא נכונה , נסה שנית" #save message to text variable
 
             #lable to display text var (msg or pw)
             label_PW = tk.Label(root, bg='#17331b', fg='white', text=text)
             label_PW.place(x=550, y=450, width=200)
-
-            returntologinbutton = tk.Button(root, text="התחבר", command=returntologin)
-            returntologinbutton.place(x=550, y=500, width=80)
+            if text != "תשובה לא נכונה , נסה שנית" :
+                returntologinbutton = tk.Button(root, text="התחבר", command=returntologin)
+                returntologinbutton.place(x=600, y=500, width=80)
 
         #save data
         userID = ID.get()
+        sql_select_query = "SELECT ID FROM userslist WHERE id =?"
+        idlist = (userID,)
+        cursor.execute(sql_select_query, idlist)
+        iddb = cursor.fetchone()
 
-        #clear screen
-        label_ID.destroy()
-        ID.destroy()
-        loginbutton.destroy()
+        #if user was found in DB
+        if iddb:
+            #clear screen
+            label_ID.destroy()
+            ID.destroy()
+            sendidbutton.destroy()
+            label_UserNotFound.destroy()
 
-        #get question from db
-        sql_select_query = "SELECT question FROM userslist WHERE id =?"
-        idlist=(userID,)
-        cursor.execute(sql_select_query,idlist)
-        question= cursor.fetchone()
+            #get question from db
+            sql_select_query = "SELECT question FROM userslist WHERE id =?"
+            idlist=(userID,)
+            cursor.execute(sql_select_query,idlist)
+            question= cursor.fetchone()
 
-        #display question and textbox for answer
-        label_Question = tk.Label(root, bg='#17331b', fg='white', text=question)
-        label_Question.place(x=550,y=300,width=200)
-        QuestBox=tk.Entry(root, width=200)
-        QuestBox.place(x=550,y=350, width=200)
+            #display question and textbox for answer
+            label_Question = tk.Label(root, bg='#17331b', fg='white', text=question)
+            label_Question.place(x=550,y=300,width=200)
+            QuestBox=tk.Entry(root, width=200)
+            QuestBox.place(x=550,y=350, width=200)
 
-        #send button
-        sendbutton = tk.Button(root, text="שלח", command=SendButton)
-        sendbutton.place(x=600, y=400, width=75)
+            #send button
+            sendbutton = tk.Button(root, text="שלח", command=SendButton)
+            sendbutton.place(x=600, y=400, width=75)
+
+        else: #user was not found
+            label_UserNotFound.place(x=550,y=400) #place label asking to try again
 
 
     #Request ID TextBox
@@ -396,8 +408,8 @@ def ForgotPWPage():
     ID.place(x=550, y=300, width = 100)
 
     #Login button
-    loginbutton = tk.Button(root, text ="שחזר סיסמא", command=ForgotPWButton)
-    loginbutton.place(x=580, y=350, width=75)
+    sendidbutton = tk.Button(root, text ="שחזר סיסמא", command=ForgotPWButton)
+    sendidbutton.place(x=580, y=350, width=75)
 
 StartPage()
 #LoginPage()
