@@ -60,14 +60,7 @@ def LoginPage():
         user = ID.get()
         pw = password.get()
 
-        #clear screen
-        lblfrstrow.destroy()
-        ID.destroy()
-        lblsecrow.destroy()
-        password.destroy()
-        loginbutton.destroy()
-        signupbutton.destroy()
-        forgotpwbutton.destroy()
+
 
         #search for user in db
         sql_select_query = "SELECT password FROM userslist WHERE id =?"
@@ -76,11 +69,17 @@ def LoginPage():
         pwdb = cursor.fetchone()
         if(pwdb): #if user was found (any data from password col)
             if pw == pwdb[0]: #check if the password entered match db
-                sql_select_query = "SELECT name FROM userslist WHERE id =?"
-                idlist = (user,)
-                cursor.execute(sql_select_query, idlist)
-                namedb = cursor.fetchone()
-                text = namedb #save name from db
+                # clear screen
+                lblfrstrow.destroy()
+                ID.destroy()
+                lblsecrow.destroy()
+                password.destroy()
+                loginbutton.destroy()
+                signupbutton.destroy()
+                forgotpwbutton.destroy()
+
+                #Send to user menu
+                CheckUserType(user)
             else:
                 text = "סיסמא לא נכונה" #display wrong password if passwords didn't match
         else:
@@ -264,6 +263,8 @@ def SignUpPage():
     RegisterButton = tk.Button(root, text ="הרשם", command = RegisterButton)
     RegisterButton.place(x=580, y=510, width=80, height=25)
 
+
+
 #function for ForggotPWPage
 def ForgotPWPage():
     TitleImage()
@@ -346,10 +347,68 @@ def ForgotPWPage():
     loginbutton = tk.Button(root, text ="שחזר סיסמא", command=ForgotPWButton)
     loginbutton.place(x=580, y=350, width=75)
 
+
+#Function for Menu page for admin user
+def MenuPageAdmin():
+
+    #StudentDetailsButton
+    def StudentDetailsButton():
+
+        pass
+
+    #EraseStudentButton
+    def EraseStudentButton():
+        pass
+    #DeleteGameButton
+    def DeleteGameButton():
+        pass
+
+    #Student Details
+    DetailsButton = tk.Button(root, text="פרטי תלמיד", command=StudentDetailsButton)
+    DetailsButton.place(x=580, y=510, width=80, height=25)
+
+    # Erase user
+    EraseButton = tk.Button(root, text="מחק משתמש", command=EraseStudentButton)
+    EraseButton.place(x=580, y=410, width=80, height=25)
+
+    # Delete user
+    DeleteButton = tk.Button(root, text="מחק משתמש", command=DeleteGameButton)
+    DeleteButton.place(x=580, y=310, width=80, height=25)
+
+
+
+
+
+#Function for Menu page for Research user
+def MenuPageResearch():
+    pass
+#Function for Menu page for Student user
+def MenuPageStudent():
+    pass
+
+
+
+def CheckUserType(user):
+    #Function that checks if user is Admin\Research\Student user
+    # search for type in db
+    sql_select_query = "SELECT type FROM userslist WHERE id =?"
+    userlist = (user,)
+    cursor.execute(sql_select_query, userlist)
+    userType = cursor.fetchone()
+    if userType=='תלמיד':
+        MenuPageStudent()
+    if  userType=='מחקר':
+        MenuPageResearch()
+    if  userType=='מנהל':
+        MenuPageAdmin()
+
+
 StartPage()
 #LoginPage()
 #SignUpPage()
-
-
+#CheckUserType()
+#MenuPageAdmin()
+#MenuPageResearch()
+#MenuPageStudent()
 
 root.mainloop()
