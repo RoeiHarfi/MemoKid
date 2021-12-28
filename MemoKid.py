@@ -433,7 +433,7 @@ def MenuPageAdmin():
         EraseButton.destroy()
         DLGButton.destroy()
         ShowStudGameScoreButton.destroy()
-        ##########################
+        UpadeDetailsPage()
 
 
 
@@ -627,8 +627,8 @@ def ShowStudentGames():
             style = ttk.Style(root)
             style.theme_use("clam")
             style.configure("Treeview",
-                            background="black",
-                            foreground="black",
+                            background="17331b",
+                            foreground="white",
                             rowheight=25,
                             fieldbackground="#17331b",
                             selectbackground="17331b")
@@ -1029,8 +1029,8 @@ def Level1(user):
     b11.grid(row=2, column=3)
 
 
-Level1(315848820)
-#StartPage()
+#Level1(315848820)
+StartPage()
 
 
 root.mainloop()
