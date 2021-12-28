@@ -1,6 +1,7 @@
 import tkinter as tk
 import pygame as pg
 from tkinter import *
+from tkinter import ttk
 from PIL import Image, ImageTk
 import sqlite3
 import random
@@ -11,6 +12,8 @@ import time
 # connect to db
 sqlconnect = sqlite3.connect('MemoKidDB.db')
 cursor = sqlconnect.cursor()
+sqlconnect2 = sqlite3.connect('usergrades.db')
+cursorgrades = sqlconnect2.cursor()
 
 # Create the screen
 root = tk.Tk()
@@ -32,9 +35,6 @@ def TitleImage():
     label_title = tk.Label(image=title)
     label_title.image = title
     label_title.place(x=400, y=100)
-
-
-# subfunction to display
 
 # Function for stat page
 def StartPage():
@@ -467,10 +467,66 @@ def CheckUserType(user):
     if userType[0] == 'מנהל':
         MenuPageAdmin()
 
+#function to show student games details
+def ShowStudentGames():
+
+    #function for show button click
+    def ShowButton():
+
+        # check if ID is in database
+        userID = UserID_Entry.get()
+        sql_select = "SELECT id FROM userslist WHERE id = ?"
+        userlist = (userID, )
+        cursor.execute(sql_select , userlist)
+        IDdb = cursor.fetchone()
+
+        if IDdb:
+            style = ttk.Style(root)
+            style.theme_use("clam")
+            style.configure("Treeview",
+                            background="black",
+                            foreground="black",
+                            rowheight=25,
+                            fieldbackground="#17331b",
+                            selectbackground="17331b")
+            tree = ttk.Treeview(root, column=("","userID", "attempts", "gameTime", "level1", "level2", "level3"), show='headings')
+            tree.column("#1", minwidth="0")
+            tree.column("#1", width=0)
+            tree.column("#2", anchor=tk.CENTER)
+            tree.heading("#2", text="תעודת זהות")
+            tree.column("#3", anchor=tk.CENTER)
+            tree.heading("#3", text="מספר משחק")
+            tree.column("#4", anchor=tk.CENTER)
+            tree.heading("#4", text="תאריך")
+            tree.column("#5", anchor=tk.CENTER)
+            tree.heading("#5", text="שלב 1")
+            tree.column("#6", anchor=tk.CENTER)
+            tree.heading("#6", text="שלב 2")
+            tree.column("#7", anchor=tk.CENTER)
+            tree.heading("#7", text="שלב 3")
+            tree.pack()
+            sql_select_data = "SELECT * FROM usergrades WHERE userID = ?"
+            userlistdata= (userID, )
+            cursorgrades.execute(sql_select_data , userlistdata)
+            rows = cursorgrades.fetchall()
+            for row in rows:
+                tree.insert("", tk.END, values=row)
+            tree.place(x=40, y=350)
+
+
+        else:
+            Message_Label = tk.Label(root, bg='#17331b', fg='white', text="משתמש לא נמצא")
+            Message_Label.place(x=540, y=310, width=120, height=25)
+
+    TitleImage()
+    userID_Label = tk.Label(root, bg='#17331b', fg='white', text="תעודת זהות תלמיד")
+    userID_Label.place(x=540, y=220, width=120, height=25)
+    UserID_Entry = tk.Entry(root, width=200)
+    UserID_Entry.place(x=540, y=250, width=120, height=25)
+    Show_Button = tk.Button(root, text= "הצג", command=ShowButton)
+    Show_Button.place(x=580, y=280, height=25)
 
 count = 0
-
-
 # level 1
 def Level1():
     #     root = Tk()
@@ -530,8 +586,8 @@ def Level1():
     b11.grid(row=2, column=3)
 
 
-# StartPage()
-# Level1()
-StartPage()
+#Level1()
+#StartPage()
+ShowStudentGames()
 
 root.mainloop()
