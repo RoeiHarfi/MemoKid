@@ -60,6 +60,8 @@ def StartPage():
 # Function for Login Page
 def LoginPage():
     TitleImage()
+    text = None
+    label_Message = tk.Label(root, bg='#17331b', fg='white', text="")
 
     # function for login button, displayes name if login successful (for now)
     def LoginButton():
@@ -82,20 +84,19 @@ def LoginPage():
                 loginbutton.destroy()
                 signupbutton.destroy()
                 forgotpwbutton.destroy()
-                text = "don't show label"
+                label_Message.destroy()
 
                 # Send to user menu
                 CheckUserType(user)
 
             else:
-                text = "סיסמא לא נכונה"  # display wrong password if passwords didn't match
+                label_Message['text'] = "סיסמא לא נכונה"  # display wrong password if passwords didn't match
+                label_Message.place(x=550, y=520, width=200)
         else:
-            text = "משתמש לא קיים"  # display nonexistent user if no data was found
+            label_Message['text'] = "משתמש לא קיים"  # display nonexistent user if no data was found
+            label_Message.place(x=550, y=520, width=200)
 
         # display message
-        if (text != "don't show label"):
-            label_PW = tk.Label(root, bg='#17331b', fg='white', text=text)
-            label_PW.place(x=550, y=450, width=200)
 
     # function for signup button
     def SignUpButton():
@@ -107,6 +108,7 @@ def LoginPage():
         loginbutton.destroy()
         signupbutton.destroy()
         forgotpwbutton.destroy()
+        label_Message.destroy()
 
         # send to signup page
         SignUpPage()
@@ -121,6 +123,8 @@ def LoginPage():
         loginbutton.destroy()
         signupbutton.destroy()
         forgotpwbutton.destroy()
+        label_Message.destroy()
+
         # send to ForgotPWPage
         ForgotPWPage()
 
@@ -174,64 +178,63 @@ def SignUpPage():
         answer_user = Answer.get()
         user_password = PasswordFirst.get()
         user_password2 = PasswordSecond.get()
-        print("name user = ", name_user)
-        print("ID user = ", ID_user)
-        print("city_user = ", city_user)
-        print("school user= ", school_user)
-        print("class user= ", class_user)
-        print("gender user= ", gender_user)
-        print("type user= ", type_user)
-        print("question user= ", question_user)
-        print("answer user= ", answer_user)
-        print("user password= ", user_password)
-        print("user password 2= ", user_password2)
 
-        # check if both passwords match (and not empty)
-        if user_password == user_password2 and len(user_password) > 6 and user_password2:
-            # clear screen
-            SignUpLabel1.destroy()
-            Name.destroy()
-            SignUpLabel2.destroy()
-            ID.destroy()
-            SignUpLabel3.destroy()
-            City.destroy()
-            SignUpLabel4.destroy()
-            School.destroy()
-            SignUpLabel5.destroy()
-            Class.destroy()
-            SignUpLabel6.destroy()
-            Gender.destroy()
-            SignUpLabel7.destroy()
-            PasswordFirst.destroy()
-            SignUpLabel8.destroy()
-            PasswordSecond.destroy()
-            SignupLabel9.destroy()
-            Type.destroy()
-            SignUpLabel10.destroy()
-            Question.destroy()
-            SignUpLabel11.destroy()
-            Answer.destroy()
-            RegisterButton.destroy()
-            RetryLabel.destroy()
+        sql_select_id = "SELECT id FROM userslist WHERE id = ?"
+        ID_list = (ID_user, )
+        cursor.execute(sql_select_id, ID_list)
+        registered = cursor.fetchone()
 
-            # insert data into db
-            sql_insert_query = "INSERT INTO userslist VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            val = (name_user, ID_user, city_user, school_user, gender_user, class_user, type_user, user_password, "0",
-                   question_user, answer_user)
-            cursor.execute(sql_insert_query, val)
-            sqlconnect.commit()
-
-            # register succesful and button to go to login page
-            Successlabel = Label(root, bg='#17331b', fg='white', text="ההרשמה הצליחה , אנא התחברו", )
-            Successlabel.place(x=570, y=300, width=180)
-            registercompletebutton = tk.Button(root, text="התחבר", command=RegisterCompleteButton)
-            registercompletebutton.place(x=570, y=350, width=80)
-
-        else:  # if passwords didn't match place the label (unmatching passwords try again)
+        if registered:
+            RetryLabel['text'] = "משתמש קיים"
             RetryLabel.place(x=520, y=470, width=200, height=35)
+        else:
+            # check if both passwords match (and not empty)
+            if user_password == user_password2 and len(user_password) > 5 and user_password2:
+                # clear screen
+                SignUpLabel1.destroy()
+                Name.destroy()
+                SignUpLabel2.destroy()
+                ID.destroy()
+                SignUpLabel3.destroy()
+                City.destroy()
+                SignUpLabel4.destroy()
+                School.destroy()
+                SignUpLabel5.destroy()
+                Class.destroy()
+                SignUpLabel6.destroy()
+                Gender.destroy()
+                SignUpLabel7.destroy()
+                PasswordFirst.destroy()
+                SignUpLabel8.destroy()
+                PasswordSecond.destroy()
+                SignupLabel9.destroy()
+                Type.destroy()
+                SignUpLabel10.destroy()
+                Question.destroy()
+                SignUpLabel11.destroy()
+                Answer.destroy()
+                RegisterButton.destroy()
+                RetryLabel.destroy()
 
-    # Retry Title (not placing unless passwords didn't match)
-    RetryLabel = Label(root, bg='#17331b', fg='white', text="סיסמאות לא תקינות, אנא נסה שנית")
+                # insert data into db
+                sql_insert_query = "INSERT INTO userslist VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                val = (name_user, ID_user, city_user, school_user, gender_user, class_user, type_user, user_password, "0",
+                       question_user, answer_user)
+                cursor.execute(sql_insert_query, val)
+                sqlconnect.commit()
+
+                # register succesful and button to go to login page
+                Successlabel = Label(root, bg='#17331b', fg='white', text="ההרשמה הצליחה , אנא התחברו", )
+                Successlabel.place(x=570, y=300, width=180)
+                registercompletebutton = tk.Button(root, text="התחבר", command=RegisterCompleteButton)
+                registercompletebutton.place(x=570, y=350, width=80)
+
+            else:  # if passwords didn't match place the label (unmatching passwords try again)
+                RetryLabel['text'] = "סיסמאות לא תקינות, אנא נסה שנית"
+                RetryLabel.place(x=520, y=470, width=200, height=35)
+
+    # Retry Title
+    RetryLabel = Label(root, bg='#17331b', fg='white', text="")
 
     # Name Title
     SignUpLabel1 = Label(root, bg='#17331b', fg='white', text="שם מלא", )
@@ -565,6 +568,8 @@ def CheckUserType(user):
 
 #function to show student games details
 def ShowStudentGames():
+    # Label for messages
+    Message_Label = tk.Label(root, bg='#17331b', fg='white', text="")
 
     #function for show button click
     def ShowButton():
@@ -608,10 +613,11 @@ def ShowStudentGames():
             for row in rows:
                 tree.insert("", tk.END, values=row)
             tree.place(x=40, y=350)
+            Message_Label['text'] = "משחקי התלמיד"
 
 
         else:
-            Message_Label = tk.Label(root, bg='#17331b', fg='white', text="משתמש לא נמצא")
+            Message_Label['text'] = "משתמש לא נמצא"
             Message_Label.place(x=540, y=310, width=120, height=25)
 
     TitleImage()
