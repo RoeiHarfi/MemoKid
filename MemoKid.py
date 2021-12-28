@@ -444,7 +444,7 @@ def MenuPageAdmin():
         EraseButton.destroy()
         DLGButton.destroy()
         ShowStudGameScoreButton.destroy()
-        ########################
+        DeleteUser()
 
 
     #DeleteGameButton
@@ -894,6 +894,101 @@ def UpadeDetailsPage():
     Return_Button = tk.Button(root, text="חזור לתפריט", command=ReturnButton)
     Return_Button.place(x=540, y=280, height=25)
 
+# Function for delete user page
+def DeleteUser():
+    TitleImage()
+
+    #Label Message
+    Label_Message = tk.Label(root, bg='#17331b' , fg='white' , text="")
+
+    # Function for return button
+    def ReturnButton():
+        #clear screen
+        Label_Message.destroy()
+        userID_Label.destroy()
+        UserID_Entry.destroy()
+        Show_Button.destroy()
+        Return_Button.destroy()
+        #back to menu
+        MenuPageAdmin()
+
+    # Function for delete button
+    def DeleteButton():
+        # check if ID is in database
+        userID = UserID_Entry.get()
+        sql_select = "SELECT * FROM userslist WHERE id = ?"
+        userlist = (userID,)
+        cursor.execute(sql_select, userlist)
+        IDdb = cursor.fetchone()
+
+        if IDdb:
+            sql_delete = "DELETE FROM userslist WHERE id = ?"
+            cursor.execute(sql_delete , userlist)
+            sqlconnect.commit()
+            Label_Message['text'] = "המשתמש נמחק בהצלחה"
+        else:
+            Label_Message['text'] = "משתמש לא נמצא"
+            Label_Message.place(x=540 , y= 320)
+
+
+    userID_Label = tk.Label(root, bg='#17331b', fg='white', text="הכנס תעודת זהות של המשתמש שברצונך למחוק")
+    userID_Label.place(x=470, y=220, width=250, height=25)
+    UserID_Entry = tk.Entry(root, width=200)
+    UserID_Entry.place(x=540, y=250, width=120, height=25)
+    Show_Button = tk.Button(root, text="מחק", command=DeleteButton)
+    Show_Button.place(x=625, y=280, height=25)
+    Return_Button = tk.Button(root, text="חזור לתפריט", command=ReturnButton)
+    Return_Button.place(x=540, y=280, height=25)
+
+
+# Function for delete last game
+def DeleteLastGame():
+    TitleImage()
+
+    #Label Message
+    Label_Message = tk.Label(root, bg='#17331b' , fg='white' , text="")
+
+    # Function for return button
+    def ReturnButton():
+        #clear screen
+        Label_Message.destroy()
+        userID_Label.destroy()
+        UserID_Entry.destroy()
+        Show_Button.destroy()
+        Return_Button.destroy()
+        #back to menu
+        MenuPageAdmin()
+
+    # Function for delete button
+    def DeleteButton():
+        # check if ID is in database
+        userID = UserID_Entry.get()
+        sql_select = "SELECT * FROM userslist WHERE id = ?"
+        userlist = (userID,)
+        cursor.execute(sql_select, userlist)
+        IDdb = cursor.fetchone()
+
+        if IDdb:
+            sql_select = "SELECT MAX(attempts) from usergrades WHERE id= ?"
+            cursorgrades.execute(sql_select , userlist)
+            attemptsdb = cursor.fetchone()
+            print(attemptsdb)
+
+            #Label_Message['text'] = "המשתמש נמחק בהצלחה"
+        else:
+            Label_Message['text'] = "משתמש לא נמצא"
+            Label_Message.place(x=540 , y= 320)
+
+
+    userID_Label = tk.Label(root, bg='#17331b', fg='white', text="הכנס תעודת זהות של המשתמש שברצונך למחוק את המשחק האחרון שלו")
+    userID_Label.place(x=390, y=220, width=450, height=25)
+    UserID_Entry = tk.Entry(root, width=200)
+    UserID_Entry.place(x=540, y=250, width=120, height=25)
+    Show_Button = tk.Button(root, text="מחק", command=DeleteButton)
+    Show_Button.place(x=625, y=280, height=25)
+    Return_Button = tk.Button(root, text="חזור לתפריט", command=ReturnButton)
+    Return_Button.place(x=540, y=280, height=25)
+
 
 
 
@@ -1030,7 +1125,6 @@ def Level1(user):
 
 
 #Level1(315848820)
-StartPage()
-
-
+#StartPage()
+DeleteLastGame()
 root.mainloop()
