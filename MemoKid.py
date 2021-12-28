@@ -186,7 +186,7 @@ def SignUpPage():
 
 
         #check if both passwords match (and not empty)
-        if user_password == user_password2 and user_password and user_password2:
+        if user_password == user_password2 and len(user_password)>6 and user_password2:
             #clear screen
             SignUpLabel1.destroy()
             Name.destroy()
@@ -229,7 +229,7 @@ def SignUpPage():
             RetryLabel.place(x=520, y=470, width=200, height=35)
 
     #Retry Title (not placing unless passwords didn't match)
-    RetryLabel = Label(root, bg='#17331b', fg='white', text="סיסמאות לא תואמות אנא נסה שנית")
+    RetryLabel = Label(root, bg='#17331b', fg='white', text="סיסמאות לא תקינות, אנא נסה שנית")
 
     #Name Title
     SignUpLabel1 = Label(root, bg='#17331b', fg='white', text = "שם מלא", )
@@ -279,7 +279,7 @@ def SignUpPage():
     Gender.place(x=800, y=550, width=70)
 
     # PasswordFirst Title
-    SignUpLabel7 = Label(root, bg='#17331b', fg='white', text="סיסמא אישית", )
+    SignUpLabel7 = Label(root, bg='#17331b', fg='white', text="סיסמא אישית (לפחות 6 תווים)", )
     SignUpLabel7.place(x=520, y=280, width=175,height=35)
     # PasswordFirst TextBox
     PasswordFirst = tk.Entry(root, width = 35)
