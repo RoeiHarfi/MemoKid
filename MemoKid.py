@@ -969,7 +969,7 @@ def DeleteLastGame():
         IDdb = cursor.fetchone()
 
         if IDdb:
-            sql_select = "SELECT MAX(attempts) from usergrades WHERE id= ?"
+            sql_select = "SELECT MAX(attempts) FROM usergrades WHERE userID= ?"
             cursorgrades.execute(sql_select , userlist)
             attemptsdb = cursor.fetchone()
             print(attemptsdb)
