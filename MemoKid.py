@@ -1,6 +1,7 @@
 import tkinter as tk
 import pygame as pg
 from tkinter import *
+from tkinter import ttk
 from PIL import Image, ImageTk
 import sqlite3
 import random
@@ -12,11 +13,13 @@ import time
 # connect to db
 sqlconnect = sqlite3.connect('MemoKidDB.db')
 cursor = sqlconnect.cursor()
+sqlconnect2 = sqlite3.connect('usergrades.db')
+cursorgrades = sqlconnect2.cursor()
 
 # Create the screen
 root = tk.Tk()
 root.geometry("1280x720")
-root.title("Login Page")
+root.title("MemoKid")
 
 # background image
 C = Canvas(root, bg="blue", height=1280, width=720)
@@ -33,9 +36,6 @@ def TitleImage():
     label_title = tk.Label(image=title)
     label_title.image = title
     label_title.place(x=400, y=100)
-
-
-# subfunction to display
 
 # Function for stat page
 def StartPage():
@@ -61,6 +61,8 @@ def StartPage():
 # Function for Login Page
 def LoginPage():
     TitleImage()
+    text = None
+    label_Message = tk.Label(root, bg='#17331b', fg='white', text="")
 
     # function for login button, displayes name if login successful (for now)
     def LoginButton():
@@ -83,20 +85,19 @@ def LoginPage():
                 loginbutton.destroy()
                 signupbutton.destroy()
                 forgotpwbutton.destroy()
-                text = "don't show label"
+                label_Message.destroy()
 
                 # Send to user menu
                 CheckUserType(user)
 
             else:
-                text = "סיסמא לא נכונה"  # display wrong password if passwords didn't match
+                label_Message['text'] = "סיסמא לא נכונה"  # display wrong password if passwords didn't match
+                label_Message.place(x=550, y=520, width=200)
         else:
-            text = "משתמש לא קיים"  # display nonexistent user if no data was found
+            label_Message['text'] = "משתמש לא קיים"  # display nonexistent user if no data was found
+            label_Message.place(x=550, y=520, width=200)
 
         # display message
-        if (text != "don't show label"):
-            label_PW = tk.Label(root, bg='#17331b', fg='white', text=text)
-            label_PW.place(x=550, y=450, width=200)
 
     # function for signup button
     def SignUpButton():
@@ -108,6 +109,7 @@ def LoginPage():
         loginbutton.destroy()
         signupbutton.destroy()
         forgotpwbutton.destroy()
+        label_Message.destroy()
 
         # send to signup page
         SignUpPage()
@@ -122,6 +124,8 @@ def LoginPage():
         loginbutton.destroy()
         signupbutton.destroy()
         forgotpwbutton.destroy()
+        label_Message.destroy()
+
         # send to ForgotPWPage
         ForgotPWPage()
 
@@ -175,64 +179,63 @@ def SignUpPage():
         answer_user = Answer.get()
         user_password = PasswordFirst.get()
         user_password2 = PasswordSecond.get()
-        print("name user = ", name_user)
-        print("ID user = ", ID_user)
-        print("city_user = ", city_user)
-        print("school user= ", school_user)
-        print("class user= ", class_user)
-        print("gender user= ", gender_user)
-        print("type user= ", type_user)
-        print("question user= ", question_user)
-        print("answer user= ", answer_user)
-        print("user password= ", user_password)
-        print("user password 2= ", user_password2)
 
-        # check if both passwords match (and not empty)
-        if user_password == user_password2 and len(user_password) > 6 and user_password2:
-            # clear screen
-            SignUpLabel1.destroy()
-            Name.destroy()
-            SignUpLabel2.destroy()
-            ID.destroy()
-            SignUpLabel3.destroy()
-            City.destroy()
-            SignUpLabel4.destroy()
-            School.destroy()
-            SignUpLabel5.destroy()
-            Class.destroy()
-            SignUpLabel6.destroy()
-            Gender.destroy()
-            SignUpLabel7.destroy()
-            PasswordFirst.destroy()
-            SignUpLabel8.destroy()
-            PasswordSecond.destroy()
-            SignupLabel9.destroy()
-            Type.destroy()
-            SignUpLabel10.destroy()
-            Question.destroy()
-            SignUpLabel11.destroy()
-            Answer.destroy()
-            RegisterButton.destroy()
-            RetryLabel.destroy()
+        sql_select_id = "SELECT id FROM userslist WHERE id = ?"
+        ID_list = (ID_user, )
+        cursor.execute(sql_select_id, ID_list)
+        registered = cursor.fetchone()
 
-            # insert data into db
-            sql_insert_query = "INSERT INTO userslist VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            val = (name_user, ID_user, city_user, school_user, gender_user, class_user, type_user, user_password, "0",
-                   question_user, answer_user)
-            cursor.execute(sql_insert_query, val)
-            sqlconnect.commit()
-
-            # register succesful and button to go to login page
-            Successlabel = Label(root, bg='#17331b', fg='white', text="ההרשמה הצליחה , אנא התחברו", )
-            Successlabel.place(x=570, y=300, width=180)
-            registercompletebutton = tk.Button(root, text="התחבר", command=RegisterCompleteButton)
-            registercompletebutton.place(x=570, y=350, width=80)
-
-        else:  # if passwords didn't match place the label (unmatching passwords try again)
+        if registered:
+            RetryLabel['text'] = "משתמש קיים"
             RetryLabel.place(x=520, y=470, width=200, height=35)
+        else:
+            # check if both passwords match (and not empty)
+            if user_password == user_password2 and len(user_password) > 5 and user_password2:
+                # clear screen
+                SignUpLabel1.destroy()
+                Name.destroy()
+                SignUpLabel2.destroy()
+                ID.destroy()
+                SignUpLabel3.destroy()
+                City.destroy()
+                SignUpLabel4.destroy()
+                School.destroy()
+                SignUpLabel5.destroy()
+                Class.destroy()
+                SignUpLabel6.destroy()
+                Gender.destroy()
+                SignUpLabel7.destroy()
+                PasswordFirst.destroy()
+                SignUpLabel8.destroy()
+                PasswordSecond.destroy()
+                SignupLabel9.destroy()
+                Type.destroy()
+                SignUpLabel10.destroy()
+                Question.destroy()
+                SignUpLabel11.destroy()
+                Answer.destroy()
+                RegisterButton.destroy()
+                RetryLabel.destroy()
 
-    # Retry Title (not placing unless passwords didn't match)
-    RetryLabel = Label(root, bg='#17331b', fg='white', text="סיסמאות לא תקינות, אנא נסה שנית")
+                # insert data into db
+                sql_insert_query = "INSERT INTO userslist VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                val = (name_user, ID_user, city_user, school_user, gender_user, class_user, type_user, user_password, "0",
+                       question_user, answer_user)
+                cursor.execute(sql_insert_query, val)
+                sqlconnect.commit()
+
+                # register succesful and button to go to login page
+                Successlabel = Label(root, bg='#17331b', fg='white', text="ההרשמה הצליחה , אנא התחברו", )
+                Successlabel.place(x=570, y=300, width=180)
+                registercompletebutton = tk.Button(root, text="התחבר", command=RegisterCompleteButton)
+                registercompletebutton.place(x=570, y=350, width=80)
+
+            else:  # if passwords didn't match place the label (unmatching passwords try again)
+                RetryLabel['text'] = "סיסמאות לא תקינות, אנא נסה שנית"
+                RetryLabel.place(x=520, y=470, width=200, height=35)
+
+    # Retry Title
+    RetryLabel = Label(root, bg='#17331b', fg='white', text="")
 
     # Name Title
     SignUpLabel1 = Label(root, bg='#17331b', fg='white', text="שם מלא", )
@@ -418,60 +421,425 @@ def ForgotPWPage():
 
 
 # Function for Menu page for admin user
+
+#Function for Menu page for admin user
 def MenuPageAdmin():
-    # StudentDetailsButton
-    def StudentDetailsButton():
-        pass
 
-    # EraseStudentButton
+    #StudentDetailsButton
+    def UpdateDetailsButton():
+        #clear screen
+        DetailsButton.destroy()
+        EraseButton.destroy()
+        DLGButton.destroy()
+        ShowStudGameScoreButton.destroy()
+        ##########################
+
+
+
+    #EraseStudentButton
     def EraseStudentButton():
-        pass
+        # clear screen
+        DetailsButton.destroy()
+        EraseButton.destroy()
+        DLGButton.destroy()
+        ShowStudGameScoreButton.destroy()
+        ########################
 
-    # DeleteGameButton
-    def DeleteGameButton():
-        pass
 
-    # Student Details
-    DetailsButton = tk.Button(root, text="פרטי תלמיד", command=StudentDetailsButton)
-    DetailsButton.place(x=580, y=510, width=80, height=25)
+    #DeleteGameButton
+    def DeleteLastGameButton():
+        # clear screen
+        DetailsButton.destroy()
+        EraseButton.destroy()
+        DLGButton.destroy()
+        ShowStudGameScoreButton.destroy()
+        ########################
+
+    def ShowGameScore():
+        # clear screen
+        DetailsButton.destroy()
+        EraseButton.destroy()
+        DLGButton.destroy()
+        ShowStudGameScoreButton.destroy()
+        ShowStudentGames()
+        
+
+    #Update personal info in info screen
+    DetailsButton = tk.Button(root, text="עדבן פרטי משתמש", command=UpdateDetailsButton)
+    DetailsButton.place(x=550, y=450, width=130)
 
     # Erase user
     EraseButton = tk.Button(root, text="מחק משתמש", command=EraseStudentButton)
-    EraseButton.place(x=580, y=410, width=80, height=25)
+    EraseButton.place(x=550, y=400, width=130)
 
-    # Delete user
-    DeleteButton = tk.Button(root, text="מחק משתמש", command=DeleteGameButton)
-    DeleteButton.place(x=580, y=310, width=80, height=25)
+    # Erase the last game the user played
+    DLGButton = tk.Button(root, text="מחק משחק אחרון", command=DeleteLastGameButton)
+    DLGButton.place(x=550, y=350, width=130)
+
+    #Show student games score
+    ShowStudGameScoreButton = tk.Button(root, text="הצג משחקי תלמיד", command=ShowGameScore)
+    ShowStudGameScoreButton.place(x=550, y=300, width=130)
 
 
-# Function for Menu page for Research user
+
+
+
+#Function for Menu page for Research user
 def MenuPageResearch():
-    pass
+
+    # Show Data in a boys\girls cut Button
+    def BoysGirlsDataButton():
+        # clear screen
+        BGDButton.destroy()
+        SDICButton.destroy()
+        SDISButton.destroy()
+        ShowStudGameScoreButton.destroy()
+        ################################
+
+    # Show Data in a class cut
+    def ShowDataInClassButton():
+        # clear screen
+        BGDButton.destroy()
+        SDICButton.destroy()
+        SDISButton.destroy()
+        ShowStudGameScoreButton.destroy()
+        ################################
+
+    # Show Data in a schoolName cut
+    def ShowDataInSchoolButton():
+        # clear screen
+        BGDButton.destroy()
+        SDICButton.destroy()
+        SDISButton.destroy()
+        ShowStudGameScoreButton.destroy()
+        ################################
+
+    # Show student games score
+    def ShowGameScore():
+        # clear screen
+        BGDButton.destroy()
+        SDICButton.destroy()
+        SDISButton.destroy()
+        ShowStudGameScoreButton.destroy()
+        ShowStudentGames()
 
 
-# Function for Menu page for Student user
+    #Show Data in a boys\girls cut
+    BGDButton = tk.Button(root, text="הצג נתונים בחתך בנים או בנות", command=BoysGirlsDataButton)
+    BGDButton.place(x=580, y=510, width=130)
+    # Show Data in a class cut
+    SDICButton = tk.Button(root, text="הצג נתונים בחתך כיתה", command=ShowDataInClassButton)
+    SDICButton.place(x=580, y=410, width=130)
+    #Show Data in a schoolName cut
+    SDISButton = tk.Button(root, text="הצג נתונים בחתך שם בית ספר", command=ShowDataInSchoolButton)
+    SDISButton.place(x=580, y=310, width=130)
+    # Show student games score
+    ShowStudGameScoreButton = tk.Button(root, text="הצג משחקי תלמיד", command=ShowGameScore)
+    ShowStudGameScoreButton.place(x=380, y=210, width=130)
+
+
+#Function for Menu page for Student user
 def MenuPageStudent():
-    pass
+    # Game instructions Button
+    def GameInstructionButton():
+        #################--------------SHAI WORK-------------
+        pass
+
+    # Start Game Button
+    def StartGameButton():
+        #clear screen
+        GIButton.destroy()
+        SGButton.destroy()
+        SSLGButton.destroy()
+        SAGButton.destroy()
+#########################################
+
+    # Show grade of last game Button
+    def ShowStudentLastGradeButton():
+        # clear screen
+        GIButton.destroy()
+        SGButton.destroy()
+        SSLGButton.destroy()
+        SAGButton.destroy()
+########################################
+
+    # Show Average rank for now Button
+    def ShowAveGradeButton():
+        # clear screen
+        GIButton.destroy()
+        SGButton.destroy()
+        SSLGButton.destroy()
+        SAGButton.destroy()
+####################################
+
+    #Game instructions
+    GIButton = tk.Button(root, text="הוראות המשחק", command=GameInstructionButton)
+    GIButton.place(x=1050, y=180, width=130)
+
+    #Start Game
+    SGButton = tk.Button(root, text="התחל משחק", command=StartGameButton)
+    SGButton.place(x=550, y=410, width=130,height=50)
+
+    #Show grade of last game
+    SSLGButton = tk.Button(root, text="הצג ציון אחרון", command=ShowStudentLastGradeButton)
+    SSLGButton.place(x=550, y=370, width=130)
+
+    #Show Average rank for now
+    SAGButton = tk.Button(root, text="הצג ממוצע", command=ShowAveGradeButton)
+    SAGButton.place(x=550, y=320, width=130)
+
+
+
+
 
 
 def CheckUserType(user):
-    # Function that checks if user is Admin\Research\Student user
+    #Function that checks if user is Admin\Research\Student user
     # search for type in db
     sql_select_query = "SELECT type FROM userslist WHERE id =?"
     userlist = (user,)
     cursor.execute(sql_select_query, userlist)
     userType = cursor.fetchone()
-    if userType[0] == 'תלמיד':
+    if userType[0]=='תלמיד':
         MenuPageStudent()
-    if userType[0] == 'מחקר':
+    if userType[0]=='חוקר':
         MenuPageResearch()
-    if userType[0] == 'מנהל':
+    if userType[0]=='מנהל':
         MenuPageAdmin()
 
+#function to show student games details
+def ShowStudentGames():
+    # Label for messages
+    Message_Label = tk.Label(root, bg='#17331b', fg='white', text="")
+
+    #function for show button click
+    def ShowButton():
+
+        # check if ID is in database
+        userID = UserID_Entry.get()
+        sql_select = "SELECT id FROM userslist WHERE id = ?"
+        userlist = (userID, )
+        cursor.execute(sql_select , userlist)
+        IDdb = cursor.fetchone()
+
+        if IDdb:
+            style = ttk.Style(root)
+            style.theme_use("clam")
+            style.configure("Treeview",
+                            background="black",
+                            foreground="black",
+                            rowheight=25,
+                            fieldbackground="#17331b",
+                            selectbackground="17331b")
+            tree = ttk.Treeview(root, column=("","userID", "attempts", "gameTime", "level1", "level2", "level3"), show='headings')
+            tree.column("#1", minwidth="0")
+            tree.column("#1", width=0)
+            tree.column("#2", anchor=tk.CENTER)
+            tree.heading("#2", text="תעודת זהות")
+            tree.column("#3", anchor=tk.CENTER)
+            tree.heading("#3", text="מספר משחק")
+            tree.column("#4", anchor=tk.CENTER)
+            tree.heading("#4", text="תאריך")
+            tree.column("#5", anchor=tk.CENTER)
+            tree.heading("#5", text="שלב 1")
+            tree.column("#6", anchor=tk.CENTER)
+            tree.heading("#6", text="שלב 2")
+            tree.column("#7", anchor=tk.CENTER)
+            tree.heading("#7", text="שלב 3")
+            tree.pack()
+            sql_select_data = "SELECT * FROM usergrades WHERE userID = ?"
+            userlistdata= (userID, )
+            cursorgrades.execute(sql_select_data , userlistdata)
+            rows = cursorgrades.fetchall()
+            for row in rows:
+                tree.insert("", tk.END, values=row)
+            tree.place(x=40, y=350)
+            Message_Label['text'] = "משחקי התלמיד"
+
+
+        else:
+            Message_Label['text'] = "משתמש לא נמצא"
+            Message_Label.place(x=540, y=310, width=120, height=25)
+
+    TitleImage()
+    userID_Label = tk.Label(root, bg='#17331b', fg='white', text="תעודת זהות תלמיד")
+    userID_Label.place(x=540, y=220, width=120, height=25)
+    UserID_Entry = tk.Entry(root, width=200)
+    UserID_Entry.place(x=540, y=250, width=120, height=25)
+    Show_Button = tk.Button(root, text= "הצג", command=ShowButton)
+    Show_Button.place(x=580, y=280, height=25)
+
+
+# function to update details of a user
+def UpadeDetailsPage():
+    TitleImage()
+
+    # Message Label
+    Message_Label = tk.Label(root, bg='#17331b', fg='white', text="")
+
+    # Function for show button:
+    def ShowButton():
+        # check if ID is in database
+        userID = UserID_Entry.get()
+        sql_select = "SELECT * FROM userslist WHERE id = ?"
+        userlist = (userID,)
+        cursor.execute(sql_select, userlist)
+        IDdb = cursor.fetchone()
+
+
+        if IDdb:
+            Message_Label['text'] = "פרטי המשתמש"
+            NameLabel.place(x=920, y=300, width=75)
+            Name.place(x=800, y=300, width=100)
+            CityLabel.place(x=920, y=400, width=75)
+            City.place(x=800, y=400, width=100)
+            SchoolLabel.place(x=920, y=450, width=75)
+            School.place(x=800, y=450, width=100)
+            ClassLabel.place(x=920, y=500, width=75)
+            Class.place(x=800, y=500, width=90)
+            GenderLabel.place(x=920, y=550, width=75)
+            Gender.place(x=800, y=550, width=70)
+            PasswordLabel.place(x=520, y=380, width=175, height=35)
+            PasswordFirst.place(x=520, y=420, width=174, height=25)
+            TypeLabel.place(x=920, y=350, height=35)
+            Type.place(x=800, y=350, width=70)
+            Question.place(x=250, y=420, width=174, height=25)
+            QuestionLabel.place(x=250, y=380, width=175, height=35)
+            Answer.place(x=250, y=510, width=174)
+            AnswerLabel.place(x=250, y=470, width=175, height=35)
+            UpdadeButton.place(x=580, y=610, width=80, height=25)
+
+            Name.delete(0, END)
+            Name.insert(0, IDdb[0])
+
+            City.delete(0, END)
+            City.insert(0, IDdb[2])
+
+            School.delete(0, END)
+            School.insert(0, IDdb[3])
+
+            GenderVar.set(IDdb[4])
+
+            ClassVar.set(IDdb[5])
+
+            TypeVar.set(IDdb[6])
+
+            PasswordFirst.delete(0, END)
+            PasswordFirst.insert(0, IDdb[7])
+
+            Question.delete(0, END)
+            Question.insert(0, IDdb[9])
+
+            Answer.delete(0, END)
+            Answer.insert(0, IDdb[10])
+
+
+        else:
+            Message_Label['text'] = "משתמש לא נמצא"
+            Message_Label.place(x=540, y=310, width=120, height=25)
+            Name.delete(0, END)
+            City.delete(0, END)
+            School.delete(0, END)
+            GenderVar.set("")
+            ClassVar.set("")
+            TypeVar.set("")
+            PasswordFirst.delete(0, END)
+            Question.delete(0, END)
+            Answer.delete(0, END)
+            UpdadeButton.place_forget()
+            NameLabel.place_forget()
+            Name.place_forget()
+            CityLabel.place_forget()
+            City.place_forget()
+            SchoolLabel.place_forget()
+            School.place_forget()
+            ClassLabel.place_forget()
+            Class.place_forget()
+            GenderLabel.place_forget()
+            Gender.place_forget()
+            PasswordLabel.place_forget()
+            PasswordFirst.place_forget()
+            TypeLabel.place_forget()
+            Type.place_forget()
+            Question.place_forget()
+            QuestionLabel.place_forget()
+            Answer.place_forget()
+            AnswerLabel.place_forget()
+
+
+
+    # Function for update button
+
+    def UpdateButton():
+        pass
+
+    # Detail fields:
+
+    # Name
+    NameLabel = Label(root, bg='#17331b', fg='white', text="שם מלא", )
+
+    Name = tk.Entry(root, width=35)
+
+    # City
+    CityLabel = Label(root, bg='#17331b', fg='white', text="עיר מגורים", )
+
+    City = tk.Entry(root, width=35)
+
+    # School
+    SchoolLabel = Label(root, bg='#17331b', fg='white', text="שם בית הספר", )
+
+    School = tk.Entry(root, width=35)
+
+    # Class
+    ClassLabel = Label(root, bg='#17331b', fg='white', text="כיתה", )
+
+    ClassVar = StringVar(root)
+    Class = tk.OptionMenu(root, ClassVar, "א", "ב", "ג", "ד", "ה", "ו", "לא רלוונטי")
+    Class.pack
+
+    # Gender
+    GenderLabel = Label(root, bg='#17331b', fg='white', text="מין", )
+
+    GenderVar = StringVar(root)
+    Gender = tk.OptionMenu(root, GenderVar, "זכר", "נקבה")
+    Gender.pack()
+
+    # Password
+    PasswordLabel = Label(root, bg='#17331b', fg='white', text="סיסמא אישית (לפחות 6 תווים)", )
+
+    PasswordFirst = tk.Entry(root, width=35)
+
+    # Type
+    TypeLabel = Label(root, bg='#17331b', fg='white', text="סוג משתמש", )
+
+    TypeVar = StringVar(root)
+    Type = tk.OptionMenu(root, TypeVar, "תלמיד", "מנהל", "חוקר")
+    Type.pack()
+
+    # Question
+    QuestionLabel = Label(root, bg='#17331b', fg='white', text="שאלת אבטחה", )
+
+    Question = tk.Entry(root, width=35)
+
+    # Answer Title
+    AnswerLabel = Label(root, bg='#17331b', fg='white', text="תשובת אבטחה", )
+
+    Answer = tk.Entry(root, width=35)
+
+    # Update Button
+    UpdadeButton = tk.Button(root, text="עדכן", command=UpdateButton)
+
+    userID_Label = tk.Label(root, bg='#17331b', fg='white', text="תעודת זהות משתמש")
+    userID_Label.place(x=540, y=220, width=120, height=25)
+    UserID_Entry = tk.Entry(root, width=200)
+    UserID_Entry.place(x=540, y=250, width=120, height=25)
+    Show_Button = tk.Button(root, text="הצג", command=ShowButton)
+    Show_Button.place(x=580, y=280, height=25)
 
 
 
 
+count = 0
 # level 1
 count = 0
 answer_dict = {}
@@ -563,12 +931,6 @@ def Level1():
     b10.grid(row=2, column=2)
     b11.grid(row=2, column=3)
 
-
-
-
-
-# StartPage()
-Level1()
-#StartPage()
+StartPage()
 
 root.mainloop()
