@@ -64,7 +64,6 @@ def LoginPage():
         pw = password.get()
 
 
-
         #search for user in db
         sql_select_query = "SELECT password FROM userslist WHERE id =?"
         idlist = (user,)
@@ -80,18 +79,20 @@ def LoginPage():
                 loginbutton.destroy()
                 signupbutton.destroy()
                 forgotpwbutton.destroy()
+                text="don't show label"
 
                 #Send to user menu
                 CheckUserType(user)
+
             else:
                 text = "סיסמא לא נכונה" #display wrong password if passwords didn't match
         else:
             text = "משתמש לא קיים" #display nonexistent user if no data was found
 
-        #display message (or name)
-        label_PW = tk.Label(root, bg='#17331b', fg='white', text=text)
-        label_PW.place(x=550, y=450, width=200)
-        #so far login only displays name (in the future levels will be here)
+        #display message
+        if (text != "don't show label"):
+            label_PW = tk.Label(root, bg='#17331b', fg='white', text=text)
+            label_PW.place(x=550, y=450, width=200)
 
     #function for signup button
     def SignUpButton():
@@ -463,11 +464,11 @@ def CheckUserType(user):
     userlist = (user,)
     cursor.execute(sql_select_query, userlist)
     userType = cursor.fetchone()
-    if userType=='תלמיד':
+    if userType[0]=='תלמיד':
         MenuPageStudent()
-    if  userType=='מחקר':
+    if userType[0]=='מחקר':
         MenuPageResearch()
-    if  userType=='מנהל':
+    if userType[0]=='מנהל':
         MenuPageAdmin()
 
 
