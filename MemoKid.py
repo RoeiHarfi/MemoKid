@@ -1103,11 +1103,7 @@ def Level1(user):
                     key["text"] = " "
 
                 answer_dict = {}
-    # Go to level 2
-    GTNButton = tk.Button(root, text="מעבר לשלב הבא", command=GoToNextButton)
-    GTNButton.place(x=220, y=580, width=130)
-
-
+                
     # Go to level 2
     GTNButton = tk.Button(root, text="מעבר לשלב הבא", command=GoToNextButton)
     GTNButton.place(x=120, y=620, width=130)
@@ -1146,16 +1142,7 @@ def Level1(user):
 
 
 Level1(315848820)
-#StartPage()
-
-
-
-
-# StartPage()
-Level1()
-=======
-#Level1(315848820)
 
 #StartPage()
-DeleteLastGame()
+#DeleteLastGame()
 root.mainloop()
