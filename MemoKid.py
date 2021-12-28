@@ -669,7 +669,7 @@ def ShowStudentGames():
     Show_Button.place(x=580, y=280, height=25)
 
 count = 0
-# level 1
+# Level 1
 def Level1():
     #     root = Tk()
     #     root.title('level 1')
@@ -727,9 +727,15 @@ def Level1():
     b10.grid(row=2, column=2)
     b11.grid(row=2, column=3)
 
-
+#Level2
+def Level2():
+    TitleImage()
+    Label1 = Label(root, bg='#17331b', fg='white', text="בשלב זה תצטרך לזכור את מירב המספרים שמוצגים על המסך ולאחר ההצגה לרשום אותם בתיבה למטה" )
+    Label1.config(font=("Ariel",12))
+    Label1.place(x=300,y=220,width=700,height=50)
 #Level1()
-StartPage()
+Level2()
+#StartPage()
 
 
 root.mainloop()
