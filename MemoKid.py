@@ -1,3 +1,4 @@
+from datetime import datetime
 import tkinter as tk
 import pygame as pg
 from tkinter import *
@@ -839,20 +840,27 @@ def UpadeDetailsPage():
 
 
 
-count = 0
 # level 1
 count = 0
+clicks = 0
+succesess = 0
+gradeLevel1 = 0
+gradeLevel2 = 0
+gradeLevel3 = 0
 answer_dict = {}
 answer_list = []
 
-def Level1():
+def Level1(user):
 
-
-    #sql_select_class = "SELECT class from userlist Where id = ? "
-    #idlist = (user, )
-    #cursor.exexcute(sql_select_class, idlist)
-    #userClass = cursor.fetchone()
-
+    global clicks, succesess, gradeLevel1
+    clicks = 0
+    succesess = 0
+    gradeLevel1 = 0
+    sql_select_class = "SELECT class from userslist WHERE id = ? "
+    idlist = (user, )
+    cursor.execute(sql_select_class, idlist)
+    userClass = cursor.fetchone()
+    print(userClass)
 
     # Create matches
     matches = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6]
@@ -866,11 +874,37 @@ def Level1():
     my_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 
+    #Go to next button + configure grade function
+    def GoToNextButton():
+        print(clicks)
+        print(succesess)
+        if succesess < 6:
+            gradeLevel1 = 0
+        else:
+            if clicks <= 20:
+                gradeLevel1 = 100
+            elif clicks <= 24:
+                gradeLevel1 = 75
+            elif clicks <= 28:
+                gradeLevel1 = 50
+            elif clicks <= 32:
+                gradeLevel1 = 25
+            else:
+                gradeLevel1 = 0
+
+
+        game_date = datetime.today().strftime('%Y-%m-%d')
+
+        sql_insert= "INSERT INTO usergrades VALUES (?, ? , ? , ? , ? , ? , ?)"
+        val = (0, user, 1, game_date, gradeLevel1 , 0 , 0)
+        cursorgrades.execute(sql_insert , val)
+        sqlconnect2.commit()
 
 
     def button_click(b, number):
-
-        global count, answer_list, answer_dict
+        global count, answer_list, answer_dict, clicks,succesess
+        #Count user attempts
+        clicks += 1
 
         if b["text"] == ' ' and count < 2:
             b["text"] = matches[number]
@@ -880,11 +914,13 @@ def Level1():
             answer_dict[b] = matches[number]
             #increment our counter
             count += 1
+
         if len(answer_list) == 2:
             if matches[answer_list[0]] == matches[answer_list[1]]:
+                succesess += 1
                 for key in answer_dict:
                     key["state"] = "disabled"
-                #messagebox.showinfo("צדקת!","צדקת!")
+                messagebox.showinfo("צדקת!","צדקת!")
                 count = 0
                 answer_list = []
                 answer_dict = {}
@@ -893,13 +929,17 @@ def Level1():
                 answer_list = []
 
                 # pop up box
-                #messagebox.showinfo("טעות!", "נסה שוב!")
+                messagebox.showinfo("טעות!", "נסה שוב!")
 
                 #Reset the buttons
                 for key in answer_dict:
                     key["text"] = " "
 
                 answer_dict = {}
+    # Go to level 2
+    GTNButton = tk.Button(root, text="מעבר לשלב הבא", command=GoToNextButton)
+    GTNButton.place(x=220, y=580, width=130)
+
 
     # define our buttons
     b0 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b0, 0))
@@ -931,6 +971,9 @@ def Level1():
     b10.grid(row=2, column=2)
     b11.grid(row=2, column=3)
 
-StartPage()
+
+Level1(315848820)
+#StartPage()
+
 
 root.mainloop()
