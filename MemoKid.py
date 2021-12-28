@@ -419,7 +419,7 @@ def ForgotPWPage():
     sendidbutton.place(x=580, y=350, width=75)
 
 
-# Function for Menu page for admin us+---+++++++++er
+# Function for Menu page for admin user
 
 #Function for Menu page for admin user
 def MenuPageAdmin():
@@ -430,8 +430,8 @@ def MenuPageAdmin():
         DetailsButton.destroy()
         EraseButton.destroy()
         DLGButton.destroy()
-        ShowStudGameScoreButton()
-        ########################
+        ShowStudGameScoreButton.destroy()
+        ##########################
 
 
 
@@ -460,8 +460,7 @@ def MenuPageAdmin():
         EraseButton.destroy()
         DLGButton.destroy()
         ShowStudGameScoreButton.destroy()
-        ShowStudentGames.destroy()
-        ############################
+        ShowStudentGames()
         
 
     #Update personal info in info screen
@@ -521,7 +520,8 @@ def MenuPageResearch():
         SDICButton.destroy()
         SDISButton.destroy()
         ShowStudGameScoreButton.destroy()
-        ################################
+        ShowStudentGames()
+
 
     #Show Data in a boys\girls cut
     BGDButton = tk.Button(root, text="הצג נתונים בחתך בנים או בנות", command=BoysGirlsDataButton)
@@ -533,7 +533,7 @@ def MenuPageResearch():
     SDISButton = tk.Button(root, text="הצג נתונים בחתך שם בית ספר", command=ShowDataInSchoolButton)
     SDISButton.place(x=580, y=310, width=130)
     # Show student games score
-    ShowStudGameScoreButton = tk.Button(root, text="הצג נתוני משחק של תלמיד", command=ShowGameScore)
+    ShowStudGameScoreButton = tk.Button(root, text="הצג משחקי תלמיד", command=ShowGameScore)
     ShowStudGameScoreButton.place(x=380, y=210, width=130)
 
 
@@ -547,42 +547,45 @@ def MenuPageStudent():
     # Start Game Button
     def StartGameButton():
         #clear screen
-        GameInstructionButton.destroy()
-        StartGameButton.destroy()
-        ShowStudentLastGradeButton.destroy()
-        ShowAveGradeButton.destroy()
+        GIButton.destroy()
+        SGButton.destroy()
+        SSLGButton.destroy()
+        SAGButton.destroy()
+#########################################
 
     # Show grade of last game Button
     def ShowStudentLastGradeButton():
         # clear screen
-        GameInstructionButton.destroy()
-        StartGameButton.destroy()
-        ShowStudentLastGradeButton.destroy()
-        ShowAveGradeButton.destroy()
+        GIButton.destroy()
+        SGButton.destroy()
+        SSLGButton.destroy()
+        SAGButton.destroy()
+########################################
 
     # Show Average rank for now Button
     def ShowAveGradeButton():
         # clear screen
-        GameInstructionButton.destroy()
-        StartGameButton.destroy()
-        ShowStudentLastGradeButton.destroy()
-        ShowAveGradeButton.destroy()
+        GIButton.destroy()
+        SGButton.destroy()
+        SSLGButton.destroy()
+        SAGButton.destroy()
+####################################
 
     #Game instructions
     GIButton = tk.Button(root, text="הוראות המשחק", command=GameInstructionButton)
-    GIButton.place(x=1050, y=700, width=130)
+    GIButton.place(x=1050, y=180, width=130)
 
     #Start Game
     SGButton = tk.Button(root, text="התחל משחק", command=StartGameButton)
-    SGButton.place(x=550, y=510, width=130)
+    SGButton.place(x=550, y=410, width=130,height=50)
 
     #Show grade of last game
-    SSLGButton = tk.Button(root, text="הצד ציון אחרון", command=ShowStudentLastGradeButton)
-    SSLGButton.place(x=550, y=410, width=130)
+    SSLGButton = tk.Button(root, text="הצג ציון אחרון", command=ShowStudentLastGradeButton)
+    SSLGButton.place(x=550, y=370, width=130)
 
     #Show Average rank for now
-    SAGButton = tk.Button(root, text="הצג ציון עד כה", command=ShowAveGradeButton)
-    SAGButton.place(x=550, y=310, width=130)
+    SAGButton = tk.Button(root, text="הצג ממוצע", command=ShowAveGradeButton)
+    SAGButton.place(x=550, y=320, width=130)
 
 
 
@@ -598,7 +601,7 @@ def CheckUserType(user):
     userType = cursor.fetchone()
     if userType[0]=='תלמיד':
         MenuPageStudent()
-    if userType[0]=='מחקר':
+    if userType[0]=='חוקר':
         MenuPageResearch()
     if userType[0]=='מנהל':
         MenuPageAdmin()
