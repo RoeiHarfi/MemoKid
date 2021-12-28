@@ -4,6 +4,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 import sqlite3
 import random
+from tkinter import messagebox
 
 from sqlite3 import Error
 import time
@@ -468,14 +469,22 @@ def CheckUserType(user):
         MenuPageAdmin()
 
 
-count = 0
+
 
 
 # level 1
+count = 0
+answer_dict = {}
+answer_list = []
+
 def Level1():
-    #     root = Tk()
-    #     root.title('level 1')
-    #     root.geometry("500x550")
+
+
+    #sql_select_class = "SELECT class from userlist Where id = ? "
+    #idlist = (user, )
+    #cursor.exexcute(sql_select_class, idlist)
+    #userClass = cursor.fetchone()
+
 
     # Create matches
     matches = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6]
@@ -488,16 +497,41 @@ def Level1():
     my_frame.pack(pady=10)
     my_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
 
-    # define variables
-    count = 0
-    answer_list = []
-    answer_dict = {}
+
+
 
     def button_click(b, number):
-        global answer_list, answer_dict
+
+        global count, answer_list, answer_dict
 
         if b["text"] == ' ' and count < 2:
             b["text"] = matches[number]
+            # add number to answer list
+            answer_list.append(number)
+            # add button and number to answer dict
+            answer_dict[b] = matches[number]
+            #increment our counter
+            count += 1
+        if len(answer_list) == 2:
+            if matches[answer_list[0]] == matches[answer_list[1]]:
+                for key in answer_dict:
+                    key["state"] = "disabled"
+                #messagebox.showinfo("צדקת!","צדקת!")
+                count = 0
+                answer_list = []
+                answer_dict = {}
+            else:
+                count = 0
+                answer_list = []
+
+                # pop up box
+                #messagebox.showinfo("טעות!", "נסה שוב!")
+
+                #Reset the buttons
+                for key in answer_dict:
+                    key["text"] = " "
+
+                answer_dict = {}
 
     # define our buttons
     b0 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b0, 0))
@@ -530,8 +564,11 @@ def Level1():
     b11.grid(row=2, column=3)
 
 
+
+
+
 # StartPage()
-# Level1()
-StartPage()
+Level1()
+#StartPage()
 
 root.mainloop()
