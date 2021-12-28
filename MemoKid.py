@@ -417,54 +417,148 @@ def ForgotPWPage():
 
 
 # Function for Menu page for admin user
+
+#Function for Menu page for admin user
 def MenuPageAdmin():
-    # StudentDetailsButton
-    def StudentDetailsButton():
-        pass
 
-    # EraseStudentButton
+    #StudentDetailsButton
+    def UpdateDetailsButton():
+        #clear screen
+        DetailsButton.destroy()
+        EraseButton.destroy()
+        DLGButton.destroy()
+        ShowStudGameScoreButton()
+        ########################
+
+
+
+    #EraseStudentButton
     def EraseStudentButton():
-        pass
+        # clear screen
+        DetailsButton.destroy()
+        EraseButton.destroy()
+        DLGButton.destroy()
+        ShowStudGameScoreButton()
+        ########################
 
-    # DeleteGameButton
-    def DeleteGameButton():
-        pass
 
-    # Student Details
-    DetailsButton = tk.Button(root, text="פרטי תלמיד", command=StudentDetailsButton)
-    DetailsButton.place(x=580, y=510, width=80, height=25)
+    #DeleteGameButton
+    def DeleteLastGameButton():
+        # clear screen
+        DetailsButton.destroy()
+        EraseButton.destroy()
+        DLGButton.destroy()
+        ShowStudGameScoreButton()
+        ########################
+
+    def ShowGameScore():
+        # clear screen
+        DetailsButton.destroy()
+        EraseButton.destroy()
+        DLGButton.destroy()
+        ShowStudGameScoreButton()
+        
+
+    #Update personal info in info screen
+    DetailsButton = tk.Button(root, text="עדבן פרטי משתמש", command=UpdateDetailsButton)
+    DetailsButton.place(x=540, y=310, width=130, height=40)
 
     # Erase user
     EraseButton = tk.Button(root, text="מחק משתמש", command=EraseStudentButton)
-    EraseButton.place(x=580, y=410, width=80, height=25)
+    EraseButton.place(x=540, y=410, width=100, height=40)
 
-    # Delete user
-    DeleteButton = tk.Button(root, text="מחק משתמש", command=DeleteGameButton)
-    DeleteButton.place(x=580, y=310, width=80, height=25)
+    # Erase the last game the user played
+    DLGButton = tk.Button(root, text="מחק משחק אחרון", command=DeleteLastGameButton)
+    DLGButton.place(x=540, y=510, width=130, height=40)
+
+    #Show student games score
+    ShowStudGameScoreButton = tk.Button(root, text="הצג משחקי תלמיד", command=ShowGameScore)
+    ShowStudGameScoreButton.place(x=540, y=610, width=130, height=40)
 
 
-# Function for Menu page for Research user
+
+
+
+#Function for Menu page for Research user
 def MenuPageResearch():
-    pass
+
+    # Show Data in a boys\girls cut Button
+    def BoysGirlsDataButton():
+        # clear screen
+        BGDButton.destroy()
+        SDICButton.destroy()
+        SDISButton.destroy()
+        ShowStudGameScoreButton.destroy()
+        ################################
+
+    # Show Data in a class cut
+    def ShowDataInClassButton():
+        # clear screen
+        BGDButton.destroy()
+        SDICButton.destroy()
+        SDISButton.destroy()
+        ShowStudGameScoreButton.destroy()
+        ################################
+
+    # Show Data in a schoolName cut
+    def ShowDataInSchoolButton():
+        # clear screen
+        BGDButton.destroy()
+        SDICButton.destroy()
+        SDISButton.destroy()
+        ShowStudGameScoreButton.destroy()
+        ################################
+
+    # Show student games score
+    def ShowGameScore():
+        # clear screen
+        BGDButton.destroy()
+        SDICButton.destroy()
+        SDISButton.destroy()
+        ShowStudGameScoreButton.destroy()
+        ################################
+
+    #Show Data in a boys\girls cut
+    BGDButton = tk.Button(root, text="הצג נתונים בחתך בנים או בנות", command=BoysGirlsDataButton)
+    BGDButton.place(x=580, y=510, width=80, height=25)
+    # Show Data in a class cut
+    SDICButton = tk.Button(root, text="הצג נתונים בחתך כיתה", command=ShowDataInClassButton)
+    SDICButton.place(x=580, y=410, width=80, height=25)
+    #Show Data in a schoolName cut
+    SDISButton = tk.Button(root, text="הצג נתונים בחתך שם בית ספר", command=ShowDataInSchoolButton)
+    SDISButton.place(x=580, y=310, width=80, height=25)
+    # Show student games score
+    ShowStudGameScoreButton = tk.Button(root, text="הצג נתוני משחק של תלמיד", command=ShowGameScore)
+    ShowStudGameScoreButton.place(x=380, y=210, width=80, height=25)
 
 
-# Function for Menu page for Student user
+#Function for Menu page for Student user
 def MenuPageStudent():
+    #Game instructions
+
+    #Start Game
+
+    #Show grade of last game
+
+    #Show Average rank for now
+
+
     pass
+
 
 
 def CheckUserType(user):
-    # Function that checks if user is Admin\Research\Student user
+    #Function that checks if user is Admin\Research\Student user
     # search for type in db
     sql_select_query = "SELECT type FROM userslist WHERE id =?"
     userlist = (user,)
     cursor.execute(sql_select_query, userlist)
     userType = cursor.fetchone()
-    if userType[0] == 'תלמיד':
+    if userType[0]=='תלמיד':
         MenuPageStudent()
-    if userType[0] == 'מחקר':
+    if userType[0]=='מחקר':
         MenuPageResearch()
-    if userType[0] == 'מנהל':
+    if userType[0]=='מנהל':
         MenuPageAdmin()
 
 #function to show student games details
