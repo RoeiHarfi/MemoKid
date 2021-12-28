@@ -218,7 +218,7 @@ def SignUpPage():
 
                 # insert data into db
                 sql_insert_query = "INSERT INTO userslist VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-                val = (name_user, ID_user, city_user, school_user, gender_user, class_user, type_user, user_password, "0",
+                val =(name_user, ID_user, city_user, school_user, gender_user, class_user, type_user, user_password, "0",
                        question_user, answer_user)
                 cursor.execute(sql_insert_query, val)
                 sqlconnect.commit()
@@ -675,6 +675,40 @@ def UpadeDetailsPage():
 
     # Message Label
     Message_Label = tk.Label(root, bg='#17331b', fg='white', text="")
+    Message_Label2 = tk.Label(root, bg='#17331b', fg='white', text="")
+
+    # Function for return Button
+    def ReturnButton():
+
+        #clear screen
+        Message_Label.destroy()
+        Message_Label2.destroy()
+        NameLabel.destroy()
+        Name.destroy()
+        CityLabel.destroy()
+        City.destroy()
+        SchoolLabel.destroy()
+        School.destroy()
+        ClassLabel.destroy()
+        Class.destroy()
+        GenderLabel.destroy()
+        Gender.destroy()
+        PasswordLabel.destroy()
+        PasswordFirst.destroy()
+        TypeLabel.destroy()
+        Type.destroy()
+        QuestionLabel.destroy()
+        Question.destroy()
+        AnswerLabel.destroy()
+        Answer.destroy()
+        UpdateButton.destroy()
+        userID_Label.destroy()
+        UserID_Entry.destroy()
+        Show_Button.destroy()
+        Return_Button.destroy()
+
+        # Send to menu
+        MenuPageAdmin()
 
     # Function for show button:
     def ShowButton():
@@ -706,7 +740,8 @@ def UpadeDetailsPage():
             QuestionLabel.place(x=250, y=380, width=175, height=35)
             Answer.place(x=250, y=510, width=174)
             AnswerLabel.place(x=250, y=470, width=175, height=35)
-            UpdadeButton.place(x=580, y=610, width=80, height=25)
+
+            UpdateButton.place(x=580, y=610, width=80, height=25)
 
             Name.delete(0, END)
             Name.insert(0, IDdb[0])
@@ -736,6 +771,7 @@ def UpadeDetailsPage():
         else:
             Message_Label['text'] = "משתמש לא נמצא"
             Message_Label.place(x=540, y=310, width=120, height=25)
+            Message_Label2.place_forget()
             Name.delete(0, END)
             City.delete(0, END)
             School.delete(0, END)
@@ -745,7 +781,7 @@ def UpadeDetailsPage():
             PasswordFirst.delete(0, END)
             Question.delete(0, END)
             Answer.delete(0, END)
-            UpdadeButton.place_forget()
+            UpdateButton.place_forget()
             NameLabel.place_forget()
             Name.place_forget()
             CityLabel.place_forget()
@@ -770,7 +806,26 @@ def UpadeDetailsPage():
     # Function for update button
 
     def UpdateButton():
-        pass
+        userID= UserID_Entry.get()
+        name_user = Name.get()
+        city_user = City.get()
+        school_user = School.get()
+        class_user = ClassVar.get()
+        gender_user = GenderVar.get()
+        type_user = TypeVar.get()
+        question_user = Question.get()
+        answer_user = Answer.get()
+        user_password = PasswordFirst.get()
+
+        sql_update = "UPDATE userslist SET name= ? , city= ? , school= ? , gender = ? , class = ? , type = ?" \
+                     " , password = ? , question = ? , answer = ? WHERE id = ?"
+        val = (name_user, city_user, school_user, gender_user, class_user, type_user, user_password,
+                       question_user, answer_user , userID)
+        cursor.execute(sql_update, val)
+        sqlconnect.commit()
+
+        Message_Label2.configure(text="העדכון בוצע בהצלחה , אנא חזור לתפריט")
+        Message_Label2.place(x=520, y=640, width=250, height=25)
 
     # Detail fields:
 
@@ -826,14 +881,16 @@ def UpadeDetailsPage():
     Answer = tk.Entry(root, width=35)
 
     # Update Button
-    UpdadeButton = tk.Button(root, text="עדכן", command=UpdateButton)
+    UpdateButton = tk.Button(root, text="עדכן", command=UpdateButton)
 
     userID_Label = tk.Label(root, bg='#17331b', fg='white', text="תעודת זהות משתמש")
     userID_Label.place(x=540, y=220, width=120, height=25)
     UserID_Entry = tk.Entry(root, width=200)
     UserID_Entry.place(x=540, y=250, width=120, height=25)
     Show_Button = tk.Button(root, text="הצג", command=ShowButton)
-    Show_Button.place(x=580, y=280, height=25)
+    Show_Button.place(x=630, y=280, height=25)
+    Return_Button = tk.Button(root, text="חזור לתפריט", command=ReturnButton)
+    Return_Button.place(x=540, y=280, height=25)
 
 
 
