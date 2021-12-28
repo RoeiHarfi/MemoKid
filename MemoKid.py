@@ -18,7 +18,7 @@ cursorgrades = sqlconnect2.cursor()
 # Create the screen
 root = tk.Tk()
 root.geometry("1280x720")
-root.title("Login Page")
+root.title("MemoKid")
 
 # background image
 C = Canvas(root, bg="blue", height=1280, width=720)
@@ -665,6 +665,176 @@ def ShowStudentGames():
     Show_Button = tk.Button(root, text= "הצג", command=ShowButton)
     Show_Button.place(x=580, y=280, height=25)
 
+
+# function to update details of a user
+def UpadeDetailsPage():
+    TitleImage()
+
+    # Message Label
+    Message_Label = tk.Label(root, bg='#17331b', fg='white', text="")
+
+    # Function for show button:
+    def ShowButton():
+        # check if ID is in database
+        userID = UserID_Entry.get()
+        sql_select = "SELECT * FROM userslist WHERE id = ?"
+        userlist = (userID,)
+        cursor.execute(sql_select, userlist)
+        IDdb = cursor.fetchone()
+
+
+        if IDdb:
+            Message_Label['text'] = "פרטי המשתמש"
+            NameLabel.place(x=920, y=300, width=75)
+            Name.place(x=800, y=300, width=100)
+            CityLabel.place(x=920, y=400, width=75)
+            City.place(x=800, y=400, width=100)
+            SchoolLabel.place(x=920, y=450, width=75)
+            School.place(x=800, y=450, width=100)
+            ClassLabel.place(x=920, y=500, width=75)
+            Class.place(x=800, y=500, width=90)
+            GenderLabel.place(x=920, y=550, width=75)
+            Gender.place(x=800, y=550, width=70)
+            PasswordLabel.place(x=520, y=380, width=175, height=35)
+            PasswordFirst.place(x=520, y=420, width=174, height=25)
+            TypeLabel.place(x=920, y=350, height=35)
+            Type.place(x=800, y=350, width=70)
+            Question.place(x=250, y=420, width=174, height=25)
+            QuestionLabel.place(x=250, y=380, width=175, height=35)
+            Answer.place(x=250, y=510, width=174)
+            AnswerLabel.place(x=250, y=470, width=175, height=35)
+            UpdadeButton.place(x=580, y=610, width=80, height=25)
+
+            Name.delete(0, END)
+            Name.insert(0, IDdb[0])
+
+            City.delete(0, END)
+            City.insert(0, IDdb[2])
+
+            School.delete(0, END)
+            School.insert(0, IDdb[3])
+
+            GenderVar.set(IDdb[4])
+
+            ClassVar.set(IDdb[5])
+
+            TypeVar.set(IDdb[6])
+
+            PasswordFirst.delete(0, END)
+            PasswordFirst.insert(0, IDdb[7])
+
+            Question.delete(0, END)
+            Question.insert(0, IDdb[9])
+
+            Answer.delete(0, END)
+            Answer.insert(0, IDdb[10])
+
+
+        else:
+            Message_Label['text'] = "משתמש לא נמצא"
+            Message_Label.place(x=540, y=310, width=120, height=25)
+            Name.delete(0, END)
+            City.delete(0, END)
+            School.delete(0, END)
+            GenderVar.set("")
+            ClassVar.set("")
+            TypeVar.set("")
+            PasswordFirst.delete(0, END)
+            Question.delete(0, END)
+            Answer.delete(0, END)
+            UpdadeButton.place_forget()
+            NameLabel.place_forget()
+            Name.place_forget()
+            CityLabel.place_forget()
+            City.place_forget()
+            SchoolLabel.place_forget()
+            School.place_forget()
+            ClassLabel.place_forget()
+            Class.place_forget()
+            GenderLabel.place_forget()
+            Gender.place_forget()
+            PasswordLabel.place_forget()
+            PasswordFirst.place_forget()
+            TypeLabel.place_forget()
+            Type.place_forget()
+            Question.place_forget()
+            QuestionLabel.place_forget()
+            Answer.place_forget()
+            AnswerLabel.place_forget()
+
+
+
+    # Function for update button
+
+    def UpdateButton():
+        pass
+
+    # Detail fields:
+
+    # Name
+    NameLabel = Label(root, bg='#17331b', fg='white', text="שם מלא", )
+
+    Name = tk.Entry(root, width=35)
+
+    # City
+    CityLabel = Label(root, bg='#17331b', fg='white', text="עיר מגורים", )
+
+    City = tk.Entry(root, width=35)
+
+    # School
+    SchoolLabel = Label(root, bg='#17331b', fg='white', text="שם בית הספר", )
+
+    School = tk.Entry(root, width=35)
+
+    # Class
+    ClassLabel = Label(root, bg='#17331b', fg='white', text="כיתה", )
+
+    ClassVar = StringVar(root)
+    Class = tk.OptionMenu(root, ClassVar, "א", "ב", "ג", "ד", "ה", "ו", "לא רלוונטי")
+    Class.pack
+
+    # Gender
+    GenderLabel = Label(root, bg='#17331b', fg='white', text="מין", )
+
+    GenderVar = StringVar(root)
+    Gender = tk.OptionMenu(root, GenderVar, "זכר", "נקבה")
+    Gender.pack()
+
+    # Password
+    PasswordLabel = Label(root, bg='#17331b', fg='white', text="סיסמא אישית (לפחות 6 תווים)", )
+
+    PasswordFirst = tk.Entry(root, width=35)
+
+    # Type
+    TypeLabel = Label(root, bg='#17331b', fg='white', text="סוג משתמש", )
+
+    TypeVar = StringVar(root)
+    Type = tk.OptionMenu(root, TypeVar, "תלמיד", "מנהל", "חוקר")
+    Type.pack()
+
+    # Question
+    QuestionLabel = Label(root, bg='#17331b', fg='white', text="שאלת אבטחה", )
+
+    Question = tk.Entry(root, width=35)
+
+    # Answer Title
+    AnswerLabel = Label(root, bg='#17331b', fg='white', text="תשובת אבטחה", )
+
+    Answer = tk.Entry(root, width=35)
+
+    # Update Button
+    UpdadeButton = tk.Button(root, text="עדכן", command=UpdateButton)
+
+    userID_Label = tk.Label(root, bg='#17331b', fg='white', text="תעודת זהות משתמש")
+    userID_Label.place(x=540, y=220, width=120, height=25)
+    UserID_Entry = tk.Entry(root, width=200)
+    UserID_Entry.place(x=540, y=250, width=120, height=25)
+    Show_Button = tk.Button(root, text="הצג", command=ShowButton)
+    Show_Button.place(x=580, y=280, height=25)
+
+
+
+
 count = 0
 # level 1
 def Level1():
@@ -726,7 +896,7 @@ def Level1():
 
 
 #Level1()
-StartPage()
-
+#StartPage()
+UpadeDetailsPage()
 
 root.mainloop()
