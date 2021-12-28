@@ -1014,6 +1014,22 @@ def Level1(user):
     userClass = cursor.fetchone()
     print(userClass)
 
+    #Level title
+    TitleImage()
+    Label1 = Label(root, bg='#17331b', fg='white',text="בשלב זה מספר ריבועים בכל אחד מהם מספר, מצא את הצמדים המסתתרים בריבועים")
+    Label1.config(font=("Ariel", 12))
+    Label1.place(x=250, y=220, width=700, height=50)
+
+    #Level number headline
+    Label2 =Label(root,bg='#17331b', fg='white',text="שלב ראשון")
+    Label2.config(font=("Ariel", 28))
+    Label2.place(x=950, y=550, width=200, height=50)
+
+    #Monkey
+    img1=PhotoImage('monkey level 1.jpeg')
+    Label(root,image=img1).place(x=500,y=200)
+
+
     # Create matches
     matches = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6]
     matches[0]
@@ -1023,8 +1039,7 @@ def Level1(user):
     # Create button frame
     my_frame = tk.Frame(root)
     my_frame.pack(pady=10)
-    my_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
-
+    my_frame.place(relx=0.475, rely=0.65, anchor=CENTER)
 
     #Go to next button + configure grade function
     def GoToNextButton():
@@ -1093,19 +1108,24 @@ def Level1(user):
     GTNButton.place(x=220, y=580, width=130)
 
 
+    # Go to level 2
+    GTNButton = tk.Button(root, text="מעבר לשלב הבא", command=GoToNextButton)
+    GTNButton.place(x=120, y=620, width=130)
+
+
     # define our buttons
-    b0 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b0, 0))
-    b1 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b1, 1))
-    b2 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b2, 2))
-    b3 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b3, 3))
-    b4 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b4, 4))
-    b5 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b5, 5))
-    b6 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b6, 6))
-    b7 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b7, 7))
-    b8 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b8, 8))
-    b9 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b9, 9))
-    b10 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b10, 10))
-    b11 = Button(my_frame, text=' ', font=("Helvatica", 20), height=3, width=6, command=lambda: button_click(b11, 11))
+    b0 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b0, 0))
+    b1 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b1, 1))
+    b2 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b2, 2))
+    b3 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b3, 3))
+    b4 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b4, 4))
+    b5 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b5, 5))
+    b6 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b6, 6))
+    b7 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b7, 7))
+    b8 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b8, 8))
+    b9 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b9, 9))
+    b10 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b10, 10))
+    b11 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b11, 11))
 
     # Grid the buttons
     b0.grid(row=0, column=0)
@@ -1124,7 +1144,18 @@ def Level1(user):
     b11.grid(row=2, column=3)
 
 
+
+Level1(315848820)
+#StartPage()
+
+
+
+
+# StartPage()
+Level1()
+=======
 #Level1(315848820)
+
 #StartPage()
 DeleteLastGame()
 root.mainloop()
