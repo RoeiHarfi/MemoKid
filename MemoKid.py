@@ -419,7 +419,7 @@ def ForgotPWPage():
     sendidbutton.place(x=580, y=350, width=75)
 
 
-# Function for Menu page for admin user
+# Function for Menu page for admin us+---+++++++++er
 
 #Function for Menu page for admin user
 def MenuPageAdmin():
@@ -460,25 +460,25 @@ def MenuPageAdmin():
         EraseButton.destroy()
         DLGButton.destroy()
         ShowStudGameScoreButton.destroy()
-        ShowStudentGames()
-        ####
+        ShowStudentGames.destroy()
+        ############################
         
 
     #Update personal info in info screen
     DetailsButton = tk.Button(root, text="עדבן פרטי משתמש", command=UpdateDetailsButton)
-    DetailsButton.place(x=540, y=310, width=130, height=40)
+    DetailsButton.place(x=550, y=450, width=130)
 
     # Erase user
     EraseButton = tk.Button(root, text="מחק משתמש", command=EraseStudentButton)
-    EraseButton.place(x=540, y=410, width=100, height=40)
+    EraseButton.place(x=550, y=400, width=130)
 
     # Erase the last game the user played
     DLGButton = tk.Button(root, text="מחק משחק אחרון", command=DeleteLastGameButton)
-    DLGButton.place(x=540, y=510, width=130, height=40)
+    DLGButton.place(x=550, y=350, width=130)
 
     #Show student games score
     ShowStudGameScoreButton = tk.Button(root, text="הצג משחקי תלמיד", command=ShowGameScore)
-    ShowStudGameScoreButton.place(x=540, y=610, width=130, height=40)
+    ShowStudGameScoreButton.place(x=550, y=300, width=130)
 
 
 
@@ -525,30 +525,67 @@ def MenuPageResearch():
 
     #Show Data in a boys\girls cut
     BGDButton = tk.Button(root, text="הצג נתונים בחתך בנים או בנות", command=BoysGirlsDataButton)
-    BGDButton.place(x=580, y=510, width=80, height=25)
+    BGDButton.place(x=580, y=510, width=130)
     # Show Data in a class cut
     SDICButton = tk.Button(root, text="הצג נתונים בחתך כיתה", command=ShowDataInClassButton)
-    SDICButton.place(x=580, y=410, width=80, height=25)
+    SDICButton.place(x=580, y=410, width=130)
     #Show Data in a schoolName cut
     SDISButton = tk.Button(root, text="הצג נתונים בחתך שם בית ספר", command=ShowDataInSchoolButton)
-    SDISButton.place(x=580, y=310, width=80, height=25)
+    SDISButton.place(x=580, y=310, width=130)
     # Show student games score
     ShowStudGameScoreButton = tk.Button(root, text="הצג נתוני משחק של תלמיד", command=ShowGameScore)
-    ShowStudGameScoreButton.place(x=380, y=210, width=80, height=25)
+    ShowStudGameScoreButton.place(x=380, y=210, width=130)
 
 
 #Function for Menu page for Student user
 def MenuPageStudent():
+    # Game instructions Button
+    def GameInstructionButton():
+        #################--------------SHAI WORK-------------
+        pass
+
+    # Start Game Button
+    def StartGameButton():
+        #clear screen
+        GameInstructionButton.destroy()
+        StartGameButton.destroy()
+        ShowStudentLastGradeButton.destroy()
+        ShowAveGradeButton.destroy()
+
+    # Show grade of last game Button
+    def ShowStudentLastGradeButton():
+        # clear screen
+        GameInstructionButton.destroy()
+        StartGameButton.destroy()
+        ShowStudentLastGradeButton.destroy()
+        ShowAveGradeButton.destroy()
+
+    # Show Average rank for now Button
+    def ShowAveGradeButton():
+        # clear screen
+        GameInstructionButton.destroy()
+        StartGameButton.destroy()
+        ShowStudentLastGradeButton.destroy()
+        ShowAveGradeButton.destroy()
+
     #Game instructions
+    GIButton = tk.Button(root, text="הוראות המשחק", command=GameInstructionButton)
+    GIButton.place(x=1050, y=700, width=130)
 
     #Start Game
+    SGButton = tk.Button(root, text="התחל משחק", command=StartGameButton)
+    SGButton.place(x=550, y=510, width=130)
 
     #Show grade of last game
+    SSLGButton = tk.Button(root, text="הצד ציון אחרון", command=ShowStudentLastGradeButton)
+    SSLGButton.place(x=550, y=410, width=130)
 
     #Show Average rank for now
+    SAGButton = tk.Button(root, text="הצג ציון עד כה", command=ShowAveGradeButton)
+    SAGButton.place(x=550, y=310, width=130)
 
 
-    pass
+
 
 
 
