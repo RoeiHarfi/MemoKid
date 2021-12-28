@@ -438,7 +438,7 @@ def MenuPageAdmin():
         DetailsButton.destroy()
         EraseButton.destroy()
         DLGButton.destroy()
-        ShowStudGameScoreButton()
+        ShowStudGameScoreButton.destroy()
         ########################
 
 
@@ -448,7 +448,7 @@ def MenuPageAdmin():
         DetailsButton.destroy()
         EraseButton.destroy()
         DLGButton.destroy()
-        ShowStudGameScoreButton()
+        ShowStudGameScoreButton.destroy()
         ########################
 
     def ShowGameScore():
@@ -456,7 +456,9 @@ def MenuPageAdmin():
         DetailsButton.destroy()
         EraseButton.destroy()
         DLGButton.destroy()
-        ShowStudGameScoreButton()
+        ShowStudGameScoreButton.destroy()
+        ShowStudentGames()
+        ####
         
 
     #Update personal info in info screen
@@ -681,7 +683,7 @@ def Level1():
 
 
 #Level1()
-#StartPage()
-ShowStudentGames()
+StartPage()
+
 
 root.mainloop()
