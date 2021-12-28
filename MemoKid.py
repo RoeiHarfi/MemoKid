@@ -38,6 +38,7 @@ def TitleImage():
     label_title.image = title
     label_title.place(x=400, y=100)
 
+
 # Function for stat page
 def StartPage():
     # press on continue go to login page
@@ -182,7 +183,7 @@ def SignUpPage():
         user_password2 = PasswordSecond.get()
 
         sql_select_id = "SELECT id FROM userslist WHERE id = ?"
-        ID_list = (ID_user, )
+        ID_list = (ID_user,)
         cursor.execute(sql_select_id, ID_list)
         registered = cursor.fetchone()
 
@@ -220,8 +221,9 @@ def SignUpPage():
 
                 # insert data into db
                 sql_insert_query = "INSERT INTO userslist VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-                val =(name_user, ID_user, city_user, school_user, gender_user, class_user, type_user, user_password, "0",
-                       question_user, answer_user)
+                val = (
+                name_user, ID_user, city_user, school_user, gender_user, class_user, type_user, user_password, "0",
+                question_user, answer_user)
                 cursor.execute(sql_insert_query, val)
                 sqlconnect.commit()
 
@@ -423,21 +425,18 @@ def ForgotPWPage():
 
 # Function for Menu page for admin user
 
-#Function for Menu page for admin user
+# Function for Menu page for admin user
 def MenuPageAdmin():
-
-    #StudentDetailsButton
+    # StudentDetailsButton
     def UpdateDetailsButton():
-        #clear screen
+        # clear screen
         DetailsButton.destroy()
         EraseButton.destroy()
         DLGButton.destroy()
         ShowStudGameScoreButton.destroy()
         UpadeDetailsPage()
 
-
-
-    #EraseStudentButton
+    # EraseStudentButton
     def EraseStudentButton():
         # clear screen
         DetailsButton.destroy()
@@ -446,8 +445,7 @@ def MenuPageAdmin():
         ShowStudGameScoreButton.destroy()
         DeleteUser()
 
-
-    #DeleteGameButton
+    # DeleteGameButton
     def DeleteLastGameButton():
         # clear screen
         DetailsButton.destroy()
@@ -463,9 +461,8 @@ def MenuPageAdmin():
         DLGButton.destroy()
         ShowStudGameScoreButton.destroy()
         ShowStudentGames()
-        
 
-    #Update personal info in info screen
+    # Update personal info in info screen
     DetailsButton = tk.Button(root, text="עדבן פרטי משתמש", command=UpdateDetailsButton)
     DetailsButton.place(x=550, y=450, width=130)
 
@@ -477,17 +474,13 @@ def MenuPageAdmin():
     DLGButton = tk.Button(root, text="מחק משחק אחרון", command=DeleteLastGameButton)
     DLGButton.place(x=550, y=350, width=130)
 
-    #Show student games score
+    # Show student games score
     ShowStudGameScoreButton = tk.Button(root, text="הצג משחקי תלמיד", command=ShowGameScore)
     ShowStudGameScoreButton.place(x=550, y=300, width=130)
 
 
-
-
-
-#Function for Menu page for Research user
+# Function for Menu page for Research user
 def MenuPageResearch():
-
     # Show Data in a boys\girls cut Button
     def BoysGirlsDataButton():
         # clear screen
@@ -524,14 +517,13 @@ def MenuPageResearch():
         ShowStudGameScoreButton.destroy()
         ShowStudentGames()
 
-
-    #Show Data in a boys\girls cut
+    # Show Data in a boys\girls cut
     BGDButton = tk.Button(root, text="הצג נתונים בחתך בנים או בנות", command=BoysGirlsDataButton)
     BGDButton.place(x=580, y=510, width=130)
     # Show Data in a class cut
     SDICButton = tk.Button(root, text="הצג נתונים בחתך כיתה", command=ShowDataInClassButton)
     SDICButton.place(x=580, y=410, width=130)
-    #Show Data in a schoolName cut
+    # Show Data in a schoolName cut
     SDISButton = tk.Button(root, text="הצג נתונים בחתך שם בית ספר", command=ShowDataInSchoolButton)
     SDISButton.place(x=580, y=310, width=130)
     # Show student games score
@@ -539,7 +531,7 @@ def MenuPageResearch():
     ShowStudGameScoreButton.place(x=380, y=210, width=130)
 
 
-#Function for Menu page for Student user
+# Function for Menu page for Student user
 def MenuPageStudent():
     # Game instructions Button
     def GameInstructionButton():
@@ -548,12 +540,13 @@ def MenuPageStudent():
 
     # Start Game Button
     def StartGameButton():
-        #clear screen
+        # clear screen
         GIButton.destroy()
         SGButton.destroy()
         SSLGButton.destroy()
         SAGButton.destroy()
-#########################################
+
+    #########################################
 
     # Show grade of last game Button
     def ShowStudentLastGradeButton():
@@ -562,7 +555,8 @@ def MenuPageStudent():
         SGButton.destroy()
         SSLGButton.destroy()
         SAGButton.destroy()
-########################################
+
+    ########################################
 
     # Show Average rank for now Button
     def ShowAveGradeButton():
@@ -571,56 +565,54 @@ def MenuPageStudent():
         SGButton.destroy()
         SSLGButton.destroy()
         SAGButton.destroy()
-####################################
 
-    #Game instructions
+    ####################################
+
+    # Game instructions
     GIButton = tk.Button(root, text="הוראות המשחק", command=GameInstructionButton)
     GIButton.place(x=1050, y=180, width=130)
 
-    #Start Game
+    # Start Game
     SGButton = tk.Button(root, text="התחל משחק", command=StartGameButton)
-    SGButton.place(x=550, y=410, width=130,height=50)
+    SGButton.place(x=550, y=410, width=130, height=50)
 
-    #Show grade of last game
+    # Show grade of last game
     SSLGButton = tk.Button(root, text="הצג ציון אחרון", command=ShowStudentLastGradeButton)
     SSLGButton.place(x=550, y=370, width=130)
 
-    #Show Average rank for now
+    # Show Average rank for now
     SAGButton = tk.Button(root, text="הצג ממוצע", command=ShowAveGradeButton)
     SAGButton.place(x=550, y=320, width=130)
 
 
-
-
-
-
 def CheckUserType(user):
-    #Function that checks if user is Admin\Research\Student user
+    # Function that checks if user is Admin\Research\Student user
     # search for type in db
     sql_select_query = "SELECT type FROM userslist WHERE id =?"
     userlist = (user,)
     cursor.execute(sql_select_query, userlist)
     userType = cursor.fetchone()
-    if userType[0]=='תלמיד':
+    if userType[0] == 'תלמיד':
         MenuPageStudent()
-    if userType[0]=='חוקר':
+    if userType[0] == 'חוקר':
         MenuPageResearch()
-    if userType[0]=='מנהל':
+    if userType[0] == 'מנהל':
         MenuPageAdmin()
 
-#function to show student games details
+
+# function to show student games details
 def ShowStudentGames():
     # Label for messages
     Message_Label = tk.Label(root, bg='#17331b', fg='white', text="")
 
-    #function for show button click
+    # function for show button click
     def ShowButton():
 
         # check if ID is in database
         userID = UserID_Entry.get()
         sql_select = "SELECT id FROM userslist WHERE id = ?"
-        userlist = (userID, )
-        cursor.execute(sql_select , userlist)
+        userlist = (userID,)
+        cursor.execute(sql_select, userlist)
         IDdb = cursor.fetchone()
 
         if IDdb:
@@ -632,7 +624,8 @@ def ShowStudentGames():
                             rowheight=25,
                             fieldbackground="#17331b",
                             selectbackground="17331b")
-            tree = ttk.Treeview(root, column=("","userID", "attempts", "gameTime", "level1", "level2", "level3"), show='headings')
+            tree = ttk.Treeview(root, column=("", "userID", "attempts", "gameTime", "level1", "level2", "level3"),
+                                show='headings')
             tree.column("#1", minwidth="0")
             tree.column("#1", width=0)
             tree.column("#2", anchor=tk.CENTER)
@@ -649,8 +642,8 @@ def ShowStudentGames():
             tree.heading("#7", text="שלב 3")
             tree.pack()
             sql_select_data = "SELECT * FROM usergrades WHERE userID = ?"
-            userlistdata= (userID, )
-            cursorgrades.execute(sql_select_data , userlistdata)
+            userlistdata = (userID,)
+            cursorgrades.execute(sql_select_data, userlistdata)
             rows = cursorgrades.fetchall()
             for row in rows:
                 tree.insert("", tk.END, values=row)
@@ -667,7 +660,7 @@ def ShowStudentGames():
     userID_Label.place(x=540, y=220, width=120, height=25)
     UserID_Entry = tk.Entry(root, width=200)
     UserID_Entry.place(x=540, y=250, width=120, height=25)
-    Show_Button = tk.Button(root, text= "הצג", command=ShowButton)
+    Show_Button = tk.Button(root, text="הצג", command=ShowButton)
     Show_Button.place(x=580, y=280, height=25)
 
 
@@ -682,7 +675,7 @@ def UpadeDetailsPage():
     # Function for return Button
     def ReturnButton():
 
-        #clear screen
+        # clear screen
         Message_Label.destroy()
         Message_Label2.destroy()
         NameLabel.destroy()
@@ -720,7 +713,6 @@ def UpadeDetailsPage():
         userlist = (userID,)
         cursor.execute(sql_select, userlist)
         IDdb = cursor.fetchone()
-
 
         if IDdb:
             Message_Label['text'] = "פרטי המשתמש"
@@ -803,12 +795,10 @@ def UpadeDetailsPage():
             Answer.place_forget()
             AnswerLabel.place_forget()
 
-
-
     # Function for update button
 
     def UpdateButton():
-        userID= UserID_Entry.get()
+        userID = UserID_Entry.get()
         name_user = Name.get()
         city_user = City.get()
         school_user = School.get()
@@ -822,7 +812,7 @@ def UpadeDetailsPage():
         sql_update = "UPDATE userslist SET name= ? , city= ? , school= ? , gender = ? , class = ? , type = ?" \
                      " , password = ? , question = ? , answer = ? WHERE id = ?"
         val = (name_user, city_user, school_user, gender_user, class_user, type_user, user_password,
-                       question_user, answer_user , userID)
+               question_user, answer_user, userID)
         cursor.execute(sql_update, val)
         sqlconnect.commit()
 
@@ -894,22 +884,23 @@ def UpadeDetailsPage():
     Return_Button = tk.Button(root, text="חזור לתפריט", command=ReturnButton)
     Return_Button.place(x=540, y=280, height=25)
 
+
 # Function for delete user page
 def DeleteUser():
     TitleImage()
 
-    #Label Message
-    Label_Message = tk.Label(root, bg='#17331b' , fg='white' , text="")
+    # Label Message
+    Label_Message = tk.Label(root, bg='#17331b', fg='white', text="")
 
     # Function for return button
     def ReturnButton():
-        #clear screen
+        # clear screen
         Label_Message.destroy()
         userID_Label.destroy()
         UserID_Entry.destroy()
         Show_Button.destroy()
         Return_Button.destroy()
-        #back to menu
+        # back to menu
         MenuPageAdmin()
 
     # Function for delete button
@@ -923,13 +914,12 @@ def DeleteUser():
 
         if IDdb:
             sql_delete = "DELETE FROM userslist WHERE id = ?"
-            cursor.execute(sql_delete , userlist)
+            cursor.execute(sql_delete, userlist)
             sqlconnect.commit()
             Label_Message['text'] = "המשתמש נמחק בהצלחה"
         else:
             Label_Message['text'] = "משתמש לא נמצא"
-            Label_Message.place(x=540 , y= 320)
-
+            Label_Message.place(x=540, y=320)
 
     userID_Label = tk.Label(root, bg='#17331b', fg='white', text="הכנס תעודת זהות של המשתמש שברצונך למחוק")
     userID_Label.place(x=470, y=220, width=250, height=25)
@@ -945,18 +935,18 @@ def DeleteUser():
 def DeleteLastGame():
     TitleImage()
 
-    #Label Message
-    Label_Message = tk.Label(root, bg='#17331b' , fg='white' , text="")
+    # Label Message
+    Label_Message = tk.Label(root, bg='#17331b', fg='white', text="")
 
     # Function for return button
     def ReturnButton():
-        #clear screen
+        # clear screen
         Label_Message.destroy()
         userID_Label.destroy()
         UserID_Entry.destroy()
         Show_Button.destroy()
         Return_Button.destroy()
-        #back to menu
+        # back to menu
         MenuPageAdmin()
 
     # Function for delete button
@@ -970,17 +960,17 @@ def DeleteLastGame():
 
         if IDdb:
             sql_select = "SELECT MAX(attempts) FROM usergrades WHERE userID= ?"
-            cursorgrades.execute(sql_select , userlist)
+            cursorgrades.execute(sql_select, userlist)
             attemptsdb = cursor.fetchone()
             print(attemptsdb)
 
-            #Label_Message['text'] = "המשתמש נמחק בהצלחה"
+            # Label_Message['text'] = "המשתמש נמחק בהצלחה"
         else:
             Label_Message['text'] = "משתמש לא נמצא"
-            Label_Message.place(x=540 , y= 320)
+            Label_Message.place(x=540, y=320)
 
-
-    userID_Label = tk.Label(root, bg='#17331b', fg='white', text="הכנס תעודת זהות של המשתמש שברצונך למחוק את המשחק האחרון שלו")
+    userID_Label = tk.Label(root, bg='#17331b', fg='white',
+                            text="הכנס תעודת זהות של המשתמש שברצונך למחוק את המשחק האחרון שלו")
     userID_Label.place(x=390, y=220, width=450, height=25)
     UserID_Entry = tk.Entry(root, width=200)
     UserID_Entry.place(x=540, y=250, width=120, height=25)
@@ -988,8 +978,6 @@ def DeleteLastGame():
     Show_Button.place(x=625, y=280, height=25)
     Return_Button = tk.Button(root, text="חזור לתפריט", command=ReturnButton)
     Return_Button.place(x=540, y=280, height=25)
-
-
 
 
 # level 1
@@ -1002,33 +990,33 @@ gradeLevel3 = 0
 answer_dict = {}
 answer_list = []
 
-def Level1(user):
 
+def Level1(user):
     global clicks, succesess, gradeLevel1
     clicks = 0
     succesess = 0
     gradeLevel1 = 0
     sql_select_class = "SELECT class from userslist WHERE id = ? "
-    idlist = (user, )
+    idlist = (user,)
     cursor.execute(sql_select_class, idlist)
     userClass = cursor.fetchone()
     print(userClass)
 
-    #Level title
+    # Level title
     TitleImage()
-    Label1 = Label(root, bg='#17331b', fg='white',text="בשלב זה מספר ריבועים בכל אחד מהם מספר, מצא את הצמדים המסתתרים בריבועים")
+    Label1 = Label(root, bg='#17331b', fg='white',
+                   text="בשלב זה מספר ריבועים בכל אחד מהם מספר, מצא את הצמדים המסתתרים בריבועים")
     Label1.config(font=("Ariel", 12))
     Label1.place(x=250, y=220, width=700, height=50)
 
-    #Level number headline
-    Label2 =Label(root,bg='#17331b', fg='white',text="שלב ראשון")
+    # Level number headline
+    Label2 = Label(root, bg='#17331b', fg='white', text="שלב ראשון")
     Label2.config(font=("Ariel", 28))
     Label2.place(x=950, y=550, width=200, height=50)
 
-    #Monkey
-    img1=PhotoImage('monkey level 1.jpeg')
-    Label(root,image=img1).place(x=500,y=200)
-
+    # Monkey
+    img1 = PhotoImage('monkey level 1.jpeg')
+    Label(root, image=img1).place(x=500, y=200)
 
     # Create matches
     matches = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6]
@@ -1041,7 +1029,7 @@ def Level1(user):
     my_frame.pack(pady=10)
     my_frame.place(relx=0.475, rely=0.65, anchor=CENTER)
 
-    #Go to next button + configure grade function
+    # Go to next button + configure grade function
     def GoToNextButton():
         print(clicks)
         print(succesess)
@@ -1059,18 +1047,16 @@ def Level1(user):
             else:
                 gradeLevel1 = 0
 
-
         game_date = datetime.today().strftime('%Y-%m-%d')
 
-        sql_insert= "INSERT INTO usergrades VALUES (?, ? , ? , ? , ? , ? , ?)"
-        val = (0, user, 1, game_date, gradeLevel1 , 0 , 0)
-        cursorgrades.execute(sql_insert , val)
+        sql_insert = "INSERT INTO usergrades VALUES (?, ? , ? , ? , ? , ? , ?)"
+        val = (0, user, 1, game_date, gradeLevel1, 0, 0)
+        cursorgrades.execute(sql_insert, val)
         sqlconnect2.commit()
 
-
     def button_click(b, number):
-        global count, answer_list, answer_dict, clicks,succesess
-        #Count user attempts
+        global count, answer_list, answer_dict, clicks, succesess
+        # Count user attempts
         clicks += 1
 
         if b["text"] == ' ' and count < 2:
@@ -1079,7 +1065,7 @@ def Level1(user):
             answer_list.append(number)
             # add button and number to answer dict
             answer_dict[b] = matches[number]
-            #increment our counter
+            # increment our counter
             count += 1
 
         if len(answer_list) == 2:
@@ -1087,7 +1073,7 @@ def Level1(user):
                 succesess += 1
                 for key in answer_dict:
                     key["state"] = "disabled"
-                messagebox.showinfo("צדקת!","צדקת!")
+                messagebox.showinfo("צדקת!", "צדקת!")
                 count = 0
                 answer_list = []
                 answer_dict = {}
@@ -1098,30 +1084,41 @@ def Level1(user):
                 # pop up box
                 messagebox.showinfo("טעות!", "נסה שוב!")
 
-                #Reset the buttons
+                # Reset the buttons
                 for key in answer_dict:
                     key["text"] = " "
 
                 answer_dict = {}
-                
+
     # Go to level 2
     GTNButton = tk.Button(root, text="מעבר לשלב הבא", command=GoToNextButton)
     GTNButton.place(x=120, y=620, width=130)
 
-
     # define our buttons
-    b0 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b0, 0))
-    b1 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b1, 1))
-    b2 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b2, 2))
-    b3 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b3, 3))
-    b4 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b4, 4))
-    b5 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b5, 5))
-    b6 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b6, 6))
-    b7 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b7, 7))
-    b8 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b8, 8))
-    b9 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b9, 9))
-    b10 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b10, 10))
-    b11 = Button(my_frame, text=' ', font=("Helvatica", 20),fg="white", bg="#17331b", height=3, width=6, command=lambda: button_click(b11, 11))
+    b0 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b0, 0))
+    b1 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b1, 1))
+    b2 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b2, 2))
+    b3 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b3, 3))
+    b4 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b4, 4))
+    b5 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b5, 5))
+    b6 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b6, 6))
+    b7 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b7, 7))
+    b8 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b8, 8))
+    b9 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b9, 9))
+    b10 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                 command=lambda: button_click(b10, 10))
+    b11 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                 command=lambda: button_click(b11, 11))
 
     # Grid the buttons
     b0.grid(row=0, column=0)
@@ -1140,9 +1137,8 @@ def Level1(user):
     b11.grid(row=2, column=3)
 
 
+#Level1(315848820)
 
-Level1(315848820)
-
-#StartPage()
-#DeleteLastGame()
+StartPage()
+# DeleteLastGame()
 root.mainloop()
