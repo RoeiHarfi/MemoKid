@@ -641,7 +641,7 @@ def ShowStudentGames():
             tree.column("#7", anchor=tk.CENTER)
             tree.heading("#7", text="שלב 3")
             tree.pack()
-            sql_select_data = "SELECT * FROM usergrades WHERE userID = ?"
+            sql_select_data = "SELECT * FROM usergrades WHERE userID = ? ORDER BY attempts"
             userlistdata = (userID,)
             cursorgrades.execute(sql_select_data, userlistdata)
             rows = cursorgrades.fetchall()
@@ -917,6 +917,7 @@ def DeleteUser():
             cursor.execute(sql_delete, userlist)
             sqlconnect.commit()
             Label_Message['text'] = "המשתמש נמחק בהצלחה"
+            Label_Message.place(x=540, y=320)
         else:
             Label_Message['text'] = "משתמש לא נמצא"
             Label_Message.place(x=540, y=320)
@@ -959,10 +960,10 @@ def DeleteLastGame():
         IDdb = cursor.fetchone()
 
         if IDdb:
-            sql_select = "SELECT MAX(attempts) FROM usergrades WHERE userID= ?"
+            sql_select = "SELECT MAX(attempts) FROM usergrades WHERE userID = ?"
             cursorgrades.execute(sql_select, userlist)
-            attemptsdb = cursor.fetchone()
-            print(attemptsdb)
+            attemptsdb = cursorgrades.fetchone()
+
 
             # Label_Message['text'] = "המשתמש נמחק בהצלחה"
         else:
@@ -1036,21 +1037,34 @@ def Level1(user):
         if succesess < 6:
             gradeLevel1 = 0
         else:
-            if clicks <= 20:
+            if clicks <= 26:
                 gradeLevel1 = 100
-            elif clicks <= 24:
-                gradeLevel1 = 75
-            elif clicks <= 28:
-                gradeLevel1 = 50
             elif clicks <= 32:
+                gradeLevel1 = 75
+            elif clicks <= 38:
+                gradeLevel1 = 50
+            elif clicks <= 44:
                 gradeLevel1 = 25
             else:
                 gradeLevel1 = 0
 
+        # Get today's date
         game_date = datetime.today().strftime('%Y-%m-%d')
 
+        # Get attempt number
+        sql_select = "SELECT MAX(attempts) FROM usergrades WHERE userID = ?"
+        userlist=(user, )
+        cursorgrades.execute(sql_select, userlist)
+        attemptsdb = cursorgrades.fetchone()
+        if attemptsdb[0]:
+            attempts = attemptsdb[0] +1
+        else: #if this is first attempt
+            attempts = 1
+
+        # Push game into db
         sql_insert = "INSERT INTO usergrades VALUES (?, ? , ? , ? , ? , ? , ?)"
-        val = (0, user, 1, game_date, gradeLevel1, 0, 0)
+        print(user)
+        val = (0, user, attempts , game_date, gradeLevel1, 0, 0)
         cursorgrades.execute(sql_insert, val)
         sqlconnect2.commit()
 
@@ -1137,8 +1151,8 @@ def Level1(user):
     b11.grid(row=2, column=3)
 
 
-#Level1(315848820)
+#Level1(302583380)
 
 StartPage()
-# DeleteLastGame()
+#DeleteLastGame()
 root.mainloop()
