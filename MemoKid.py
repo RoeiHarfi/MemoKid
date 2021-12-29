@@ -12,9 +12,9 @@ from sqlite3 import Error
 import time
 
 # connect to db
-sqlconnect = sqlite3.connect('MemoKidDB.db')
+sqlconnect = sqlite3.connect('MemoKidDB.db' , check_same_thread=False)
 cursor = sqlconnect.cursor()
-sqlconnect2 = sqlite3.connect('usergrades.db')
+sqlconnect2 = sqlite3.connect('usergrades.db' , check_same_thread=False)
 cursorgrades = sqlconnect2.cursor()
 
 # Create the screen
@@ -1101,9 +1101,32 @@ def Level1(user):
     random.shuffle(matches)
 
     # Create button frame
+<<<<<<< Updated upstream
     my_frame = tk.Frame(root)
     my_frame.pack(pady=10)
     my_frame.place(relx=0.475, rely=0.65, anchor=CENTER)
+=======
+    Level1Table = tk.Frame(root)
+    Level1Table.pack(pady=10)
+    Level1Table.place(relx=0.475, rely=0.65, anchor=CENTER)
+
+
+    #Backround Monkey
+    #pic1 = Image.open("MonkeyLevel11.png")
+    #monkeyPic = ImageTk.PhotoImage(pic1)
+    #Label3 = tk.Label(image=monkeyPic)
+    #Label3.Image = monkeyPic
+    #Label3.configure(width=500,height=150)
+    #Label3.place(x=400,y=500)
+
+    def CountdownTimerLevel1():
+        messagebox.showinfo(emoji.emojize(":Thumbs_up"), "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
+        GoToNextButton()
+
+    # Declartion of timer variable
+    stopTimer = threading.Timer(2.0, CountdownTimerLevel1)
+    stopTimer.start()
+>>>>>>> Stashed changes
 
     # Go to next button + configure grade function
     def GoToNextButton():
