@@ -1,3 +1,4 @@
+import threading
 from datetime import datetime
 import tkinter as tk
 import pygame as pg
@@ -7,6 +8,7 @@ from PIL import Image, ImageTk
 import sqlite3
 import random
 from tkinter import messagebox
+import emoji
 
 from sqlite3 import Error
 import time
@@ -37,6 +39,9 @@ def TitleImage():
     label_title = tk.Label(image=title)
     label_title.image = title
     label_title.place(x=400, y=100)
+
+# Creating messagebox class
+
 
 
 # Function for stat page
@@ -992,6 +997,8 @@ answer_dict = {}
 answer_list = []
 
 
+
+
 def Level1(user):
     global clicks, succesess, gradeLevel1
     clicks = 0
@@ -1015,9 +1022,11 @@ def Level1(user):
     Label2.config(font=("Ariel", 28))
     Label2.place(x=950, y=550, width=200, height=50)
 
+    #######################################
     # Monkey
-    img1 = PhotoImage('monkey level 1.jpeg')
-    Label(root, image=img1).place(x=500, y=200)
+    img1 = PhotoImage('MonkeyLevel1.png')
+    Label(root, image=img1).place(x=900, y=200)
+    ##########################
 
     # Create matches
     matches = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6]
@@ -1026,14 +1035,39 @@ def Level1(user):
     random.shuffle(matches)
 
     # Create button frame
-    my_frame = tk.Frame(root)
-    my_frame.pack(pady=10)
-    my_frame.place(relx=0.475, rely=0.65, anchor=CENTER)
+    Level1Table = tk.Frame(root)
+    Level1Table.pack(pady=10)
+    Level1Table.place(relx=0.475, rely=0.65, anchor=CENTER)
+
+
+    #Backround Monkey
+    pic1 = Image.open("MonkeyLevel11.png")
+    monkeyPic = ImageTk.PhotoImage(pic1)
+    Label3 = tk.Label(image=monkeyPic)
+    Label3.Image = monkeyPic
+    Label3.configure(width=500,height=150)
+    #Label3.place(x=400,y=500)
+
+    def CountdownTimerLevel1():
+        messagebox.showinfo(emoji.emojize(":Thumbs_up"), "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
+        GoToNextButton()
+
+    # Declartion of timer variable
+    stopTimer = threading.Timer(2.0, CountdownTimerLevel1)
+    stopTimer.start()
 
     # Go to next button + configure grade function
     def GoToNextButton():
-        print(clicks)
-        print(succesess)
+        #clear screen
+        GTNButton.destroy()
+        Label1.destroy()
+        Label2.destroy()
+        Level1Table.destroy()
+
+        #Timer cancel
+        stopTimer.cancel()
+
+        #Calculate grade
         if succesess < 6:
             gradeLevel1 = 0
         else:
@@ -1087,7 +1121,6 @@ def Level1(user):
                 succesess += 1
                 for key in answer_dict:
                     key["state"] = "disabled"
-                messagebox.showinfo("צדקת!", "צדקת!")
                 count = 0
                 answer_list = []
                 answer_dict = {}
@@ -1095,43 +1128,45 @@ def Level1(user):
                 count = 0
                 answer_list = []
 
-                # pop up box
-                messagebox.showinfo("טעות!", "נסה שוב!")
 
-                # Reset the buttons
+                b["text"] = matches[number]
+                b.update()
+                time.sleep(0.35)
                 for key in answer_dict:
                     key["text"] = " "
 
+
                 answer_dict = {}
+
 
     # Go to level 2
     GTNButton = tk.Button(root, text="מעבר לשלב הבא", command=GoToNextButton)
     GTNButton.place(x=120, y=620, width=130)
 
     # define our buttons
-    b0 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b0 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
                 command=lambda: button_click(b0, 0))
-    b1 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b1 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
                 command=lambda: button_click(b1, 1))
-    b2 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b2 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
                 command=lambda: button_click(b2, 2))
-    b3 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b3 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
                 command=lambda: button_click(b3, 3))
-    b4 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b4 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
                 command=lambda: button_click(b4, 4))
-    b5 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b5 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
                 command=lambda: button_click(b5, 5))
-    b6 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b6 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
                 command=lambda: button_click(b6, 6))
-    b7 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b7 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
                 command=lambda: button_click(b7, 7))
-    b8 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b8 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
                 command=lambda: button_click(b8, 8))
-    b9 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b9 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
                 command=lambda: button_click(b9, 9))
-    b10 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b10 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
                  command=lambda: button_click(b10, 10))
-    b11 = Button(my_frame, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b11 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
                  command=lambda: button_click(b11, 11))
 
     # Grid the buttons
@@ -1151,8 +1186,8 @@ def Level1(user):
     b11.grid(row=2, column=3)
 
 
-#Level1(302583380)
+Level1(315848820)
 
-StartPage()
+#StartPage()
 #DeleteLastGame()
 root.mainloop()
