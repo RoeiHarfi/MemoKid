@@ -434,6 +434,8 @@ def MenuPageAdmin():
         EraseButton.destroy()
         DLGButton.destroy()
         ShowStudGameScoreButton.destroy()
+
+        # send to update details page
         UpadeDetailsPage()
 
     # EraseStudentButton
@@ -443,6 +445,8 @@ def MenuPageAdmin():
         EraseButton.destroy()
         DLGButton.destroy()
         ShowStudGameScoreButton.destroy()
+
+        # send to delete user page
         DeleteUser()
 
     # DeleteGameButton
@@ -452,7 +456,9 @@ def MenuPageAdmin():
         EraseButton.destroy()
         DLGButton.destroy()
         ShowStudGameScoreButton.destroy()
-        ########################
+
+        # send to delete last game page
+        DeleteLastGame()
 
     def ShowGameScore():
         # clear screen
@@ -460,6 +466,8 @@ def MenuPageAdmin():
         EraseButton.destroy()
         DLGButton.destroy()
         ShowStudGameScoreButton.destroy()
+
+        # send to show student games page
         ShowStudentGames()
 
     # Update personal info in info screen
@@ -604,9 +612,29 @@ def CheckUserType(user):
 def ShowStudentGames():
     # Label for messages
     Message_Label = tk.Label(root, bg='#17331b', fg='white', text="")
+    # var and Label for avg
+    Message_Label2 = tk.Label(root, bg='#17331b', fg='white', text="")
+
+    # Function for return button
+    def ReturnButton():
+
+        # clear screen
+        Message_Label.destroy()
+        Message_Label2.destroy()
+        userID_Label.destroy()
+        UserID_Entry.destroy()
+        Show_Button.destroy()
+        Return_Button.destroy()
+        tree.destroy()
+
+        # send to menu
+        MenuPageAdmin()
 
     # function for show button click
     def ShowButton():
+
+        # clear data in table
+        tree.delete(*tree.get_children())
 
         # check if ID is in database
         userID = UserID_Entry.get()
@@ -616,31 +644,6 @@ def ShowStudentGames():
         IDdb = cursor.fetchone()
 
         if IDdb:
-            style = ttk.Style(root)
-            style.theme_use("clam")
-            style.configure("Treeview",
-                            background="17331b",
-                            foreground="white",
-                            rowheight=25,
-                            fieldbackground="#17331b",
-                            selectbackground="17331b")
-            tree = ttk.Treeview(root, column=("", "userID", "attempts", "gameTime", "level1", "level2", "level3"),
-                                show='headings')
-            tree.column("#1", minwidth="0")
-            tree.column("#1", width=0)
-            tree.column("#2", anchor=tk.CENTER)
-            tree.heading("#2", text="תעודת זהות")
-            tree.column("#3", anchor=tk.CENTER)
-            tree.heading("#3", text="מספר משחק")
-            tree.column("#4", anchor=tk.CENTER)
-            tree.heading("#4", text="תאריך")
-            tree.column("#5", anchor=tk.CENTER)
-            tree.heading("#5", text="שלב 1")
-            tree.column("#6", anchor=tk.CENTER)
-            tree.heading("#6", text="שלב 2")
-            tree.column("#7", anchor=tk.CENTER)
-            tree.heading("#7", text="שלב 3")
-            tree.pack()
             sql_select_data = "SELECT * FROM usergrades WHERE userID = ? ORDER BY attempts"
             userlistdata = (userID,)
             cursorgrades.execute(sql_select_data, userlistdata)
@@ -649,20 +652,64 @@ def ShowStudentGames():
                 tree.insert("", tk.END, values=row)
             tree.place(x=40, y=350)
             Message_Label['text'] = "משחקי התלמיד"
+            Message_Label.place(x=540, y=310, width=120, height=25)
 
+            # Get avarage
+            sql_select = "SELECT points FROM userslist WHERE id = ?"
+            cursor.execute(sql_select, userlist)
+            avgdb = cursor.fetchone()
+
+            avg = str(avgdb[0])
+            avg += " ממוצע התלמיד הוא  "
+            Message_Label2['text'] = avg
+            Message_Label2.place(x=350, y=310, width=170, height=25)
 
         else:
+
+            # make tree disappear
+            tree.place_forget()
+
+            # show message
             Message_Label['text'] = "משתמש לא נמצא"
             Message_Label.place(x=540, y=310, width=120, height=25)
 
     TitleImage()
+
     userID_Label = tk.Label(root, bg='#17331b', fg='white', text="תעודת זהות תלמיד")
     userID_Label.place(x=540, y=220, width=120, height=25)
     UserID_Entry = tk.Entry(root, width=200)
     UserID_Entry.place(x=540, y=250, width=120, height=25)
     Show_Button = tk.Button(root, text="הצג", command=ShowButton)
-    Show_Button.place(x=580, y=280, height=25)
+    Show_Button.place(x=630, y=280, height=25)
+    Return_Button = tk.Button(root, text="חזור לתפריט", command=ReturnButton)
+    Return_Button.place(x=540, y=280, height=25)
 
+    # Table to show data
+    style = ttk.Style(root)
+    style.theme_use("clam")
+    style.configure("Treeview",
+                    background="17331b",
+                    foreground="white",
+                    rowheight=25,
+                    fieldbackground="#17331b",
+                    selectbackground="17331b")
+    tree = ttk.Treeview(root, column=("", "userID", "attempts", "gameTime", "level1", "level2", "level3"),
+                        show='headings')
+    tree.column("#1", minwidth="0")
+    tree.column("#1", width=0)
+    tree.column("#2", anchor=tk.CENTER)
+    tree.heading("#2", text="תעודת זהות")
+    tree.column("#3", anchor=tk.CENTER)
+    tree.heading("#3", text="מספר משחק")
+    tree.column("#4", anchor=tk.CENTER)
+    tree.heading("#4", text="תאריך")
+    tree.column("#5", anchor=tk.CENTER)
+    tree.heading("#5", text="שלב 1")
+    tree.column("#6", anchor=tk.CENTER)
+    tree.heading("#6", text="שלב 2")
+    tree.column("#7", anchor=tk.CENTER)
+    tree.heading("#7", text="שלב 3")
+    tree.pack()
 
 # function to update details of a user
 def UpadeDetailsPage():
@@ -960,12 +1007,19 @@ def DeleteLastGame():
         IDdb = cursor.fetchone()
 
         if IDdb:
+            # Get current attempt number
             sql_select = "SELECT MAX(attempts) FROM usergrades WHERE userID = ?"
             cursorgrades.execute(sql_select, userlist)
             attemptsdb = cursorgrades.fetchone()
+            attempt = attemptsdb[0]
 
+            # Delete game
+            sql_delete = "DELETE FROM usergrades WHERE userID = ? AND attempts = ?"
+            vals = (userID, attempt)
+            cursorgrades.execute(sql_delete, vals)
+            sqlconnect2.commit()
 
-            # Label_Message['text'] = "המשתמש נמחק בהצלחה"
+            Label_Message['text'] = "המשחק נמחק בהצלחה"
         else:
             Label_Message['text'] = "משתמש לא נמצא"
             Label_Message.place(x=540, y=320)
@@ -1151,7 +1205,7 @@ def Level1(user):
     b11.grid(row=2, column=3)
 
 
-#Level1(302583380)
+#Level1(315848820)
 
 StartPage()
 #DeleteLastGame()
