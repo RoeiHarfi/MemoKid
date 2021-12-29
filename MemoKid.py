@@ -1,3 +1,4 @@
+import threading
 from datetime import datetime
 import tkinter as tk
 import pygame as pg
@@ -985,11 +986,14 @@ count = 0
 clicks = 0
 succesess = 0
 gradeLevel1 = 0
-gradeLevel2 = 0
-gradeLevel3 = 0
 answer_dict = {}
 answer_list = []
 
+#level 2
+gradeLevel2 = 0
+
+#level 3
+gradeLevel3 = 0
 
 def Level1(user):
     global clicks, succesess, gradeLevel1
@@ -1137,8 +1141,207 @@ def Level1(user):
     b11.grid(row=2, column=3)
 
 
-#Level1(315848820)
 
-StartPage()
+
+
+def Level2(user , userlevel, attempt):
+
+
+    # get difficulty level
+    if userlevel == 1:
+        difflevel = 5
+    elif userlevel == 2:
+        difflevel = 7
+    elif userlevel == 3:
+        difflevel = 10
+
+    # Check if value is in list
+    def SearchInList(list, value):
+        for i in range(len(list)):
+            if list[i] == value:
+                return True
+        return False
+
+
+
+    #frame for level 2
+    level2_frame = tk.Frame(root , bg='#17331b')
+    level2_frame.pack(pady=10)
+    level2_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+    # generate random numbers list
+    number_list = list(range(1,101))
+    random_list = list(random.sample(number_list, difflevel))
+
+
+    #label for numbers
+    Label_Numbers = tk.Label(level2_frame, bg='#17331b', fg='white', text="" , width=30 , font=('Ariel' , 45))
+    Label_Numbers['text'] = random_list
+
+    #text boxes for inputs
+    textbox1 = tk.Entry(root)
+    textbox2 = tk.Entry(root)
+    textbox3 = tk.Entry(root)
+    textbox4 = tk.Entry(root)
+    textbox5 = tk.Entry(root)
+    textbox6 = tk.Entry(root)
+    textbox7 = tk.Entry(root)
+    textbox8 = tk.Entry(root)
+    textbox9 = tk.Entry(root)
+    textbox10 = tk.Entry(root)
+
+    #Countdoen timer level
+    def CountDownTimerLevel():
+        messagebox.showinfo(message='תם הזמן המוקצב לשלב זה, הנך מועבר לשלב הבא.')
+
+    #Function for submit button
+    def SubmitButton():
+        # Get values in text boxes
+        input1 = textbox1.get()
+        if input1 == "":
+            input1 = 0
+        input2 = textbox2.get()
+        if input2 == "":
+            input2 = 0
+        input3 = textbox3.get()
+        if input3 == "":
+            input3 = 0
+        input4 = textbox4.get()
+        if input4 == "":
+            input4 = 0
+        input5 = textbox5.get()
+        if input5 == "":
+            input5 = 0
+        input6 = textbox6.get()
+        if input6 == "":
+            input6 = 0
+        input7 = textbox7.get()
+        if input7 == "":
+            input7 = 0
+        input8 = textbox8.get()
+        if input8 == "":
+            input8 = 0
+        input9 = textbox8.get()
+        if input9 == "":
+            input9 = 0
+        input10 = textbox10.get()
+        if input10 == "":
+            input10 = 0
+
+        # counter for successes
+        counter = 0
+        if SearchInList(random_list, int(input1)):
+            counter += 1
+        if SearchInList(random_list, int(input2)):
+            counter += 1
+        if SearchInList(random_list, int(input3)):
+            counter += 1
+        if SearchInList(random_list, int(input4)):
+            counter += 1
+        if SearchInList(random_list, int(input5)):
+            counter += 1
+        if SearchInList(random_list, int(input6)):
+            counter += 1
+        if SearchInList(random_list, int(input7)):
+            counter += 1
+        if SearchInList(random_list, int(input8)):
+            counter += 1
+        if SearchInList(random_list, int(input9)):
+            counter += 1
+        if SearchInList(random_list, int(input10)):
+            counter += 1
+
+        # calculate grade
+        user_grade = 0
+        if difflevel == 5:
+            user_grade = counter*20
+        elif difflevel == 7:
+            user_grade = counter*14 + 2
+        elif difflevel == 10:
+            user_grade = counter*10
+
+        # update database
+        sql_update = "UPDATE usergrades SET level2 = ? WHERE userID = ? AND attempts = ?"
+        vals = (user_grade , user , attempt)
+        cursorgrades.execute(sql_update, vals)
+        sqlconnect2.commit()
+
+        #clear screen
+        level2_frame.destroy()
+        textbox1.destroy()
+        textbox2.destroy()
+        textbox3.destroy()
+        textbox4.destroy()
+        textbox5.destroy()
+        textbox6.destroy()
+        textbox7.destroy()
+        textbox8.destroy()
+        textbox9.destroy()
+        textbox10.destroy()
+        SBbutton.destroy()
+        SLButton.destroy()
+        Label_ins.destroy()
+        Label2.destroy()
+
+    #Function for start level button
+    def StartLevelButton():
+
+        SLButton.destroy()
+        Label_Numbers.pack()
+        Label_Numbers.update()
+        time.sleep(10)
+        Label_Numbers.pack_forget()
+
+        # Create textboxes fo the student answer
+        textbox1.place(x=220, y=410, width=50, height=25)
+        textbox2.place(x=370, y=410, width=50, height=25)
+        textbox3.place(x=520, y=410, width=50, height=25)
+        textbox4.place(x=670, y=410, width=50, height=25)
+        textbox5.place(x=820, y=410, width=50, height=25)
+
+        if difflevel > 5:
+            textbox6.place(x=220, y=500, width=50, height=25)
+            textbox7.place(x=370, y=500, width=50, height=25)
+        if difflevel > 7:
+            textbox8.place(x=520, y=500, width=50, height=25)
+            textbox9.place(x=670, y=500, width=50, height=25)
+            textbox10.place(x=820, y=500, width=50, height=25)
+
+        SBbutton.place(x=520 , y=650)
+
+
+
+
+
+
+    #Submit button
+    SBbutton = tk.Button(root, text="הגש", command=SubmitButton)
+
+    #Start the level button
+    SLButton= tk.Button(root, text="התחל שלב", command=StartLevelButton)
+    SLButton.place(x=550, y=400, height=25)
+
+    # Declartion of timer variable
+    #stopTimer = threading.Timer(2.0, CountDownTimerLevel)
+
+    #Level2 "MemoKid"
+    TitleImage()
+    #instructions bar
+    Label_ins = Label(root, bg='#17331b', fg='white', text="בשלב זה יופיעו מספרים על המסך ותצטרכו לזכור ולרשום אותהם בתיבות למטה  ")
+    Label_ins.config(font=("Ariel", 12))
+    Label_ins.place(x=250, y=220, width=700, height=50)
+
+    # Level number headline
+    Label2 = Label(root, bg='#17331b', fg='white', text="שלב שני")
+    Label2.config(font=("Ariel", 28))
+    Label2.place(x=950, y=550, width=200, height=50)
+
+
+
+
+
+#Level1(315848820)
+Level2(315848820 , 3, 1)
+#StartPage()
 # DeleteLastGame()
 root.mainloop()
