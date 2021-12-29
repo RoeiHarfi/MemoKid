@@ -1069,9 +1069,22 @@ answer_dict = {}
 answer_list = []
 
 
+#Function that from DB - what grade the user is and send it to Level A/B/C
+def LevelClass(user):
+    sql_select_class = "SELECT class from userslist WHERE id = ? "
+    idlist = (user,)
+    cursor.execute(sql_select_class, idlist)
+    userClass = cursor.fetchone()
+    # print(userClass)
+    if userClass[0] == 'א' or userClass[0] == 'ב':
+        Level1A(user)
+    if userClass[0] == 'ג' or userClass[0] == 'ד':
+        Level1B(user)
+    if userClass[0] == 'ה' or userClass[0] == 'ו':
+        Level1C(user)
 
-
-def Level1(user):
+#Function of Level 1 grade א\ב
+def Level1A(user):
     global clicks, succesess, gradeLevel1
     clicks = 0
     succesess = 0
@@ -1080,12 +1093,11 @@ def Level1(user):
     idlist = (user,)
     cursor.execute(sql_select_class, idlist)
     userClass = cursor.fetchone()
-    print(userClass)
 
     # Level title
     TitleImage()
     Label1 = Label(root, bg='#17331b', fg='white',
-                   text="בשלב זה מספר ריבועים בכל אחד מהם מספר, מצא את הצמדים המסתתרים בריבועים")
+                   text="בשלב0000 זה מספר ריבועים בכל אחד מהם מספר, מצא את הצמדים המסתתרים בריבועים")
     Label1.config(font=("Ariel", 12))
     Label1.place(x=250, y=220, width=700, height=50)
 
@@ -1093,12 +1105,6 @@ def Level1(user):
     Label2 = Label(root, bg='#17331b', fg='white', text="שלב ראשון")
     Label2.config(font=("Ariel", 28))
     Label2.place(x=950, y=550, width=200, height=50)
-
-    #######################################
-    # Monkey
-    img1 = PhotoImage('MonkeyLevel1.png')
-    Label(root, image=img1).place(x=900, y=200)
-    ##########################
 
     # Create matches
     matches = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6]
@@ -1111,14 +1117,14 @@ def Level1(user):
     Level1Table.pack(pady=10)
     Level1Table.place(relx=0.475, rely=0.65, anchor=CENTER)
 
-
+    ##לשאול את רועי ועמית אם אפשר לוותר על הקוף המעאפן הזה
     #Backround Monkey
-    #pic1 = Image.open("MonkeyLevel11.png")
+    #pic1 = Image.open("MonkeyLevel1.png")
     #monkeyPic = ImageTk.PhotoImage(pic1)
     #Label3 = tk.Label(image=monkeyPic)
     #Label3.Image = monkeyPic
-    #Label3.configure(width=500,height=150)
-    #Label3.place(x=400,y=500)
+    #Label3.configure(width=250,height=250)
+    #Label3.place(x=910,y=200)
 
     def CountdownTimerLevel1():
         messagebox.showinfo(emoji.emojize(":Thumbs_up"), "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
@@ -1173,6 +1179,9 @@ def Level1(user):
         val = (0, user, attempts , game_date, gradeLevel1, 0, 0)
         cursorgrades.execute(sql_insert, val)
         sqlconnect2.commit()
+        #Calculate level average
+        #go to next level
+        #Level2(user,1,attempts)
 
     def button_click(b, number):
         global count, answer_list, answer_dict, clicks, succesess
@@ -1256,6 +1265,408 @@ def Level1(user):
     b9.grid(row=2, column=1)
     b10.grid(row=2, column=2)
     b11.grid(row=2, column=3)
+
+# Function of Level 1 grade ג\ד
+def Level1B(user):
+    global clicks, succesess, gradeLevel1
+    clicks = 0
+    succesess = 0
+    gradeLevel1 = 0
+    sql_select_class = "SELECT class from userslist WHERE id = ? "
+    idlist = (user,)
+    cursor.execute(sql_select_class, idlist)
+    userClass = cursor.fetchone()
+    #print(userClass)
+
+
+    #Timer on the left side of the screen
+
+    # Declaration of variables
+    hour = StringVar()
+    minute = StringVar()
+    second = StringVar()
+
+    # setting the default value as 0
+    hour.set("00")
+    minute.set("00")
+    second.set("00")
+
+    # Use of Entry class to take input from the user
+    hourEntry = Entry(root, width=3, font=("Arial", 18, ""),
+                      textvariable=hour)
+    hourEntry.place(x=80, y=20)
+
+    minuteEntry = Entry(root, width=3, font=("Arial", 18, ""),
+                        textvariable=minute)
+    minuteEntry.place(x=130, y=20)
+
+    secondEntry = Entry(root, width=3, font=("Arial", 18, ""),
+                        textvariable=second)
+    secondEntry.place(x=180, y=20)
+
+
+    # Level title
+    TitleImage()
+    Label1 = Label(root, bg='#17331b', fg='white',
+                   text="בשלב1111111 זה מספר ריבועים בכל אחד מהם מספר, מצא את הצמדים המסתתרים בריבועים")
+    Label1.config(font=("Ariel", 12))
+    Label1.place(x=250, y=220, width=700, height=50)
+
+    # Level number headline
+    Label2 = Label(root, bg='#17331b', fg='white', text="שלב ראשון")
+    Label2.config(font=("Ariel", 28))
+    Label2.place(x=950, y=550, width=200, height=50)
+
+    # Create matches
+    matches = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8]
+    matches[0]
+    # shuffle our matches
+    random.shuffle(matches)
+
+    # Create button frame
+    Level1Table = tk.Frame(root)
+    Level1Table.pack(pady=10)
+    Level1Table.place(relx=0.475, rely=0.65, anchor=CENTER)
+
+    ##לשאול את רועי ועמית אם אפשר לוותר על הקוף המעאפן הזה
+    # Backround Monkey
+    # pic1 = Image.open("MonkeyLevel1.png")
+    # monkeyPic = ImageTk.PhotoImage(pic1)
+    # Label3 = tk.Label(image=monkeyPic)
+    # Label3.Image = monkeyPic
+    # Label3.configure(width=250,height=250)
+    # Label3.place(x=910,y=200)
+
+    def CountdownTimerLevel1():
+        messagebox.showinfo(emoji.emojize(":Thumbs_up"), "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
+        GoToNextButton()
+
+    # Declartion of timer variable
+    stopTimer = threading.Timer(120.0, CountdownTimerLevel1)
+    #stopTimer.start()
+
+    # Go to next button + configure grade function
+    def GoToNextButton():
+        # clear screen
+        GTNButton.destroy()
+        Label1.destroy()
+        Label2.destroy()
+        Level1Table.destroy()
+
+        # Timer cancel
+        stopTimer.cancel()
+
+        # Calculate grade
+        if succesess < 8:
+            gradeLevel1 = 0
+        else:
+            if clicks <= 36:
+                gradeLevel1 = 100
+            elif clicks <= 42:
+                gradeLevel1 = 75
+            elif clicks <= 48:
+                gradeLevel1 = 50
+            elif clicks <= 52:
+                gradeLevel1 = 25
+            else:
+                gradeLevel1 = 0
+
+        # Get today's date
+        game_date = datetime.today().strftime('%Y-%m-%d')
+
+        # Get attempt number
+        sql_select = "SELECT MAX(attempts) FROM usergrades WHERE userID = ?"
+        userlist = (user,)
+        cursorgrades.execute(sql_select, userlist)
+        attemptsdb = cursorgrades.fetchone()
+        if attemptsdb[0]:
+            attempts = attemptsdb[0] + 1
+        else:  # if this is first attempt
+            attempts = 1
+
+        # Push game into db
+        sql_insert = "INSERT INTO usergrades VALUES (?, ? , ? , ? , ? , ? , ?)"
+        val = (0, user, attempts, game_date, gradeLevel1, 0, 0)
+        cursorgrades.execute(sql_insert, val)
+        sqlconnect2.commit()
+        # Calculate level average
+        # go to next level
+        # Level2(user,2,attempts)
+
+    def button_click(b, number):
+        global count, answer_list, answer_dict, clicks, succesess
+        # Count user attempts
+        clicks += 1
+
+        if b["text"] == ' ' and count < 2:
+            b["text"] = matches[number]
+            # add number to answer list
+            answer_list.append(number)
+            # add button and number to answer dict
+            answer_dict[b] = matches[number]
+            # increment our counter
+            count += 1
+
+        if len(answer_list) == 2:
+            if matches[answer_list[0]] == matches[answer_list[1]]:
+                succesess += 1
+                for key in answer_dict:
+                    key["state"] = "disabled"
+                count = 0
+                answer_list = []
+                answer_dict = {}
+            else:
+                count = 0
+                answer_list = []
+
+                b["text"] = matches[number]
+                b.update()
+                time.sleep(0.35)
+                for key in answer_dict:
+                    key["text"] = " "
+
+                answer_dict = {}
+
+    # Go to level 2
+    GTNButton = tk.Button(root, text="מעבר לשלב הבא", command=GoToNextButton)
+    GTNButton.place(x=120, y=620, width=130)
+
+    # define our buttons
+    b0 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                command=lambda: button_click(b0, 0))
+    b1 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                command=lambda: button_click(b1, 1))
+    b2 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                command=lambda: button_click(b2, 2))
+    b3 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                command=lambda: button_click(b3, 3))
+    b4 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                command=lambda: button_click(b4, 4))
+    b5 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+              command=lambda: button_click(b5, 5))
+    b6 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                command=lambda: button_click(b6, 6))
+    b7 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                command=lambda: button_click(b7, 7))
+    b8 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                command=lambda: button_click(b8, 8))
+    b9 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                command=lambda: button_click(b9, 9))
+    b10 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                 command=lambda: button_click(b10, 10))
+    b11 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                 command=lambda: button_click(b11, 11))
+    b12 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                 command=lambda: button_click(b12, 12))
+    b13 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                 command=lambda: button_click(b13, 13))
+    b14 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                 command=lambda: button_click(b14, 14))
+    b15 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,
+                 command=lambda: button_click(b15, 15))
+
+    # Grid the buttons
+    b0.grid(row=0, column=0)
+    b1.grid(row=0, column=1)
+    b2.grid(row=0, column=2)
+    b3.grid(row=0, column=3)
+
+    b4.grid(row=1, column=0)
+    b5.grid(row=1, column=1)
+    b6.grid(row=1, column=2)
+    b7.grid(row=1, column=3)
+
+    b8.grid(row=2, column=0)
+    b9.grid(row=2, column=1)
+    b10.grid(row=2, column=2)
+    b11.grid(row=2, column=3)
+
+    b12.grid(row=3, column=0)
+    b13.grid(row=3, column=1)
+    b14.grid(row=3, column=2)
+    b15.grid(row=3, column=3)
+
+# Function of Level 1 grade ה\ו
+def Level1C(user):
+    global clicks, succesess, gradeLevel1
+    clicks = 0
+    succesess = 0
+    gradeLevel1 = 0
+    sql_select_class = "SELECT class from userslist WHERE id = ? "
+    idlist = (user,)
+    cursor.execute(sql_select_class, idlist)
+    userClass = cursor.fetchone()
+    #print(userClass)
+
+    # Level title
+    TitleImage()
+    Label1 = Label(root, bg='#17331b', fg='white',
+                   text="בשלב2222222222 זה מספר ריבועים בכל אחד מהם מספר, מצא את הצמדים המסתתרים בריבועים")
+    Label1.config(font=("Ariel", 12))
+    Label1.place(x=250, y=220, width=700, height=50)
+
+    # Level number headline
+    Label2 = Label(root, bg='#17331b', fg='white', text="שלב ראשון")
+    Label2.config(font=("Ariel", 28))
+    Label2.place(x=950, y=550, width=200, height=50)
+
+    # Create matches
+    matches = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6]
+    matches[0]
+    # shuffle our matches
+    random.shuffle(matches)
+
+    # Create button frame
+    Level1Table = tk.Frame(root)
+    Level1Table.pack(pady=10)
+    Level1Table.place(relx=0.475, rely=0.65, anchor=CENTER)
+
+    ##לשאול את רועי ועמית אם אפשר לוותר על הקוף המעאפן הזה
+    # Backround Monkey
+    # pic1 = Image.open("MonkeyLevel1.png")
+    # monkeyPic = ImageTk.PhotoImage(pic1)
+    # Label3 = tk.Label(image=monkeyPic)
+    # Label3.Image = monkeyPic
+    # Label3.configure(width=250,height=250)
+    # Label3.place(x=910,y=200)
+
+    def CountdownTimerLevel1():
+        messagebox.showinfo(emoji.emojize(":Thumbs_up"), "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
+        GoToNextButton()
+
+    # Declartion of timer variable
+    stopTimer = threading.Timer(10.0, CountdownTimerLevel1)
+    stopTimer.start()
+
+    # Go to next button + configure grade function
+    def GoToNextButton():
+        # clear screen
+        GTNButton.destroy()
+        Label1.destroy()
+        Label2.destroy()
+        Level1Table.destroy()
+
+        # Timer cancel
+        stopTimer.cancel()
+
+        # Calculate grade
+        if succesess < 6:
+            gradeLevel1 = 0
+        else:
+            if clicks <= 26:
+                gradeLevel1 = 100
+            elif clicks <= 32:
+                gradeLevel1 = 75
+            elif clicks <= 38:
+                gradeLevel1 = 50
+            elif clicks <= 44:
+                gradeLevel1 = 25
+            else:
+                gradeLevel1 = 0
+
+        # Get today's date
+        game_date = datetime.today().strftime('%Y-%m-%d')
+
+        # Get attempt number
+        sql_select = "SELECT MAX(attempts) FROM usergrades WHERE userID = ?"
+        userlist = (user,)
+        cursorgrades.execute(sql_select, userlist)
+        attemptsdb = cursorgrades.fetchone()
+        if attemptsdb[0]:
+            attempts = attemptsdb[0] + 1
+        else:  # if this is first attempt
+            attempts = 1
+
+        # Push game into db
+        sql_insert = "INSERT INTO usergrades VALUES (?, ? , ? , ? , ? , ? , ?)"
+        print(user)
+        val = (0, user, attempts, game_date, gradeLevel1, 0, 0)
+        cursorgrades.execute(sql_insert, val)
+        sqlconnect2.commit()
+        # Calculate level average
+        # go to next level
+        # Level2(user,3,attempts)
+
+    def button_click(b, number):
+        global count, answer_list, answer_dict, clicks, succesess
+        # Count user attempts
+        clicks += 1
+
+        if b["text"] == ' ' and count < 2:
+            b["text"] = matches[number]
+            # add number to answer list
+            answer_list.append(number)
+            # add button and number to answer dict
+            answer_dict[b] = matches[number]
+            # increment our counter
+            count += 1
+
+        if len(answer_list) == 2:
+            if matches[answer_list[0]] == matches[answer_list[1]]:
+                succesess += 1
+                for key in answer_dict:
+                    key["state"] = "disabled"
+                count = 0
+                answer_list = []
+                answer_dict = {}
+            else:
+                count = 0
+                answer_list = []
+
+                b["text"] = matches[number]
+                b.update()
+                time.sleep(0.35)
+                for key in answer_dict:
+                    key["text"] = " "
+
+                answer_dict = {}
+
+    # Go to level 2
+    GTNButton = tk.Button(root, text="מעבר לשלב הבא", command=GoToNextButton)
+    GTNButton.place(x=120, y=620, width=130)
+
+    # define our buttons
+    b0 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b0, 0))
+    b1 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b1, 1))
+    b2 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b2, 2))
+    b3 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b3, 3))
+    b4 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b4, 4))
+    b5 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b5, 5))
+    b6 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b6, 6))
+    b7 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b7, 7))
+    b8 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b8, 8))
+    b9 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                command=lambda: button_click(b9, 9))
+    b10 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                 command=lambda: button_click(b10, 10))
+    b11 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+                 command=lambda: button_click(b11, 11))
+
+    # Grid the buttons
+    b0.grid(row=0, column=0)
+    b1.grid(row=0, column=1)
+    b2.grid(row=0, column=2)
+    b3.grid(row=0, column=3)
+
+    b4.grid(row=1, column=0)
+    b5.grid(row=1, column=1)
+    b6.grid(row=1, column=2)
+    b7.grid(row=1, column=3)
+
+    b8.grid(row=2, column=0)
+    b9.grid(row=2, column=1)
+    b10.grid(row=2, column=2)
+    b11.grid(row=2, column=3)
+
 
 def Level2(user , userlevel, attempt):
 
@@ -1451,9 +1862,6 @@ def Level2(user , userlevel, attempt):
 
 
 
-
-
-Level1(315848820)
 
 #StartPage()
 #DeleteLastGame()
