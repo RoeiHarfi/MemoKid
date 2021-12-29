@@ -1019,10 +1019,31 @@ def DeleteLastGame():
             cursorgrades.execute(sql_delete, vals)
             sqlconnect2.commit()
 
+            # Calculate new avarage
+            sql_select_avarage1 = "SELECT ROUND(AVG(level1)) FROM 'usergrades' WHERE userID= ?"
+            sql_select_avarage2 = "SELECT ROUND(AVG(level2)) FROM 'usergrades' WHERE userID= ?"
+            sql_select_avarage3 = "SELECT ROUND(AVG(level3)) FROM 'usergrades' WHERE userID= ?"
+            cursorgrades.execute(sql_select_avarage1 , userlist)
+            avg1 = cursorgrades.fetchone()
+            cursorgrades.execute(sql_select_avarage2, userlist)
+            avg2 = cursorgrades.fetchone()
+            cursorgrades.execute(sql_select_avarage3, userlist)
+            avg3 = cursorgrades.fetchone()
+            newavg = (int(avg1[0]) + int(avg2[0]) + int(avg3[0])) / 3
+
+            # update new avarage
+            sql_update_avg = "UPDATE userslist SET points = ? WHERE id = ?"
+            update_vals = (newavg , userID)
+            cursor.execute(sql_update_avg , update_vals)
+            sqlconnect.commit()
+
             Label_Message['text'] = "המשחק נמחק בהצלחה"
+            Label_Message.place(x=540, y=320)
         else:
             Label_Message['text'] = "משתמש לא נמצא"
             Label_Message.place(x=540, y=320)
+
+
 
     userID_Label = tk.Label(root, bg='#17331b', fg='white',
                             text="הכנס תעודת זהות של המשתמש שברצונך למחוק את המשחק האחרון שלו")
@@ -1207,6 +1228,7 @@ def Level1(user):
 
 #Level1(315848820)
 
-StartPage()
-#DeleteLastGame()
+#StartPage()
+DeleteLastGame()
 root.mainloop()
+
