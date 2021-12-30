@@ -1834,10 +1834,6 @@ def Level2(user , userlevel, attempt):
         SBbutton.place(x=520 , y=650)
 
 
-
-
-
-
     #Submit button
     SBbutton = tk.Button(root, text="הגש", command=SubmitButton)
 
@@ -1860,10 +1856,88 @@ def Level2(user , userlevel, attempt):
     Label2.config(font=("Ariel", 28))
     Label2.place(x=950, y=550, width=200, height=50)
 
+def level3():
+
+    #Create new label
+    Label2 = Label(root, bg='#17331b', fg='white', text="שלב שלישי")
+    Label2.config(font=("Ariel", 28))
+    Label2.place(x=950, y=550, width=200, height=50)
+
+
+    #Put the title on screen
+    TitleImage()
+
+    #Create new frame
+    Level3Table = tk.Frame(root)
+    Level3Table.pack(pady=10)
+    Level3Table.place(relx=0.475, rely=0.65, anchor=CENTER)
+
+    #Create the board
+    b0 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b1 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b2 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b3 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b4 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b5 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b6 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b7 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b8 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b9 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b10 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b11 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b12 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b13 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b14 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+    b15 = Button(Level3Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6)
+
+    #Place the button on the screen
+    b0.grid(row=0, column=0)
+    b1.grid(row=0, column=1)
+    b2.grid(row=0, column=2)
+    b3.grid(row=0, column=3)
+
+    b4.grid(row=1, column=0)
+    b5.grid(row=1, column=1)
+    b6.grid(row=1, column=2)
+    b7.grid(row=1, column=3)
+
+    b8.grid(row=2, column=0)
+    b9.grid(row=2, column=1)
+    b10.grid(row=2, column=2)
+    b11.grid(row=2, column=3)
+
+    b12.grid(row=3, column=0)
+    b13.grid(row=3, column=1)
+    b14.grid(row=3, column=2)
+    b15.grid(row=3, column=3)
+
+    #Create textboxe's for the answers.
+    textbox1 = tk.Entry(root,width = 35 )
+    textbox1.place(x=220, y=410, width=50, height=25)
+    textbox2 = tk.Entry(root, width=35)
+    textbox2.place(x=220, y=410, width=50, height=25)
+    textbox3 = tk.Entry(root, width=35)
+    textbox3.place(x=220, y=410, width=50, height=25)
+    textbox4 = tk.Entry(root, width=35)
+    textbox4.place(x=220, y=410, width=50, height=25)
+    textbox5 = tk.Entry(root, width=35)
+    textbox5.place(x=220, y=410, width=50, height=25)
+
+
+    # frame for level 3
+    level3_frame = tk.Frame(root, bg='#17331b')
+    level3_frame.pack(pady=10)
+    level3_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+
+
+
 
 
 
 #StartPage()
 #DeleteLastGame()
+level3()
 root.mainloop()
+
 
