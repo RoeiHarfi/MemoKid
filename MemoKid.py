@@ -1220,6 +1220,70 @@ def ShowSchoolData():
 
 
 
+# Function for showing Girls and Boys Data
+def ShowBoysGirls():
+    TitleImage()
+
+    # frame for best girl
+    BestGirlFrame = tk.Frame(root , bg="#17331b")
+    BestGirlFrame.pack()
+    BestGirlFrame.place(x=290, y=250, width=300, height=150)
+
+    # frame for best boy
+    BestBoyFrame = tk.Frame(root , bg="#17331b")
+    BestBoyFrame.pack()
+    BestBoyFrame.place(x=630, y=250, width=300, height=150)
+
+    # frame for girls
+    GirlsFrame = tk.Frame(root , bg="#17331b")
+    GirlsFrame.pack()
+    GirlsFrame.place(x=290, y=440, width=300, height=150)
+
+    # frame for boys
+    BoysFrame = tk.Frame(root , bg="#17331b")
+    BoysFrame.pack()
+    BoysFrame.place(x=630, y=440, width=300, height=150)
+
+
+    # get best girl data
+    sql_select="SELECT MAX(points),id,name,school,class FROM 'userslist' WHERE gender='נקבה'"
+    cursor.execute(sql_select)
+    best_girl=cursor.fetchone()
+    bestgirltext = "הבת עם הממוצע הכי גבוה היא"
+    best_girl_ID= "תעודת הזהות : " + str(best_girl[1])
+    best_girl_name = "שם: " + best_girl[2]
+    best_girl_avg= "ממוצע: : " + str(best_girl[0])
+    best_girl_school= "בית ספר: " + str(best_girl[3])
+    best_girl_class= "כיתה: " + str(best_girl[4])
+
+    # display best girl data
+    MsgBGD = tk.Message(BestGirlFrame,
+                        text=bestgirltext+"\n"+best_girl_name+"\n"+best_girl_ID+"\n"+best_girl_school+"\n"+best_girl_class
+                        +"\n"+best_girl_avg,
+                        bg='#17331b',fg="white" , justify="right", width=400 , font=("Ariel", 14), anchor=NE)
+    MsgBGD.pack(side="right", fill="both", expand=True)
+
+    # get best boy data
+    sql_select="SELECT MAX(points),id,name,school,class FROM 'userslist' WHERE gender='זכר'"
+    cursor.execute(sql_select)
+    best_boy=cursor.fetchone()
+    bestboytext = "הבן עם הממוצע הכי גבוה היא"
+    best_boy_ID= "תעודת הזהות: " + str(best_boy[1])
+    best_boy_name = "שם: " + best_boy[2]
+    best_boy_avg= "ממוצע: " + str(best_boy[0])
+    best_boy_school= "בית ספר: " + str(best_boy[3])
+    best_boy_class= "כיתה: " + str(best_boy[4])
+
+    # display best boy data
+    MsgBBD = tk.Message(BestBoyFrame,
+                        text=bestboytext+"\n"+best_boy_name+"\n"+best_boy_ID+"\n"+best_boy_school+"\n"+best_boy_class
+                        +"\n"+best_boy_avg,
+                        bg='#17331b',fg="white" , justify="right", width=400 , font=("Ariel", 14), anchor=NE)
+    MsgBBD.pack(side="right", fill="both", expand=True)
+
+    # get data for girls
+
+
 # level 1
 count = 0
 clicks = 0
@@ -2027,6 +2091,7 @@ def Level2(user , userlevel, attempt):
 
 #StartPage()
 
-MenuPageResearch()
+ShowBoysGirls()
+
 root.mainloop()
 
