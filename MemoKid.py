@@ -507,7 +507,8 @@ def MenuPageResearch():
         SDICButton.destroy()
         SDISButton.destroy()
         ShowStudGameScoreButton.destroy()
-        ################################
+        # Send to show class data page
+        ShowClassData()
 
     # Show Data in a schoolName cut
     def ShowDataInSchoolButton():
@@ -516,7 +517,9 @@ def MenuPageResearch():
         SDICButton.destroy()
         SDISButton.destroy()
         ShowStudGameScoreButton.destroy()
-        ################################
+
+        #Show school data page
+        ShowSchoolData()
 
     # Show student games score
     def ShowGameScore():
@@ -527,18 +530,19 @@ def MenuPageResearch():
         ShowStudGameScoreButton.destroy()
         ShowStudentGames()
 
+    TitleImage()
     # Show Data in a boys\girls cut
-    BGDButton = tk.Button(root, text="הצג נתונים בחתך בנים או בנות", command=BoysGirlsDataButton)
-    BGDButton.place(x=580, y=510, width=130)
+    BGDButton = tk.Button(root, text="הצג נתונים בחתך בנים ובנות", command=BoysGirlsDataButton)
+    BGDButton.place(x=520, y=300, width=170)
     # Show Data in a class cut
     SDICButton = tk.Button(root, text="הצג נתונים בחתך כיתה", command=ShowDataInClassButton)
-    SDICButton.place(x=580, y=410, width=130)
+    SDICButton.place(x=520, y=400, width=170)
     # Show Data in a schoolName cut
     SDISButton = tk.Button(root, text="הצג נתונים בחתך שם בית ספר", command=ShowDataInSchoolButton)
-    SDISButton.place(x=580, y=310, width=130)
+    SDISButton.place(x=520, y=350, width=170)
     # Show student games score
     ShowStudGameScoreButton = tk.Button(root, text="הצג משחקי תלמיד", command=ShowGameScore)
-    ShowStudGameScoreButton.place(x=380, y=210, width=130)
+    ShowStudGameScoreButton.place(x=520, y=450, width=170)
 
 
 # Function for Menu page for Student user
@@ -2021,8 +2025,8 @@ def Level2(user , userlevel, attempt):
 
 
 
-ShowSchoolData()
 #StartPage()
-#DeleteLastGame()
+
+MenuPageResearch()
 root.mainloop()
 
