@@ -1058,6 +1058,164 @@ def DeleteLastGame():
     Return_Button.place(x=540, y=280, height=25)
 
 
+
+# Function for show data in class
+def ShowClassData():
+    # Label for messages
+    Message_Label = tk.Label(root, bg='#17331b', fg='white', text="")
+
+    # Function for return button
+    def ReturnButton():
+
+        # clear screen
+        Message_Label.destroy()
+        userID_Label.destroy()
+        Class.destroy()
+        Show_Button.destroy()
+        Return_Button.destroy()
+        tree.destroy()
+
+        # send to menu
+        MenuPageResearch()
+
+    # function for show button click
+    def ShowButton():
+
+        # clear data in table
+        tree.delete(*tree.get_children())
+
+        # save class data
+        userClass = ClassVar.get()
+
+        sql_select_data = "SELECT name,id,city,school,gender,class,points FROM userslist WHERE class = ? ORDER BY id"
+        classdata = (userClass,)
+        cursor.execute(sql_select_data, classdata)
+        rows = cursor.fetchall()
+        for row in rows:
+            tree.insert("", tk.END, values=row)
+        tree.place(x=40, y=350)
+        Message_Label['text'] = "משחקי הכיתה"
+        Message_Label.place(x=540, y=320, width=120, height=25)
+
+    TitleImage()
+
+    userID_Label = tk.Label(root, bg='#17331b', fg='white', text="אנא בחר כיתה")
+    userID_Label.place(x=540, y=220, width=120, height=25)
+    ClassVar = StringVar(root)
+    ClassVar.set("א")
+    Class = tk.OptionMenu(root, ClassVar, "א", "ב", "ג", "ד", "ה", "ו")
+    Class.place(x=550, y=250, width=90)
+    Show_Button = tk.Button(root, text="הצג", command=ShowButton)
+    Show_Button.place(x=630, y=290, height=25)
+    Return_Button = tk.Button(root, text="חזור לתפריט", command=ReturnButton)
+    Return_Button.place(x=540, y=290, height=25)
+
+    # Table to show data
+    style = ttk.Style(root)
+    style.theme_use("clam")
+    style.configure("Treeview",
+                    background="17331b",
+                    foreground="white",
+                    rowheight=25,
+                    fieldbackground="#17331b",
+                    selectbackground="17331b")
+    tree = ttk.Treeview(root, column=("name", "id", "city", "school", "gender", "class", "points"),
+                        show='headings')
+    tree.column("#1", anchor=tk.CENTER, width=171)
+    tree.heading("#1", text="שם")
+    tree.column("#2", anchor=tk.CENTER, width=171)
+    tree.heading("#2", text="תעודת זהות")
+    tree.column("#3", anchor=tk.CENTER, width=171)
+    tree.heading("#3", text="עיר")
+    tree.column("#4", anchor=tk.CENTER, width=171)
+    tree.heading("#4", text="בית ספר")
+    tree.column("#5", anchor=tk.CENTER, width=171)
+    tree.heading("#5", text="מין")
+    tree.column("#6", anchor=tk.CENTER, width=171)
+    tree.heading("#6", text="כיתה")
+    tree.column("#7", anchor=tk.CENTER, width=171)
+    tree.heading("#7", text="ממוצע")
+    tree.pack()
+
+
+# Function for show data in class
+def ShowSchoolData():
+    # Label for messages
+    Message_Label = tk.Label(root, bg='#17331b', fg='white', text="")
+
+    # Function for return button
+    def ReturnButton():
+
+        # clear screen
+        Message_Label.destroy()
+        userID_Label.destroy()
+        School.destroy()
+        Show_Button.destroy()
+        Return_Button.destroy()
+        tree.destroy()
+
+        # send to menu
+        MenuPageResearch()
+
+    # function for show button click
+    def ShowButton():
+
+        # clear data in table
+        tree.delete(*tree.get_children())
+
+        # save school data
+        userSchool = School.get()
+
+        sql_select_data = "SELECT name,id,city,school,gender,class,points FROM userslist WHERE school = ? ORDER BY id"
+        schooldata = (userSchool,)
+        cursor.execute(sql_select_data, schooldata)
+        rows = cursor.fetchall()
+        for row in rows:
+            tree.insert("", tk.END, values=row)
+        tree.place(x=40, y=350)
+        Message_Label['text'] = "משחקי בית הספר"
+        Message_Label.place(x=540, y=320, width=120, height=25)
+
+    TitleImage()
+
+    userID_Label = tk.Label(root, bg='#17331b', fg='white', text="אנא הכנס שם בית ספר")
+    userID_Label.place(x=540, y=220, width=120, height=25)
+    School = tk.Entry(root, width=200)
+    School.place(x=540, y=250, width=120, height=25)
+    Show_Button = tk.Button(root, text="הצג", command=ShowButton)
+    Show_Button.place(x=630, y=290, height=25)
+    Return_Button = tk.Button(root, text="חזור לתפריט", command=ReturnButton)
+    Return_Button.place(x=540, y=290, height=25)
+
+    # Table to show data
+    style = ttk.Style(root)
+    style.theme_use("clam")
+    style.configure("Treeview",
+                    background="17331b",
+                    foreground="white",
+                    rowheight=25,
+                    fieldbackground="#17331b",
+                    selectbackground="17331b")
+    tree = ttk.Treeview(root, column=("name", "id", "city", "school", "gender", "class", "points"),
+                        show='headings')
+    tree.column("#1", anchor=tk.CENTER, width=171)
+    tree.heading("#1", text="שם")
+    tree.column("#2", anchor=tk.CENTER, width=171)
+    tree.heading("#2", text="תעודת זהות")
+    tree.column("#3", anchor=tk.CENTER, width=171)
+    tree.heading("#3", text="עיר")
+    tree.column("#4", anchor=tk.CENTER, width=171)
+    tree.heading("#4", text="בית ספר")
+    tree.column("#5", anchor=tk.CENTER, width=171)
+    tree.heading("#5", text="מין")
+    tree.column("#6", anchor=tk.CENTER, width=171)
+    tree.heading("#6", text="כיתה")
+    tree.column("#7", anchor=tk.CENTER, width=171)
+    tree.heading("#7", text="ממוצע")
+    tree.pack()
+
+
+
 # level 1
 count = 0
 clicks = 0
@@ -1863,6 +2021,7 @@ def Level2(user , userlevel, attempt):
 
 
 
+ShowSchoolData()
 #StartPage()
 #DeleteLastGame()
 root.mainloop()
