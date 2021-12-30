@@ -14,9 +14,9 @@ from sqlite3 import Error
 import time
 
 # connect to db
-sqlconnect = sqlite3.connect('MemoKidDB.db')
+sqlconnect = sqlite3.connect('MemoKidDB.db' , check_same_thread=False)
 cursor = sqlconnect.cursor()
-sqlconnect2 = sqlite3.connect('usergrades.db')
+sqlconnect2 = sqlite3.connect('usergrades.db' , check_same_thread=False)
 cursorgrades = sqlconnect2.cursor()
 
 # Create the screen
@@ -546,7 +546,7 @@ def MenuPageResearch():
 
 
 # Function for Menu page for Student user
-def MenuPageStudent():
+def MenuPageStudent(user):
     # Game instructions Button
     def GameInstructionButton():
         #################--------------SHAI WORK-------------
@@ -559,6 +559,7 @@ def MenuPageStudent():
         SGButton.destroy()
         SSLGButton.destroy()
         SAGButton.destroy()
+        LevelClass(user)
 
     #########################################
 
@@ -607,7 +608,7 @@ def CheckUserType(user):
     cursor.execute(sql_select_query, userlist)
     userType = cursor.fetchone()
     if userType[0] == 'תלמיד':
-        MenuPageStudent()
+        MenuPageStudent(user)
     if userType[0] == 'חוקר':
         MenuPageResearch()
     if userType[0] == 'מנהל':
@@ -1663,7 +1664,7 @@ def Level1C(user):
     # Level title
     TitleImage()
     Label1 = Label(root, bg='#17331b', fg='white',
-                   text="בשלב2222222222 זה מספר ריבועים בכל אחד מהם מספר, מצא את הצמדים המסתתרים בריבועים")
+                   text="בשלב זה מספר ריבועים בכל אחד מהם מספר, מצא את הצמדים המסתתרים בריבועים")
     Label1.config(font=("Ariel", 12))
     Label1.place(x=250, y=220, width=700, height=50)
 
@@ -1673,7 +1674,7 @@ def Level1C(user):
     Label2.place(x=950, y=550, width=200, height=50)
 
     # Create matches
-    matches = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6]
+    matches = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10]
     matches[0]
     # shuffle our matches
     random.shuffle(matches)
@@ -1697,7 +1698,7 @@ def Level1C(user):
         GoToNextButton()
 
     # Declartion of timer variable
-    stopTimer = threading.Timer(10.0, CountdownTimerLevel1)
+    stopTimer = threading.Timer(120.0, CountdownTimerLevel1)
     stopTimer.start()
 
     # Go to next button + configure grade function
@@ -1712,16 +1713,16 @@ def Level1C(user):
         stopTimer.cancel()
 
         # Calculate grade
-        if succesess < 6:
+        if succesess < 10:
             gradeLevel1 = 0
         else:
-            if clicks <= 26:
+            if clicks <= 40:
                 gradeLevel1 = 100
-            elif clicks <= 32:
+            elif clicks <= 46:
                 gradeLevel1 = 75
-            elif clicks <= 38:
+            elif clicks <= 52:
                 gradeLevel1 = 50
-            elif clicks <= 44:
+            elif clicks <= 58:
                 gradeLevel1 = 25
             else:
                 gradeLevel1 = 0
@@ -1788,46 +1789,73 @@ def Level1C(user):
     GTNButton.place(x=120, y=620, width=130)
 
     # define our buttons
-    b0 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b0 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
                 command=lambda: button_click(b0, 0))
-    b1 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b1 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
                 command=lambda: button_click(b1, 1))
-    b2 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b2 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
                 command=lambda: button_click(b2, 2))
-    b3 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b3 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
                 command=lambda: button_click(b3, 3))
-    b4 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
-                command=lambda: button_click(b4, 4))
-    b5 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b4 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
+               command=lambda: button_click(b4, 4))
+    b5 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
                 command=lambda: button_click(b5, 5))
-    b6 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b6 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
                 command=lambda: button_click(b6, 6))
-    b7 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b7 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
                 command=lambda: button_click(b7, 7))
-    b8 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b8 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
                 command=lambda: button_click(b8, 8))
-    b9 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b9 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
                 command=lambda: button_click(b9, 9))
-    b10 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b10 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
                  command=lambda: button_click(b10, 10))
-    b11 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=3, width=6,
+    b11 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
                  command=lambda: button_click(b11, 11))
+    b12 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
+                command=lambda: button_click(b12, 12))
+    b13 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
+               command=lambda: button_click(b13, 13))
+    b14 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
+                command=lambda: button_click(b14, 14))
+    b15 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
+                command=lambda: button_click(b15, 15))
+    b16 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
+                command=lambda: button_click(b16, 16))
+    b17 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
+               command=lambda: button_click(b17, 17))
+    b18 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
+                command=lambda: button_click(b18, 18))
+    b19 = Button(Level1Table, text=' ', font=("Helvatica", 20), fg="white", bg="#17331b", height=1, width=3,
+                command=lambda: button_click(b19, 19))
+
 
     # Grid the buttons
     b0.grid(row=0, column=0)
-    b1.grid(row=0, column=1)
-    b2.grid(row=0, column=2)
-    b3.grid(row=0, column=3)
+    b1.grid(row=1, column=0)
+    b2.grid(row=2, column=0)
+    b3.grid(row=3, column=0)
 
-    b4.grid(row=1, column=0)
+    b4.grid(row=0, column=1)
     b5.grid(row=1, column=1)
-    b6.grid(row=1, column=2)
-    b7.grid(row=1, column=3)
+    b6.grid(row=2, column=1)
+    b7.grid(row=3, column=1)
 
-    b8.grid(row=2, column=0)
-    b9.grid(row=2, column=1)
+    b8.grid(row=0, column=2)
+    b9.grid(row=1, column=2)
     b10.grid(row=2, column=2)
-    b11.grid(row=2, column=3)
+    b11.grid(row=3, column=2)
+
+    b12.grid(row=0, column=3)
+    b13.grid(row=1, column=3)
+    b14.grid(row=2, column=3)
+    b15.grid(row=3, column=3)
+
+    b16.grid(row=0, column=4)
+    b17.grid(row=1, column=4)
+    b18.grid(row=2, column=4)
+    b19.grid(row=3, column=4)
 
 
 def Level2(user , userlevel, attempt):
@@ -2024,7 +2052,7 @@ def Level2(user , userlevel, attempt):
 
 
 
-
+LevelClass(444)
 #StartPage()
 
 MenuPageResearch()
