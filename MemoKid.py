@@ -1889,7 +1889,7 @@ def Level2(user , userlevel, attempt):
 
 
     #label for numbers
-    Label_Numbers = tk.Label(level2_frame, bg='#17331b', fg='white', text="" , width=30 , font=('Ariel' , 45))
+    Label_Numbers = tk.Label(level2_frame, bg='#17331b', fg='white', text="", width=30, font=('Ariel', 45))
     Label_Numbers['text'] = random_list
 
     #text boxes for inputs
@@ -2024,10 +2024,6 @@ def Level2(user , userlevel, attempt):
         SBbutton.place(x=520 , y=650)
 
 
-
-
-
-
     #Submit button
     SBbutton = tk.Button(root, text="הגש", command=SubmitButton)
 
@@ -2052,9 +2048,260 @@ def Level2(user , userlevel, attempt):
 
 
 
-LevelClass(444)
-#StartPage()
+def Level3(userlevel):  #user, userLevel, attempt
 
-MenuPageResearch()
+    # get difficulty level
+    if userlevel == 1:
+        difflevel = 4
+    elif userlevel == 2:
+        difflevel = 6
+    elif userlevel == 3:
+        difflevel = 8
+
+    # Check if value is in list
+    def SearchInList(list, value):
+        for i in range(len(list)):
+            if list[i] == value:
+                return True
+        return False
+
+    def FlashNumbers():
+        if SearchInList(random_list, 1):
+            b0["bg"] = "white"
+            b0.update()
+        if SearchInList(random_list, 2):
+            b1["bg"] = "white"
+            b1.update()
+        if SearchInList(random_list, 3):
+            b2["bg"] = "white"
+            b2.update()
+        if SearchInList(random_list, 4):
+            b3["bg"] = "white"
+            b3.update()
+        if SearchInList(random_list, 5):
+            b4["bg"] = "white"
+            b4.update()
+        if SearchInList(random_list, 6):
+            b5["bg"] = "white"
+            b5.update()
+        if SearchInList(random_list, 7):
+            b6["bg"] = "white"
+            b6.update()
+        if SearchInList(random_list, 8):
+            b7["bg"] = "white"
+            b7.update()
+        if SearchInList(random_list, 9):
+            b8["bg"] = "white"
+            b8.update()
+        if SearchInList(random_list, 10):
+            b9["bg"] = "white"
+            b9.update()
+        if SearchInList(random_list, 11):
+            b10["bg"] = "white"
+            b10.update()
+        if SearchInList(random_list, 12):
+            b11["bg"] = "white"
+            b11.update()
+        if SearchInList(random_list, 13):
+            b12["bg"] = "white"
+            b12.update()
+        if SearchInList(random_list, 14):
+            b13["bg"] = "white"
+            b13.update()
+        if SearchInList(random_list, 15):
+            b14["bg"] = "white"
+            b14.update()
+        if SearchInList(random_list, 16):
+            b15["bg"] = "white"
+            b15.update()
+
+        time.sleep(3)
+
+        if SearchInList(random_list, 1):
+            b0["bg"] = "#17331b"
+            b0.update()
+        if SearchInList(random_list, 2):
+            b1["bg"] = "#17331b"
+            b1.update()
+        if SearchInList(random_list, 3):
+            b2["bg"] = "#17331b"
+            b2.update()
+        if SearchInList(random_list, 4):
+            b3["bg"] = "#17331b"
+            b3.update()
+        if SearchInList(random_list, 5):
+            b4["bg"] = "#17331b"
+            b4.update()
+        if SearchInList(random_list, 6):
+            b5["bg"] = "#17331b"
+            b5.update()
+        if SearchInList(random_list, 7):
+            b6["bg"] = "#17331b"
+            b6.update()
+        if SearchInList(random_list, 8):
+            b7["bg"] = "#17331b"
+            b7.update()
+        if SearchInList(random_list, 9):
+            b8["bg"] = "#17331b"
+            b8.update()
+        if SearchInList(random_list, 10):
+            b9["bg"] = "#17331b"
+            b9.update()
+        if SearchInList(random_list, 11):
+            b10["bg"] = "#17331b"
+            b10.update()
+        if SearchInList(random_list, 12):
+            b11["bg"] = "#17331b"
+            b11.update()
+        if SearchInList(random_list, 13):
+            b12["bg"] = "#17331b"
+            b12.update()
+        if SearchInList(random_list, 14):
+            b13["bg"] = "#17331b"
+            b13.update()
+        if SearchInList(random_list, 15):
+            b14["bg"] = "#17331b"
+            b14.update()
+        if SearchInList(random_list, 16):
+            b15["bg"] = "#17331b"
+            b15.update()
+
+
+    #Instructions
+    Label_ins = Label(root, bg='#17331b', fg='white',
+                      text="לפניך ריבועים שישתנה צבעם לכמה שניות, לאחר מכן רשום את מספר הריבועים שהשתנה צבעם  ")
+    Label_ins.config(font=("Ariel", 12))
+    Label_ins.place(x=250, y=220, width=700, height=50)
+
+    #Label of level three
+    Label2 = Label(root, bg='#17331b', fg='white', text="שלב שלישי")
+    Label2.config(font=("Ariel", 28))
+    Label2.place(x=950, y=550, width=200, height=50)
+
+    #Put the title on screen
+    TitleImage()
+
+    #Frame level 3
+    Level3Table = tk.Frame(root)
+    Level3Table.pack(pady=10)
+    Level3Table.place(relx=0.500, rely=0.650, anchor=CENTER)
+
+    # generate random numbers list
+    number_list = list(range(1,17))
+    random_list = list(random.sample(number_list, difflevel))
+
+
+    def StartLevelButton2():
+
+        SLButton.destroy()
+
+        #SquareTextBoxesTitles
+        FSLabel.place(x=330, y=290, width=70)
+        FS2Label.place(x=330, y=350, width=70)
+        FS3Label.place(x=330, y=410, width=70)
+        FS4Label.place(x=330, y=470, width=70)
+        if difflevel > 4:
+            FS5Label.place(x=170, y=290, width=70)
+            FS6Label.place(x=170, y=350, width=70)
+        if difflevel > 6:
+            FS7Label.place(x=170, y=410, width=70)
+            FS8Label.place(x=170, y=470, width=70)
+
+
+
+        #Place textBoxes
+        textbox1.place(x=250, y=290, width=70, height=25)
+        textbox2.place(x=250, y=350, width=70, height=25)
+        textbox3.place(x=250, y=410, width=70, height=25)
+        textbox4.place(x=250, y=470, width=70, height=25)
+        if difflevel > 4:
+            textbox5.place(x=90, y=290, width=70, height=25)
+            textbox6.place(x=90, y=350, width=70, height=25)
+        if difflevel > 6:
+            textbox7.place(x=90, y=410, width=70, height=25)
+            textbox8.place(x=90, y=470, width=70, height=25)
+
+        # Grid the buttons
+        b0.grid(row=0, column=0)
+        b1.grid(row=0, column=1)
+        b2.grid(row=0, column=2)
+        b3.grid(row=0, column=3)
+
+        b4.grid(row=1, column=0)
+        b5.grid(row=1, column=1)
+        b6.grid(row=1, column=2)
+        b7.grid(row=1, column=3)
+
+        b8.grid(row=2, column=0)
+        b9.grid(row=2, column=1)
+        b10.grid(row=2, column=2)
+        b11.grid(row=2, column=3)
+
+        b12.grid(row=3, column=0)
+        b13.grid(row=3, column=1)
+        b14.grid(row=3, column=2)
+        b15.grid(row=3, column=3)
+
+        root.after(2000,FlashNumbers)
+
+
+
+
+
+    #Mini titles
+    FSLabel = tk.Label(root, bg='#17331b', fg='white', text="ריבוע ראשון", anchor="e")
+    FS2Label = tk.Label(root, bg='#17331b', fg='white', text="ריבוע שני", anchor="e")
+    FS3Label = tk.Label(root, bg='#17331b', fg='white', text="ריבוע שלישי", anchor="e")
+    FS4Label = tk.Label(root, bg='#17331b', fg='white', text="ריבוע רביעי", anchor="e")
+    FS5Label = tk.Label(root, bg='#17331b', fg='white', text="ריבוע חמישי", anchor="e")
+    FS6Label = tk.Label(root, bg='#17331b', fg='white', text="ריבוע שישי", anchor="e")
+    FS7Label = tk.Label(root, bg='#17331b', fg='white', text="ריבוע שביעי", anchor="e")
+    FS8Label = tk.Label(root, bg='#17331b', fg='white', text="ריבוע שמיני", anchor="e")
+
+    # Start the level button
+    SLButton = tk.Button(root, text="התחל שלב", command=StartLevelButton2)
+    SLButton.place(x=550, y=400, height=25)
+
+    # Create textboxe's for the answers.
+    textbox1 = tk.Entry(root, width=35)
+    textbox2 = tk.Entry(root, width=35)
+    textbox3 = tk.Entry(root, width=35)
+    textbox4 = tk.Entry(root, width=35)
+    textbox5 = tk.Entry(root, width=35)
+    textbox6 = tk.Entry(root, width=35)
+    textbox7 = tk.Entry(root, width=35)
+    textbox8 = tk.Entry(root, width=35)
+
+    # frame for level 3
+    level3_frame = tk.Frame(root, bg='#17331b')
+    level3_frame.pack(pady=10)
+    level3_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
+    # Create the board
+    # define our buttons
+    b0 = Button(Level3Table, text='1', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b1 = Button(Level3Table, text='2', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b2 = Button(Level3Table, text='3', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b3 = Button(Level3Table, text='4', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b4 = Button(Level3Table, text='5', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b5 = Button(Level3Table, text='6', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b6 = Button(Level3Table, text='7', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b7 = Button(Level3Table, text='8', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b8 = Button(Level3Table, text='9', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b9 = Button(Level3Table, text='10', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b10 = Button(Level3Table, text='11', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b11 = Button(Level3Table, text='12', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b12 = Button(Level3Table, text='13', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b13 = Button(Level3Table, text='14', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
+    b14 = Button(Level3Table, text='15', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,state='disabled')
+    b15 = Button(Level3Table, text='16', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,state='disabled')
+
+
+
+
+Level3(3)
+#StartPage()
+#Level2(222,2,4)
+
+#MenuPageResearch()
 root.mainloop()
 
