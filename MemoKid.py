@@ -1289,7 +1289,7 @@ def ShowBoysGirls():
     sql_select = "SELECT AVG(points) FROM 'userslist' WHERE gender='נקבה'"
     cursor.execute(sql_select)
     girls = cursor.fetchone()
-    girlstext = "ממוצע הבנות הכללי הוא: " + str(girls[0])
+    girlstext = "ממוצע הבנות הכללי הוא: " + str(round(girls[0],1))
 
     # display girls data
     MsgGirls = tk.Message(GirlsFrame, text=girlstext,bg='#17331b',fg="white" , justify="right", width=400 ,
@@ -1299,8 +1299,8 @@ def ShowBoysGirls():
     # get data for boys
     sql_select = "SELECT AVG(points) FROM 'userslist' WHERE gender='זכר'"
     cursor.execute(sql_select)
-    girls = cursor.fetchone()
-    boystext = "ממוצע הבנים הכללי הוא: " + str(girls[0])
+    boys = cursor.fetchone()
+    boystext = "ממוצע הבנים הכללי הוא: " + str(round(boys[0],1))
 
     # display girls data
     MsgGirls = tk.Message(BoysFrame, text=boystext,bg='#17331b',fg="white" , justify="right", width=400 ,
@@ -1990,7 +1990,7 @@ def Level2(user, userlevel, attempt):
         input8 = textbox8.get()
         if input8 == "":
             input8 = 0
-        input9 = textbox8.get()
+        input9 = textbox9.get()
         if input9 == "":
             input9 = 0
         input10 = textbox10.get()
@@ -2051,9 +2051,10 @@ def Level2(user, userlevel, attempt):
         SLButton.destroy()
         Label_ins.destroy()
         Label2.destroy()
+        Label_Numbers.destroy()
 
         # Go to level 3
-        Level3(user,userlevel,attempt)
+        Level3(user, userlevel, attempt)
 
     # Function for start level button
     def StartLevelButton():
@@ -2061,8 +2062,8 @@ def Level2(user, userlevel, attempt):
         SLButton.destroy()
         Label_Numbers.pack()
         Label_Numbers.update()
-        time.sleep(10)
-        Label_Numbers.pack_forget()
+        time.sleep(7)
+        Label_Numbers['text'] = "אנא הכניסו את המספרים שזכרתם"
 
         # Create textboxes fo the student answer
         textbox1.place(x=220, y=410, width=50, height=25)
@@ -2106,7 +2107,7 @@ def Level2(user, userlevel, attempt):
 
 
 # Function for level 3
-def Level3(user,userlevel,atempt):  #user, userLevel, attempt
+def Level3(user,userlevel,attempt):
 
     # get difficulty level
     if userlevel == 1:
@@ -2248,6 +2249,112 @@ def Level3(user,userlevel,atempt):  #user, userLevel, attempt
     number_list = list(range(1,17))
     random_list = list(random.sample(number_list, difflevel))
 
+    def SubmitButton():
+
+        # Get values in text boxes
+        input1 = textbox1.get()
+        if input1 == "":
+            input1 = 0
+        input2 = textbox2.get()
+        if input2 == "":
+            input2 = 0
+        input3 = textbox3.get()
+        if input3 == "":
+            input3 = 0
+        input4 = textbox4.get()
+        if input4 == "":
+            input4 = 0
+        input5 = textbox5.get()
+        if input5 == "":
+            input5 = 0
+        input6 = textbox6.get()
+        if input6 == "":
+            input6 = 0
+        input7 = textbox7.get()
+        if input7 == "":
+            input7 = 0
+        input8 = textbox8.get()
+        if input8 == "":
+            input8 = 0
+
+        # counter for successes
+        counter = 0
+        if SearchInList(random_list, int(input1)):
+            counter += 1
+        if SearchInList(random_list, int(input2)):
+            counter += 1
+        if SearchInList(random_list, int(input3)):
+            counter += 1
+        if SearchInList(random_list, int(input4)):
+            counter += 1
+        if SearchInList(random_list, int(input5)):
+            counter += 1
+        if SearchInList(random_list, int(input6)):
+            counter += 1
+        if SearchInList(random_list, int(input7)):
+            counter += 1
+        if SearchInList(random_list, int(input8)):
+            counter += 1
+
+        # calculate grade
+        user_grade = 0
+        if difflevel == 4:
+            user_grade = counter * 25
+        elif difflevel == 6:
+            user_grade = counter * 16 + 4
+        elif difflevel == 8:
+            user_grade = counter * 12 + 4
+
+        # update games database
+        sql_update = "UPDATE usergrades SET level3 = ? WHERE userID = ? AND attempts = ?"
+        vals = (user_grade, user, attempt)
+        cursorgrades.execute(sql_update, vals)
+        sqlconnect2.commit()
+
+        # Calculate new avarage
+        sql_select_avarage1 = "SELECT ROUND(AVG(level1)) FROM 'usergrades' WHERE userID= ?"
+        sql_select_avarage2 = "SELECT ROUND(AVG(level2)) FROM 'usergrades' WHERE userID= ?"
+        sql_select_avarage3 = "SELECT ROUND(AVG(level3)) FROM 'usergrades' WHERE userID= ?"
+        userlist = (user, )
+        cursorgrades.execute(sql_select_avarage1, userlist)
+        avg1 = cursorgrades.fetchone()
+        cursorgrades.execute(sql_select_avarage2, userlist)
+        avg2 = cursorgrades.fetchone()
+        cursorgrades.execute(sql_select_avarage3, userlist)
+        avg3 = cursorgrades.fetchone()
+        newavg = (int(avg1[0]) + int(avg2[0]) + int(avg3[0])) / 3
+        newavg = round(newavg, 1)
+
+        # update new avarage
+        sql_update_avg = "UPDATE userslist SET points = ? WHERE id = ?"
+        update_vals = (newavg, user)
+        cursor.execute(sql_update_avg, update_vals)
+        sqlconnect.commit()
+
+
+        # clear screen
+        Label_ins.destroy()
+        Label2.destroy()
+        Level3Table.destroy()
+        FSLabel.destroy()
+        FS2Label.destroy()
+        FS3Label.destroy()
+        FS4Label.destroy()
+        FS5Label.destroy()
+        FS6Label.destroy()
+        FS7Label.destroy()
+        FS8Label.destroy()
+        SubmitButton.destroy()
+        textbox1.destroy()
+        textbox2.destroy()
+        textbox3.destroy()
+        textbox4.destroy()
+        textbox5.destroy()
+        textbox6.destroy()
+        textbox7.destroy()
+        textbox8.destroy()
+
+
 
     def StartLevelButton2():
 
@@ -2278,6 +2385,9 @@ def Level3(user,userlevel,atempt):  #user, userLevel, attempt
         if difflevel > 6:
             textbox7.place(x=90, y=410, width=70, height=25)
             textbox8.place(x=90, y=470, width=70, height=25)
+
+        #Place Submit Button
+        SubmitButton.place(x=150, y=510)
 
         # Grid the buttons
         b0.grid(row=0, column=0)
@@ -2320,6 +2430,9 @@ def Level3(user,userlevel,atempt):  #user, userLevel, attempt
     SLButton = tk.Button(root, text="התחל שלב", command=StartLevelButton2)
     SLButton.place(x=550, y=400, height=25)
 
+    #End level button
+    SubmitButton = tk.Button(root, text="הגש" , command=SubmitButton)
+
     # Create textboxe's for the answers.
     textbox1 = tk.Entry(root, width=35)
     textbox2 = tk.Entry(root, width=35)
@@ -2330,10 +2443,6 @@ def Level3(user,userlevel,atempt):  #user, userLevel, attempt
     textbox7 = tk.Entry(root, width=35)
     textbox8 = tk.Entry(root, width=35)
 
-    # frame for level 3
-    level3_frame = tk.Frame(root, bg='#17331b')
-    level3_frame.pack(pady=10)
-    level3_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
     # Create the board
     # define our buttons
     b0 = Button(Level3Table, text='1', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6, state='disabled')
@@ -2355,13 +2464,12 @@ def Level3(user,userlevel,atempt):  #user, userLevel, attempt
 
 
 
-
 #Level3(3)
 StartPage()
 #Level2(222,2,4)
 
 #MenuPageAdmin()
-
+#MenuPageResearch()
 #LevelClass(444)
 #StartPage()
 
