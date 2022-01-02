@@ -9,6 +9,7 @@ import random
 from tkinter import messagebox
 import emoji
 import threading
+import multiprocessing
 
 from sqlite3 import Error
 import time
@@ -590,7 +591,7 @@ def MenuPageStudent(user):
     SGButton.place(x=550, y=410, width=130, height=50)
 
     # Show grade of last game
-    SSLGButton = tk.Button(root, text="הצג ציון אחרון", command=ShowStudentLastGradeButton)
+    SSLGButton = tk.Button(root, text="הצג משחקים אחרונים", command=ShowStudentLastGradeButton)
     SSLGButton.place(x=550, y=370, width=130)
 
     # Show Average rank for now
@@ -1337,7 +1338,7 @@ def LevelClass(user):
 
 # Function of Level 1 grade א\ב
 def Level1A(user):
-    global clicks, succesess, gradeLevel1
+    global clicks, succesess
     clicks = 0
     succesess = 0
     gradeLevel1 = 0
@@ -1345,6 +1346,19 @@ def Level1A(user):
     idlist = (user,)
     cursor.execute(sql_select_class, idlist)
     userClass = cursor.fetchone()
+
+    # Timer on the left side of the screen
+    # Declaration of variables
+    second = StringVar()
+    # setting the default value as 0
+    second.set("00")
+
+    #placing timer and label
+    TimerLabel = Label(root, bg='#17331b', fg='white', text="זמן נותר", font=("Arial", 18, ""))
+    TimerLabel.place(x=250,y=50)
+    secondEntry = Entry(root, width=3, font=("Arial", 18, ""),
+                        textvariable=second)
+    secondEntry.place(x=180, y=50)
 
     # Level title
     TitleImage()
@@ -1369,24 +1383,35 @@ def Level1A(user):
     Level1Table.pack(pady=10)
     Level1Table.place(relx=0.475, rely=0.65, anchor=CENTER)
 
-    def CountdownTimerLevel1():
-        messagebox.showinfo(emoji.emojize(":Thumbs_up"), "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
-        GoToNextButton()
+    def timer(killcondition):
+        while not killcondition.is_set():
+            for i in range(120):
+                second.set(str(120-i))
+                secondEntry.update()
+                time.sleep(1)
+            messagebox.showinfo("", "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
+            GoToNextButton()
+
 
     # Declartion of timer variable
-    stopTimer = threading.Timer(10.0, CountdownTimerLevel1)
-    #stopTimer.start()
+    kill=threading.Event()
+    stopTimer2= threading.Thread(target=timer, args=[kill])
+    stopTimer2.start()
+
 
     # Go to next button + configure grade function
     def GoToNextButton():
+        # Timer cancel
+        kill.set()
+
         # clear screen
         GTNButton.destroy()
         Label1.destroy()
         Label2.destroy()
         Level1Table.destroy()
+        secondEntry.destroy()
+        TimerLabel.destroy()
 
-        # Timer cancel
-        stopTimer.cancel()
 
         # Calculate grade
         if succesess < 6:
@@ -1508,7 +1533,7 @@ def Level1A(user):
 
 # Function of Level 1 grade ג\ד
 def Level1B(user):
-    global clicks, succesess
+    global clicks, succesess, flagtimer
     clicks = 0
     succesess = 0
     gradeLevel1 = 0
@@ -1518,10 +1543,8 @@ def Level1B(user):
     userClass = cursor.fetchone()
 
     # Timer on the left side of the screen
-
     # Declaration of variables
     second = StringVar()
-
     # setting the default value as 0
     second.set("00")
 
@@ -1555,29 +1578,33 @@ def Level1B(user):
     Level1Table.pack(pady=10)
     Level1Table.place(relx=0.475, rely=0.65, anchor=CENTER)
 
-    def timer():
-        for i in range(120):
-            second.set(str(120-i))
-            secondEntry.update()
-            time.sleep(1)
-        messagebox.showinfo("תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
-        GoToNextButton()
+    def timer(killcondition):
+        while not killcondition.is_set():
+            for i in range(120):
+                second.set(str(120-i))
+                secondEntry.update()
+                time.sleep(1)
+            messagebox.showinfo("", "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
+            GoToNextButton()
 
 
     # Declartion of timer variable
-    stopTimer2= threading.Thread(target=timer)
+    kill=threading.Event()
+    stopTimer2= threading.Thread(target=timer, args=[kill])
     stopTimer2.start()
 
     # Go to next button + configure grade function
     def GoToNextButton():
+        # Timer cancel
+        kill.set()
+
         # clear screen
         GTNButton.destroy()
         Label1.destroy()
         Label2.destroy()
         Level1Table.destroy()
-
-        # Timer cancel
-        stopTimer2.cancel()
+        secondEntry.destroy()
+        TimerLabel.destroy()
 
         # Calculate grade
         if succesess < 8:
@@ -1613,7 +1640,7 @@ def Level1B(user):
         cursorgrades.execute(sql_insert, val)
         sqlconnect2.commit()
         # go to next level
-        Level2(user,2,attempts , gradeLevel1)
+        Level2(user, 2, attempts, gradeLevel1)
 
     def button_click(b, number):
         global count, answer_list, answer_dict, clicks, succesess
@@ -1719,7 +1746,19 @@ def Level1C(user):
     idlist = (user,)
     cursor.execute(sql_select_class, idlist)
     userClass = cursor.fetchone()
-    # print(userClass)
+
+    # Timer on the left side of the screen
+    # Declaration of variables
+    second = StringVar()
+    # setting the default value as 0
+    second.set("00")
+
+    # placing timer and label
+    TimerLabel = Label(root, bg='#17331b', fg='white', text="זמן נותר", font=("Arial", 18, ""))
+    TimerLabel.place(x=250, y=50)
+    secondEntry = Entry(root, width=3, font=("Arial", 18, ""),
+                        textvariable=second)
+    secondEntry.place(x=180, y=50)
 
     # Level title
     TitleImage()
@@ -1744,25 +1783,32 @@ def Level1C(user):
     Level1Table.pack(pady=10)
     Level1Table.place(relx=0.475, rely=0.65, anchor=CENTER)
 
+    def timer(killcondition):
+        while not killcondition.is_set():
+            for i in range(120):
+                second.set(str(120-i))
+                secondEntry.update()
+                time.sleep(1)
+            messagebox.showinfo("", "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
+            GoToNextButton()
 
-    def CountdownTimerLevel1():
-        messagebox.showinfo(emoji.emojize(":Thumbs_up"), "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
-        GoToNextButton()
 
     # Declartion of timer variable
-    stopTimer = threading.Timer(120.0, CountdownTimerLevel1)
-    stopTimer.start()
-
+    kill=threading.Event()
+    stopTimer2= threading.Thread(target=timer, args=[kill])
+    stopTimer2.start()
     # Go to next button + configure grade function
     def GoToNextButton():
+        # Timer cancel
+        kill.set()
+
         # clear screen
         GTNButton.destroy()
         Label1.destroy()
         Label2.destroy()
         Level1Table.destroy()
-
-        # Timer cancel
-        stopTimer.cancel()
+        secondEntry.destroy()
+        TimerLabel.destroy()
 
         # Calculate grade
         if succesess < 10:
@@ -1949,12 +1995,11 @@ def Level2(user, userlevel, attempt , grade1):
     textbox9 = tk.Entry(root)
     textbox10 = tk.Entry(root)
 
-    # Countdoen timer level
-    def CountDownTimerLevel():
-        messagebox.showinfo(message='תם הזמן המוקצב לשלב זה, הנך מועבר לשלב הבא.')
-
     # Function for submit button
     def SubmitButton():
+        # Timer cancel
+        kill.set()
+
         # Get values in text boxes
         input1 = textbox1.get()
         if input1 == "":
@@ -2042,12 +2087,20 @@ def Level2(user, userlevel, attempt , grade1):
         Label_ins.destroy()
         Label2.destroy()
         Label_Numbers.destroy()
+        secondEntry.destroy()
+        TimerLabel.destroy()
 
         # Go to level 3
         Level3(user, userlevel, attempt , grade1, user_grade)
 
     # Function for start level button
     def StartLevelButton():
+        # timer place
+        TimerLabel.place(x=250, y=50)
+        secondEntry.place(x=180, y=50)
+
+        # timer start
+        stopTimer2.start()
 
         SLButton.destroy()
         Label_Numbers.pack()
@@ -2079,8 +2132,6 @@ def Level2(user, userlevel, attempt , grade1):
     SLButton = tk.Button(root, text="התחל שלב", command=StartLevelButton)
     SLButton.place(x=550, y=400, height=25)
 
-    # Declartion of timer variable
-    # stopTimer = threading.Timer(2.0, CountDownTimerLevel)
 
     # Level2 "MemoKid"
     TitleImage()
@@ -2094,6 +2145,29 @@ def Level2(user, userlevel, attempt , grade1):
     Label2 = Label(root, bg='#17331b', fg='white', text="שלב שני")
     Label2.config(font=("Ariel", 28))
     Label2.place(x=950, y=550, width=200, height=50)
+
+    # Timer on the left side of the screen
+    def timer(killcondition):
+        while not killcondition.is_set():
+            for i in range(120):
+                second.set(str(120 - i))
+                secondEntry.update()
+                time.sleep(1)
+            messagebox.showinfo("", "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
+            SubmitButton()
+
+
+    # Declaration of variables
+    second = StringVar()
+    # setting the default value as 0
+    second.set("00")
+
+    TimerLabel = Label(root, bg='#17331b', fg='white', text="זמן נותר", font=("Arial", 18, ""))
+    secondEntry = Entry(root, width=3, font=("Arial", 18, ""),
+                        textvariable=second)
+    # Declartion of timer variable
+    kill = threading.Event()
+    stopTimer2 = threading.Thread(target=timer, args=[kill])
 
 
 # Function for level 3
@@ -2241,6 +2315,9 @@ def Level3(user,userlevel,attempt , grade1, grade2):
 
     def SubmitButton():
 
+        # Timer cancel
+        kill.set()
+
         # Get values in text boxes
         input1 = textbox1.get()
         if input1 == "":
@@ -2343,14 +2420,25 @@ def Level3(user,userlevel,attempt , grade1, grade2):
         textbox6.destroy()
         textbox7.destroy()
         textbox8.destroy()
+        secondEntry.destroy()
+        TimerLabel.destroy()
 
-        #ExitScreen(user, grade1, grade2, user_grade , newavg)
+        ExitScreen(user, grade1, grade2, user_grade , newavg)
+
 
 
 
     def StartLevelButton2():
 
         SLButton.destroy()
+
+        # timer place
+        TimerLabel.place(x=250, y=50)
+        secondEntry.place(x=180, y=50)
+
+        # timer start
+        stopTimer2.start()
+
 
         #SquareTextBoxesTitles
         FSLabel.place(x=330, y=290, width=70)
@@ -2454,6 +2542,29 @@ def Level3(user,userlevel,attempt , grade1, grade2):
     b14 = Button(Level3Table, text='15', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,state='disabled')
     b15 = Button(Level3Table, text='16', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,state='disabled')
 
+    # Timer on the left side of the screen
+    def timer(killcondition):
+        while not killcondition.is_set():
+            for i in range(120):
+                second.set(str(120 - i))
+                secondEntry.update()
+                time.sleep(1)
+            messagebox.showinfo("", "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
+            SubmitButton()
+
+
+    # Declaration of variables
+    second = StringVar()
+    # setting the default value as 0
+    second.set("00")
+
+    TimerLabel = Label(root, bg='#17331b', fg='white', text="זמן נותר", font=("Arial", 18, ""))
+    secondEntry = Entry(root, width=3, font=("Arial", 18, ""),
+                        textvariable=second)
+    # Declartion of timer variable
+    kill = threading.Event()
+    stopTimer2 = threading.Thread(target=timer, args=[kill])
+
 
 def ExitScreen(user, grade1, grade2, grade3, avg):
 
@@ -2461,30 +2572,33 @@ def ExitScreen(user, grade1, grade2, grade3, avg):
     TitleImage()
     Headline = Label(root, bg='#17331b', fg='white',
                    text="מזל טוב סיימת את המשחק!!! נתוניך הם")
-    Headline.config(font=("Ariel", 12))
+    Headline.config(font=("Ariel", 14))
     Headline.place(x=250, y=220, width=700, height=50)
 
     # Frame for student grades
     StudGradeFrame = tk.Frame(root, bg="#17331b")
     StudGradeFrame.pack()
-    StudGradeFrame.place(x=630, y=250, width=300, height=150)
+    StudGradeFrame.place(x=350, y=300, width=300, height=150)
 
 
-    Level1Grade =   "ציון שלב 1" + gradeLevel1
-    Level2Grade =   "ציון שלב 2" + gradeLevel2
-    Level3Grade = "ציון שלב 3"   + gradeLevel3
+    Level1Grade = "ציון שלב 1 : " + str(grade1)
+    Level2Grade = "ציון שלב 2 : " + str(grade2)
+    Level3Grade = "ציון שלב 3 : " + str(grade3)
+    AVG = "ממוצע : " + str(avg)
 
 
 
     # Display studenGraders
-    MsgStudGrade = tk.Message(StudGradeFrame, text=Level1Grade+"\n" Level2Grade+"\n",Level3Grade+"\n")
+    MsgStudGrade = tk.Message(StudGradeFrame, text=Level1Grade+"\n" + Level2Grade+"\n" + Level3Grade+"\n" + AVG,
+                              bg='#17331b',fg="white" , justify="right", width=400 , font=("Ariel", 14), anchor=NE)
     MsgStudGrade.pack(side="right", fill="both", expand=True)
 
     #GoToMenuPageStudent
-    def GoToMenuButton(user):
+    def GoToMenuButton():
         # Clear screen
         RTSMButton.destroy()
         Headline.destroy()
+        StudGradeFrame.destroy()
 
         MenuPageStudent(user)
 
@@ -2503,12 +2617,12 @@ def ExitScreen(user, grade1, grade2, grade3, avg):
 #Level3(3)
 #StartPage()
 #Level2(222,2,4)
-ExitScreen(222,4)
+#ExitScreen(222,4)
 #MenuPageAdmin()
 #MenuPageResearch()
 #LevelClass(444)
 #StartPage()
-
 #ShowBoysGirls()
+StartPage()
 
 root.mainloop()
