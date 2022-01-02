@@ -370,12 +370,13 @@ def ForgotPWPage():
                 idlist = (userID,)
                 cursor.execute(sql_select_query, idlist)
                 pwdb = cursor.fetchone()
-                text = pwdb  # save password from db to text variable
+                text = "סיסמתך היא " + str(pwdb[0])  # save password from db to text variable
             else:  # if passwords didn't match
                 text = "תשובה לא נכונה , נסה שנית"  # save message to text variable
 
             # lable to display text var (msg or pw)
-            label_PW = tk.Label(root, bg='#17331b', fg='white', text=text)
+            label_PW['text'] = text
+            label_PW.update()
             label_PW.place(x=550, y=450, width=200)
             if text != "תשובה לא נכונה , נסה שנית":
                 returntologinbutton = tk.Button(root, text="התחבר", command=returntologin)
@@ -403,7 +404,7 @@ def ForgotPWPage():
             question = cursor.fetchone()
 
             # display question and textbox for answer
-            label_Question = tk.Label(root, bg='#17331b', fg='white', text=question)
+            label_Question = tk.Label(root, bg='#17331b', fg='white', text=question[0])
             label_Question.place(x=550, y=300, width=200)
             QuestBox = tk.Entry(root, width=200)
             QuestBox.place(x=550, y=350, width=200)
@@ -420,6 +421,9 @@ def ForgotPWPage():
     label_ID.place(x=650, y=300)
     ID = tk.Entry(root, width=35)
     ID.place(x=550, y=300, width=100)
+
+    # Labels
+    label_PW = tk.Label(root, bg='#17331b', fg='white', text="")
 
     # Login button
     sendidbutton = tk.Button(root, text="שחזר סיסמא", command=ForgotPWButton)
@@ -2700,23 +2704,8 @@ def ExitScreen(user, grade1, grade2, grade3, avg):
     RTSMButton = tk.Button(root, text="חזור לתפריט ", command=GoToMenuButton)
     RTSMButton.place(x=540, y=480, height=25)
 
-    ################
 
 
-
-
-
-
-
-#Level3(3)
-#StartPage()
-#Level2(222,2,4)
-#ExitScreen(222,4)
-#MenuPageAdmin()
-#MenuPageResearch()
-#LevelClass(444)
-#StartPage()
-#ShowBoysGirls()
 StartPage()
 
 root.mainloop()
