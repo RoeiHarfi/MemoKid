@@ -426,8 +426,6 @@ def ForgotPWPage():
 
 
 # Function for Menu page for admin user
-
-# Function for Menu page for admin user
 def MenuPageAdmin():
     # StudentDetailsButton
     def UpdateDetailsButton():
@@ -498,7 +496,7 @@ def MenuPageResearch():
         SDICButton.destroy()
         SDISButton.destroy()
         ShowStudGameScoreButton.destroy()
-        ################################
+        ShowBoysGirls()
 
     # Show Data in a class cut
     def ShowDataInClassButton():
@@ -599,9 +597,9 @@ def MenuPageStudent(user):
     SAGButton = tk.Button(root, text="הצג ממוצע", command=ShowAveGradeButton)
     SAGButton.place(x=550, y=320, width=130)
 
-
-def CheckUserType(user):
     # Function that checks if user is Admin\Research\Student user
+def CheckUserType(user):
+
     # search for type in db
     sql_select_query = "SELECT type FROM userslist WHERE id =?"
     userlist = (user,)
@@ -1217,6 +1215,16 @@ def ShowSchoolData():
 
 # Function for showing Girls and Boys Data
 def ShowBoysGirls():
+
+    # Function for return to menu button
+    def ReturnToMenuButton():
+        BestGirlFrame.destroy()
+        BestBoyFrame.destroy()
+        GirlsFrame.destroy()
+        BoysFrame.destroy()
+        Return_Button.destroy()
+        MenuPageResearch()
+
     TitleImage()
 
     # frame for best girl
@@ -1232,12 +1240,12 @@ def ShowBoysGirls():
     # frame for girls
     GirlsFrame = tk.Frame(root , bg="#17331b")
     GirlsFrame.pack()
-    GirlsFrame.place(x=290, y=440, width=300, height=150)
+    GirlsFrame.place(x=290, y=440, width=300, height=40)
 
     # frame for boys
     BoysFrame = tk.Frame(root , bg="#17331b")
     BoysFrame.pack()
-    BoysFrame.place(x=630, y=440, width=300, height=150)
+    BoysFrame.place(x=630, y=440, width=300, height=40)
 
 
     # get best girl data
@@ -1263,11 +1271,11 @@ def ShowBoysGirls():
     cursor.execute(sql_select)
     best_boy=cursor.fetchone()
     bestboytext = "הבן עם הממוצע הכי גבוה היא"
-    best_boy_ID= "תעודת הזהות: " + str(best_boy[1])
+    best_boy_ID = "תעודת הזהות: " + str(best_boy[1])
     best_boy_name = "שם: " + best_boy[2]
-    best_boy_avg= "ממוצע: " + str(best_boy[0])
-    best_boy_school= "בית ספר: " + str(best_boy[3])
-    best_boy_class= "כיתה: " + str(best_boy[4])
+    best_boy_avg = "ממוצע: " + str(best_boy[0])
+    best_boy_school = "בית ספר: " + str(best_boy[3])
+    best_boy_class = "כיתה: " + str(best_boy[4])
 
     # display best boy data
     MsgBBD = tk.Message(BestBoyFrame,
@@ -1277,6 +1285,31 @@ def ShowBoysGirls():
     MsgBBD.pack(side="right", fill="both", expand=True)
 
     # get data for girls
+    sql_select = "SELECT AVG(points) FROM 'userslist' WHERE gender='נקבה'"
+    cursor.execute(sql_select)
+    girls = cursor.fetchone()
+    girlstext = "ממוצע הבנות הכללי הוא: " + str(girls[0])
+
+    # display girls data
+    MsgGirls = tk.Message(GirlsFrame, text=girlstext,bg='#17331b',fg="white" , justify="right", width=400 ,
+                          font=("Ariel", 14), anchor=NE)
+    MsgGirls.pack(side="right", fill="both", expand=True)
+
+    # get data for boys
+    sql_select = "SELECT AVG(points) FROM 'userslist' WHERE gender='זכר'"
+    cursor.execute(sql_select)
+    girls = cursor.fetchone()
+    boystext = "ממוצע הבנים הכללי הוא: " + str(girls[0])
+
+    # display girls data
+    MsgGirls = tk.Message(BoysFrame, text=boystext,bg='#17331b',fg="white" , justify="right", width=400 ,
+                          font=("Ariel", 14), anchor=NE)
+    MsgGirls.pack(side="right", fill="both", expand=True)
+
+    #Return to menu button
+    Return_Button = tk.Button(root, text="חזור לתפריט", command=ReturnToMenuButton)
+    Return_Button.place(x=570, y=500, height=25)
+
 
 # level 1
 count = 0
@@ -1912,7 +1945,7 @@ def Level1C(user):
     b18.grid(row=2, column=4)
     b19.grid(row=3, column=4)
 
-
+# Function for level 2
 def Level2(user, userlevel, attempt):
     # get difficulty level
     if userlevel == 1:
@@ -2097,7 +2130,7 @@ def Level2(user, userlevel, attempt):
     Label2.place(x=950, y=550, width=200, height=50)
 
 
-
+# Function for level 3
 def Level3(userlevel):  #user, userLevel, attempt
 
     # get difficulty level
@@ -2352,10 +2385,10 @@ def Level3(userlevel):  #user, userLevel, attempt
 #StartPage()
 #Level2(222,2,4)
 
-#MenuPageResearch()
-root.mainloop()
+MenuPageResearch()
+
 #LevelClass(444)
-# StartPage()
+#StartPage()
 
 #ShowBoysGirls()
 
