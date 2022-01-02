@@ -1425,7 +1425,6 @@ def LevelClass(user):
     idlist = (user,)
     cursor.execute(sql_select_class, idlist)
     userClass = cursor.fetchone()
-    # print(userClass)
     if userClass[0] == 'א' or userClass[0] == 'ב':
         Level1A(user)
     if userClass[0] == 'ג' or userClass[0] == 'ד':
@@ -1494,6 +1493,7 @@ def Level1A(user):
     # Declartion of timer variable
     kill=threading.Event()
     stopTimer2= threading.Thread(target=timer, args=[kill])
+    stopTimer2.setDaemon(True)
     stopTimer2.start()
 
 
@@ -1541,7 +1541,6 @@ def Level1A(user):
 
         # Push game into db
         sql_insert = "INSERT INTO usergrades VALUES (?, ? , ? , ? , ? , ? , ?)"
-        print(user)
         val = (0, user, attempts, game_date, gradeLevel1, 0, 0)
         cursorgrades.execute(sql_insert, val)
         sqlconnect2.commit()
@@ -1689,6 +1688,7 @@ def Level1B(user):
     # Declartion of timer variable
     kill=threading.Event()
     stopTimer2= threading.Thread(target=timer, args=[kill])
+    stopTimer2.setDaemon(True)
     stopTimer2.start()
 
     # Go to next button + configure grade function
@@ -1894,6 +1894,7 @@ def Level1C(user):
     # Declartion of timer variable
     kill=threading.Event()
     stopTimer2= threading.Thread(target=timer, args=[kill])
+    stopTimer2.setDaemon(True)
     stopTimer2.start()
     # Go to next button + configure grade function
     def GoToNextButton():
@@ -1938,7 +1939,6 @@ def Level1C(user):
 
         # Push game into db
         sql_insert = "INSERT INTO usergrades VALUES (?, ? , ? , ? , ? , ? , ?)"
-        print(user)
         val = (0, user, attempts, game_date, gradeLevel1, 0, 0)
         cursorgrades.execute(sql_insert, val)
         sqlconnect2.commit()
@@ -2077,7 +2077,7 @@ def Level2(user, userlevel, attempt , grade1):
     number_list = list(range(1, 101))
     random_list = list(random.sample(number_list, difflevel))
 
-# label for numbers
+    # label for numbers
     Label_Numbers = tk.Label(level2_frame, bg='#17331b', fg='white', text="", width=30, font=('Ariel', 45))
     Label_Numbers['text'] = random_list
 
@@ -2266,6 +2266,7 @@ def Level2(user, userlevel, attempt , grade1):
     # Declartion of timer variable
     kill = threading.Event()
     stopTimer2 = threading.Thread(target=timer, args=[kill])
+    stopTimer2.setDaemon(True)
 
 
 # Function for level 3
@@ -2662,6 +2663,7 @@ def Level3(user,userlevel,attempt , grade1, grade2):
     # Declartion of timer variable
     kill = threading.Event()
     stopTimer2 = threading.Thread(target=timer, args=[kill])
+    stopTimer2.setDaemon(True)
 
 
 def ExitScreen(user, grade1, grade2, grade3, avg):
