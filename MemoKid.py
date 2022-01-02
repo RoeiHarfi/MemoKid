@@ -549,7 +549,7 @@ def MenuPageStudent(user):
     # Game instructions Button
     def GameInstructionButton():
         #################--------------SHAI WORK-------------
-        pass
+        D_Message.pack(side="right", fill="both", expand=True)
 
     # Start Game Button
     def StartGameButton():
@@ -557,10 +557,11 @@ def MenuPageStudent(user):
         GIButton.destroy()
         SGButton.destroy()
         SSLGButton.destroy()
-        SAGButton.destroy()
+        Message_Label2.destroy()
+        StudentFrame.destroy()
+        InstructionsFrame.destroy()
+        #send
         LevelClass(user)
-
-    #########################################
 
     # Show grade of last game Button
     def ShowStudentLastGradeButton():
@@ -568,22 +569,14 @@ def MenuPageStudent(user):
         GIButton.destroy()
         SGButton.destroy()
         SSLGButton.destroy()
-        SAGButton.destroy()
+        StudentFrame.destroy()
+        InstructionsFrame.destroy()
+        #send
+        ShowLastGames(user)
 
-    ########################################
-
-    # Show Average rank for now Button
-    def ShowAveGradeButton():
-        # clear screen
-        GIButton.destroy()
-        SGButton.destroy()
-        SSLGButton.destroy()
-        SAGButton.destroy()
-
-    ####################################
 
     # Game instructions
-    GIButton = tk.Button(root, text="הוראות המשחק", command=GameInstructionButton)
+    GIButton = tk.Button(root, text="הצג את הוראות המשחק", command=GameInstructionButton)
     GIButton.place(x=1050, y=180, width=130)
 
     # Start Game
@@ -595,8 +588,37 @@ def MenuPageStudent(user):
     SSLGButton.place(x=550, y=370, width=130)
 
     # Show Average rank for now
-    SAGButton = tk.Button(root, text="הצג ממוצע", command=ShowAveGradeButton)
-    SAGButton.place(x=550, y=320, width=130)
+    # Get avarage
+    sql_select = "SELECT points FROM userslist WHERE id = ?"
+    userlistdata = (user,)
+    cursor.execute(sql_select, userlistdata)
+    avgdb = cursor.fetchone()
+    # Get name
+    sql_select = "SELECT name FROM userslist WHERE id = ?"
+    userlistdata = (user,)
+    cursor.execute(sql_select, userlistdata)
+    namedb = cursor.fetchone()
+
+
+    # Display
+    # Frame for message
+    StudentFrame = tk.Frame(root, bg="#17331b")
+    StudentFrame.pack()
+    StudentFrame.place(x=480, y=220, width=320)
+    avg = "הממוצע שלך הוא "+str(round(avgdb[0],2))
+    name = "שלום " + namedb[0]
+    instructions = "באפשרותך לראות את משחקיך האחרונים\nאו להתחיל משחק"
+    Message_Label2 = tk.Message(StudentFrame, text=name+"\n"+avg + "\n" + instructions,
+                                bg='#17331b',fg="white" , justify="right", width=400 , font=("Ariel", 14), anchor=NE)
+    Message_Label2.pack(side="right", fill="both", expand=True)
+
+    # Frame for detailed instructions
+    InstructionsFrame = tk.Frame(root, bg="#17331b")
+    InstructionsFrame.pack()
+    InstructionsFrame.place(x=900, y=220, width=320)
+    dinstruct = "הוראות מורחבות"
+    D_Message = tk.Message(InstructionsFrame, text=dinstruct,
+                           bg='#17331b',fg="white" , justify="right", width=400 , font=("Ariel", 14), anchor=NE)
 
 # Function that checks if user is Admin\Research\Student user
 def CheckUserType(user):
@@ -1095,7 +1117,7 @@ def ShowClassData():
         for row in rows:
             tree.insert("", tk.END, values=row)
         tree.place(x=40, y=350)
-        Message_Label['text'] = "משחקי הכיתה"
+        Message_Label['text'] = "תלמידים בכיתה"
         Message_Label.place(x=540, y=320, width=120, height=25)
 
     TitleImage()
@@ -1172,7 +1194,7 @@ def ShowSchoolData():
         for row in rows:
             tree.insert("", tk.END, values=row)
         tree.place(x=40, y=350)
-        Message_Label['text'] = "משחקי בית הספר"
+        Message_Label['text'] = "תלמידי בית הספר"
         Message_Label.place(x=540, y=320, width=120, height=25)
 
     TitleImage()
@@ -1311,6 +1333,78 @@ def ShowBoysGirls():
     #Return to menu button
     Return_Button = tk.Button(root, text="חזור לתפריט", command=ReturnToMenuButton)
     Return_Button.place(x=570, y=500, height=25)
+
+def ShowLastGames(user):
+    # Label for messages
+    Message_Label = tk.Label(root, bg='#17331b', fg='white', text="")
+    # var and Label for avg
+    Message_Label2 = tk.Label(root, bg='#17331b', fg='white', text="")
+
+    # Table to show data
+    style = ttk.Style(root)
+    style.theme_use("clam")
+    style.configure("Treeview",
+                    background="17331b",
+                    foreground="white",
+                    rowheight=25,
+                    fieldbackground="#17331b",
+                    selectbackground="17331b")
+    tree = ttk.Treeview(root, column=("", "userID", "attempts", "gameTime", "level1", "level2", "level3"),
+                        show='headings')
+    tree.column("#1", minwidth="0")
+    tree.column("#1", width=0)
+    tree.column("#2", minwidth="0")
+    tree.column("#2", width=0)
+    tree.column("#3", anchor=tk.CENTER , width=239)
+    tree.heading("#3", text="מספר משחק")
+    tree.column("#4", anchor=tk.CENTER, width=239)
+    tree.heading("#4", text="תאריך")
+    tree.column("#5", anchor=tk.CENTER, width=239)
+    tree.heading("#5", text="שלב 1")
+    tree.column("#6", anchor=tk.CENTER, width=239)
+    tree.heading("#6", text="שלב 2")
+    tree.column("#7", anchor=tk.CENTER, width=239)
+    tree.heading("#7", text="שלב 3")
+    tree.pack()
+
+    # Function for return button
+    def ReturnButton():
+
+        # clear screen
+        Message_Label.destroy()
+        Message_Label2.destroy()
+        Return_Button.destroy()
+        tree.destroy()
+
+        # send to menu
+        MenuPageStudent(user)
+
+
+    sql_select_data = "SELECT * FROM usergrades WHERE userID = ? ORDER BY attempts"
+    userlistdata = (user,)
+    cursorgrades.execute(sql_select_data, userlistdata)
+    rows = cursorgrades.fetchall()
+    for row in rows:
+        tree.insert("", tk.END, values=row)
+    tree.place(x=40, y=350)
+    Message_Label['text'] = "רשימת המשחקים האחרונים שלך"
+    Message_Label.place(x=540, y=310, width=200, height=25)
+
+    # Get avarage
+    sql_select = "SELECT points FROM userslist WHERE id = ?"
+    cursor.execute(sql_select, userlistdata)
+    avgdb = cursor.fetchone()
+    avg = str(round(avgdb[0],2))
+    avg += " הממוצע שלך הוא "
+    Message_Label2['text'] = avg
+    Message_Label2.place(x=350, y=310, width=170, height=25)
+
+    TitleImage()
+
+    Return_Button = tk.Button(root, text="חזור לתפריט", command=ReturnButton)
+    Return_Button.place(x=540, y=280, height=25)
+
+
 
 
 # level 1
