@@ -231,7 +231,7 @@ def SignUpPage():
 
                 # register succesful and button to go to login page
                 Successlabel = Label(root, bg='#17331b', fg='white', text="ההרשמה הצליחה , אנא התחברו", )
-                Successlabel.place(x=570, y=300, width=180)
+                Successlabel.place(x=500, y=300, width=180)
                 registercompletebutton = tk.Button(root, text="התחבר", command=RegisterCompleteButton)
                 registercompletebutton.place(x=570, y=350, width=80)
 
@@ -597,7 +597,7 @@ def MenuPageStudent(user):
     SAGButton = tk.Button(root, text="הצג ממוצע", command=ShowAveGradeButton)
     SAGButton.place(x=550, y=320, width=130)
 
-    # Function that checks if user is Admin\Research\Student user
+# Function that checks if user is Admin\Research\Student user
 def CheckUserType(user):
 
     # search for type in db
@@ -1036,6 +1036,7 @@ def DeleteLastGame():
             cursorgrades.execute(sql_select_avarage3, userlist)
             avg3 = cursorgrades.fetchone()
             newavg = (int(avg1[0]) + int(avg2[0]) + int(avg3[0])) / 3
+            newavg = round(newavg,1)
 
             # update new avarage
             sql_update_avg = "UPDATE userslist SET points = ? WHERE id = ?"
@@ -1371,22 +1372,13 @@ def Level1A(user):
     Level1Table.pack(pady=10)
     Level1Table.place(relx=0.475, rely=0.65, anchor=CENTER)
 
-    ##לשאול את רועי ועמית אם אפשר לוותר על הקוף המעאפן הזה
-    # Backround Monkey
-    # pic1 = Image.open("MonkeyLevel1.png")
-    # monkeyPic = ImageTk.PhotoImage(pic1)
-    # Label3 = tk.Label(image=monkeyPic)
-    # Label3.Image = monkeyPic
-    # Label3.configure(width=250,height=250)
-    # Label3.place(x=910,y=200)
-
     def CountdownTimerLevel1():
         messagebox.showinfo(emoji.emojize(":Thumbs_up"), "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
         GoToNextButton()
 
     # Declartion of timer variable
     stopTimer = threading.Timer(10.0, CountdownTimerLevel1)
-    stopTimer.start()
+    #stopTimer.start()
 
     # Go to next button + configure grade function
     def GoToNextButton():
@@ -1433,9 +1425,8 @@ def Level1A(user):
         val = (0, user, attempts, game_date, gradeLevel1, 0, 0)
         cursorgrades.execute(sql_insert, val)
         sqlconnect2.commit()
-        # Calculate level average
         # go to next level
-        # Level2(user,1,attempts)
+        Level2(user, 1, attempts)
 
     def button_click(b, number):
         global count, answer_list, answer_dict, clicks, succesess
@@ -1528,7 +1519,6 @@ def Level1B(user):
     idlist = (user,)
     cursor.execute(sql_select_class, idlist)
     userClass = cursor.fetchone()
-    # print(userClass)
 
     # Timer on the left side of the screen
 
@@ -1578,14 +1568,6 @@ def Level1B(user):
     Level1Table.pack(pady=10)
     Level1Table.place(relx=0.475, rely=0.65, anchor=CENTER)
 
-    ##לשאול את רועי ועמית אם אפשר לוותר על הקוף המעאפן הזה
-    # Backround Monkey
-    # pic1 = Image.open("MonkeyLevel1.png")
-    # monkeyPic = ImageTk.PhotoImage(pic1)
-    # Label3 = tk.Label(image=monkeyPic)
-    # Label3.Image = monkeyPic
-    # Label3.configure(width=250,height=250)
-    # Label3.place(x=910,y=200)
 
     def CountdownTimerLevel1():
         messagebox.showinfo(emoji.emojize(":Thumbs_up"), "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
@@ -1640,9 +1622,8 @@ def Level1B(user):
         val = (0, user, attempts, game_date, gradeLevel1, 0, 0)
         cursorgrades.execute(sql_insert, val)
         sqlconnect2.commit()
-        # Calculate level average
         # go to next level
-        # Level2(user,2,attempts)
+        Level2(user,2,attempts)
 
     def button_click(b, number):
         global count, answer_list, answer_dict, clicks, succesess
@@ -1773,14 +1754,6 @@ def Level1C(user):
     Level1Table.pack(pady=10)
     Level1Table.place(relx=0.475, rely=0.65, anchor=CENTER)
 
-    ##לשאול את רועי ועמית אם אפשר לוותר על הקוף המעאפן הזה
-    # Backround Monkey
-    # pic1 = Image.open("MonkeyLevel1.png")
-    # monkeyPic = ImageTk.PhotoImage(pic1)
-    # Label3 = tk.Label(image=monkeyPic)
-    # Label3.Image = monkeyPic
-    # Label3.configure(width=250,height=250)
-    # Label3.place(x=910,y=200)
 
     def CountdownTimerLevel1():
         messagebox.showinfo(emoji.emojize(":Thumbs_up"), "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
@@ -1835,9 +1808,8 @@ def Level1C(user):
         val = (0, user, attempts, game_date, gradeLevel1, 0, 0)
         cursorgrades.execute(sql_insert, val)
         sqlconnect2.commit()
-        # Calculate level average
         # go to next level
-        # Level2(user,3,attempts)
+        Level2(user, 3, attempts)
 
     def button_click(b, number):
         global count, answer_list, answer_dict, clicks, succesess
@@ -2080,6 +2052,9 @@ def Level2(user, userlevel, attempt):
         Label_ins.destroy()
         Label2.destroy()
 
+        # Go to level 3
+        Level3(user,userlevel,attempt)
+
     # Function for start level button
     def StartLevelButton():
 
@@ -2131,7 +2106,7 @@ def Level2(user, userlevel, attempt):
 
 
 # Function for level 3
-def Level3(userlevel):  #user, userLevel, attempt
+def Level3(user,userlevel,atempt):  #user, userLevel, attempt
 
     # get difficulty level
     if userlevel == 1:
@@ -2382,10 +2357,10 @@ def Level3(userlevel):  #user, userLevel, attempt
 
 
 #Level3(3)
-#StartPage()
+StartPage()
 #Level2(222,2,4)
 
-MenuPageResearch()
+#MenuPageAdmin()
 
 #LevelClass(444)
 #StartPage()
