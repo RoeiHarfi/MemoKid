@@ -2463,11 +2463,55 @@ def Level3(user,userlevel,attempt):
     b15 = Button(Level3Table, text='16', font=("Helvatica", 20), fg="white", bg="#17331b", height=2, width=6,state='disabled')
 
 
+def ExitScreen(user, grade1, grade2, grade3, avg):
+
+    # Screen title
+    TitleImage()
+    Headline = Label(root, bg='#17331b', fg='white',
+                   text="מזל טוב סיימת את המשחק!!! נתוניך הם")
+    Headline.config(font=("Ariel", 12))
+    Headline.place(x=250, y=220, width=700, height=50)
+
+    # Frame for student grades
+    StudGradeFrame = tk.Frame(root, bg="#17331b")
+    StudGradeFrame.pack()
+    StudGradeFrame.place(x=630, y=250, width=300, height=150)
+
+
+    Level1Grade =   "ציון שלב 1" + gradeLevel1
+    Level2Grade =   "ציון שלב 2" + gradeLevel2
+    Level3Grade = "ציון שלב 3"   + gradeLevel3
+
+
+
+    # Display studenGraders
+    MsgStudGrade = tk.Message(StudGradeFrame, text=Level1Grade+"\n" Level2Grade+"\n",Level3Grade+"\n")
+    MsgStudGrade.pack(side="right", fill="both", expand=True)
+
+    #GoToMenuPageStudent
+    def GoToMenuButton(user):
+        # Clear screen
+        RTSMButton.destroy()
+        Headline.destroy()
+
+        MenuPageStudent(user)
+
+    # GoToMenuPageStudent Button
+    RTSMButton = tk.Button(root, text="חזור לתפריט ", command=GoToMenuButton)
+    RTSMButton.place(x=540, y=480, height=25)
+
+    ################
+
+
+
+
+
+
 
 #Level3(3)
-StartPage()
+#StartPage()
 #Level2(222,2,4)
-
+ExitScreen(222,4)
 #MenuPageAdmin()
 #MenuPageResearch()
 #LevelClass(444)
