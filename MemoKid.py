@@ -1316,9 +1316,6 @@ def ShowBoysGirls():
 count = 0
 clicks = 0
 succesess = 0
-gradeLevel1 = 0
-gradeLevel2 = 0
-gradeLevel3 = 0
 answer_dict = {}
 answer_list = []
 
@@ -1395,13 +1392,13 @@ def Level1A(user):
         if succesess < 6:
             gradeLevel1 = 0
         else:
-            if clicks <= 26:
+            if clicks <= 30:
                 gradeLevel1 = 100
-            elif clicks <= 32:
+            elif clicks <= 36:
                 gradeLevel1 = 75
-            elif clicks <= 38:
+            elif clicks <= 42:
                 gradeLevel1 = 50
-            elif clicks <= 44:
+            elif clicks <= 48:
                 gradeLevel1 = 25
             else:
                 gradeLevel1 = 0
@@ -1426,7 +1423,7 @@ def Level1A(user):
         cursorgrades.execute(sql_insert, val)
         sqlconnect2.commit()
         # go to next level
-        Level2(user, 1, attempts)
+        Level2(user, 1, attempts, gradeLevel1)
 
     def button_click(b, number):
         global count, answer_list, answer_dict, clicks, succesess
@@ -1511,7 +1508,7 @@ def Level1A(user):
 
 # Function of Level 1 grade ג\ד
 def Level1B(user):
-    global clicks, succesess, gradeLevel1
+    global clicks, succesess
     clicks = 0
     succesess = 0
     gradeLevel1 = 0
@@ -1523,27 +1520,17 @@ def Level1B(user):
     # Timer on the left side of the screen
 
     # Declaration of variables
-    hour = StringVar()
-    minute = StringVar()
     second = StringVar()
 
     # setting the default value as 0
-    hour.set("00")
-    minute.set("00")
     second.set("00")
 
-    # Use of Entry class to take input from the user
-    hourEntry = Entry(root, width=3, font=("Arial", 18, ""),
-                      textvariable=hour)
-    hourEntry.place(x=80, y=20)
-
-    minuteEntry = Entry(root, width=3, font=("Arial", 18, ""),
-                        textvariable=minute)
-    minuteEntry.place(x=130, y=20)
-
+    #placing timer and label
+    TimerLabel = Label(root, bg='#17331b', fg='white', text="זמן נותר", font=("Arial", 18, ""))
+    TimerLabel.place(x=250,y=50)
     secondEntry = Entry(root, width=3, font=("Arial", 18, ""),
                         textvariable=second)
-    secondEntry.place(x=180, y=20)
+    secondEntry.place(x=180, y=50)
 
     # Level title
     TitleImage()
@@ -1568,15 +1555,18 @@ def Level1B(user):
     Level1Table.pack(pady=10)
     Level1Table.place(relx=0.475, rely=0.65, anchor=CENTER)
 
-
-    def CountdownTimerLevel1():
-        messagebox.showinfo(emoji.emojize(":Thumbs_up"), "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
+    def timer():
+        for i in range(120):
+            second.set(str(120-i))
+            secondEntry.update()
+            time.sleep(1)
+        messagebox.showinfo("תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
         GoToNextButton()
 
-    # Declartion of timer variable
-    stopTimer = threading.Timer(120.0, CountdownTimerLevel1)
 
-    # stopTimer.start()
+    # Declartion of timer variable
+    stopTimer2= threading.Thread(target=timer)
+    stopTimer2.start()
 
     # Go to next button + configure grade function
     def GoToNextButton():
@@ -1587,19 +1577,19 @@ def Level1B(user):
         Level1Table.destroy()
 
         # Timer cancel
-        stopTimer.cancel()
+        stopTimer2.cancel()
 
         # Calculate grade
         if succesess < 8:
             gradeLevel1 = 0
         else:
-            if clicks <= 36:
+            if clicks <= 48:
                 gradeLevel1 = 100
-            elif clicks <= 42:
-                gradeLevel1 = 75
-            elif clicks <= 48:
-                gradeLevel1 = 50
             elif clicks <= 52:
+                gradeLevel1 = 75
+            elif clicks <= 58:
+                gradeLevel1 = 50
+            elif clicks <= 64:
                 gradeLevel1 = 25
             else:
                 gradeLevel1 = 0
@@ -1623,7 +1613,7 @@ def Level1B(user):
         cursorgrades.execute(sql_insert, val)
         sqlconnect2.commit()
         # go to next level
-        Level2(user,2,attempts)
+        Level2(user,2,attempts , gradeLevel1)
 
     def button_click(b, number):
         global count, answer_list, answer_dict, clicks, succesess
@@ -1721,7 +1711,7 @@ def Level1B(user):
 
 # Function of Level 1 grade ה\ו
 def Level1C(user):
-    global clicks, succesess, gradeLevel1
+    global clicks, succesess
     clicks = 0
     succesess = 0
     gradeLevel1 = 0
@@ -1778,13 +1768,13 @@ def Level1C(user):
         if succesess < 10:
             gradeLevel1 = 0
         else:
-            if clicks <= 40:
+            if clicks <= 52:
                 gradeLevel1 = 100
-            elif clicks <= 46:
-                gradeLevel1 = 75
-            elif clicks <= 52:
-                gradeLevel1 = 50
             elif clicks <= 58:
+                gradeLevel1 = 75
+            elif clicks <= 64:
+                gradeLevel1 = 50
+            elif clicks <= 70:
                 gradeLevel1 = 25
             else:
                 gradeLevel1 = 0
@@ -1809,7 +1799,7 @@ def Level1C(user):
         cursorgrades.execute(sql_insert, val)
         sqlconnect2.commit()
         # go to next level
-        Level2(user, 3, attempts)
+        Level2(user, 3, attempts, gradeLevel1)
 
     def button_click(b, number):
         global count, answer_list, answer_dict, clicks, succesess
@@ -1918,7 +1908,7 @@ def Level1C(user):
     b19.grid(row=3, column=4)
 
 # Function for level 2
-def Level2(user, userlevel, attempt):
+def Level2(user, userlevel, attempt , grade1):
     # get difficulty level
     if userlevel == 1:
         difflevel = 5
@@ -2054,7 +2044,7 @@ def Level2(user, userlevel, attempt):
         Label_Numbers.destroy()
 
         # Go to level 3
-        Level3(user, userlevel, attempt)
+        Level3(user, userlevel, attempt , grade1, user_grade)
 
     # Function for start level button
     def StartLevelButton():
@@ -2107,7 +2097,7 @@ def Level2(user, userlevel, attempt):
 
 
 # Function for level 3
-def Level3(user,userlevel,attempt):
+def Level3(user,userlevel,attempt , grade1, grade2):
 
     # get difficulty level
     if userlevel == 1:
@@ -2353,6 +2343,8 @@ def Level3(user,userlevel,attempt):
         textbox6.destroy()
         textbox7.destroy()
         textbox8.destroy()
+
+        #ExitScreen(user, grade1, grade2, user_grade , newavg)
 
 
 
