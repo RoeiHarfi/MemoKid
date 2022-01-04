@@ -2491,7 +2491,7 @@ def Level3(user, userlevel,attempt , grade1, grade2):
             counter += 1
 
         # calculate grade
-        user_grade = CalculateGradeLevel3()
+        user_grade = CalculateGradeLevel3(counter , difflevel)
 
         # update games database
         sql_update = "UPDATE usergrades SET level3 = ? WHERE userID = ? AND attempts = ?"
@@ -2732,4 +2732,4 @@ def ExitScreen(user, grade1, grade2, grade3, avg):
 
 StartPage()
 
-#root.mainloop()
+root.mainloop()
