@@ -2710,4 +2710,4 @@ def ExitScreen(user, grade1, grade2, grade3, avg):
 
 StartPage()
 
-root.mainloop()
+#root.mainloop()
