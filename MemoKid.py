@@ -469,7 +469,7 @@ def MenuPageAdmin():
         ShowStudGameScoreButton.destroy()
 
         # send to show student games page
-        ShowStudentGames()
+        ShowStudentGames(1)
 
     # Update personal info in info screen
     DetailsButton = tk.Button(root, text="עדבן פרטי משתמש", command=UpdateDetailsButton)
@@ -527,7 +527,7 @@ def MenuPageResearch():
         SDICButton.destroy()
         SDISButton.destroy()
         ShowStudGameScoreButton.destroy()
-        ShowStudentGames()
+        ShowStudentGames(2)
 
     TitleImage()
     # Show Data in a boys\girls cut
@@ -641,7 +641,7 @@ def CheckUserType(user):
 
 
 # function to show student games details
-def ShowStudentGames():
+def ShowStudentGames(type):
     # Label for messages
     Message_Label = tk.Label(root, bg='#17331b', fg='white', text="")
     # var and Label for avg
@@ -660,7 +660,10 @@ def ShowStudentGames():
         tree.destroy()
 
         # send to menu
-        MenuPageAdmin()
+        if type == 1:
+            MenuPageAdmin()
+        else:
+            MenuPageResearch()
 
     # function for show button click
     def ShowButton():
@@ -1191,7 +1194,7 @@ def ShowSchoolData():
         # save school data
         userSchool = School.get()
 
-        sql_select_data = "SELECT name,id,city,school,gender,class,points FROM userslist WHERE school = ? ORDER BY id"
+        sql_select_data = "SELECT name,id,city,school,gender,class,points FROM userslist WHERE school = ? AND type = 'תלמיד' ORDER BY id"
         schooldata = (userSchool,)
         cursor.execute(sql_select_data, schooldata)
         rows = cursor.fetchall()
@@ -1277,7 +1280,7 @@ def ShowBoysGirls():
 
 
     # get best girl data
-    sql_select="SELECT MAX(points),id,name,school,class FROM 'userslist' WHERE gender='נקבה'"
+    sql_select="SELECT MAX(points),id,name,school,class FROM 'userslist' WHERE gender='נקבה' AND type = 'תלמיד'"
     cursor.execute(sql_select)
     best_girl=cursor.fetchone()
     bestgirltext = "הבת עם הממוצע הכי גבוה היא"
@@ -1295,7 +1298,7 @@ def ShowBoysGirls():
     MsgBGD.pack(side="right", fill="both", expand=True)
 
     # get best boy data
-    sql_select="SELECT MAX(points),id,name,school,class FROM 'userslist' WHERE gender='זכר'"
+    sql_select="SELECT MAX(points),id,name,school,class FROM 'userslist' WHERE gender='זכר' AND type = 'תלמיד'"
     cursor.execute(sql_select)
     best_boy=cursor.fetchone()
     bestboytext = "הבן עם הממוצע הכי גבוה היא"
@@ -1313,7 +1316,7 @@ def ShowBoysGirls():
     MsgBBD.pack(side="right", fill="both", expand=True)
 
     # get data for girls
-    sql_select = "SELECT AVG(points) FROM 'userslist' WHERE gender='נקבה'"
+    sql_select = "SELECT AVG(points) FROM 'userslist' WHERE gender='נקבה' AND type = 'תלמיד'"
     cursor.execute(sql_select)
     girls = cursor.fetchone()
     girlstext = "ממוצע הבנות הכללי הוא: " + str(round(girls[0],1))
@@ -1324,7 +1327,7 @@ def ShowBoysGirls():
     MsgGirls.pack(side="right", fill="both", expand=True)
 
     # get data for boys
-    sql_select = "SELECT AVG(points) FROM 'userslist' WHERE gender='זכר'"
+    sql_select = "SELECT AVG(points) FROM 'userslist' WHERE gender='זכר' AND type = 'תלמיד'"
     cursor.execute(sql_select)
     boys = cursor.fetchone()
     boystext = "ממוצע הבנים הכללי הוא: " + str(round(boys[0],1))
@@ -1452,13 +1455,13 @@ def CacluateGradeLevel1(succesess, numclicks, userlevel):
         if succesess < 6:
             grade = 0
         else:
-            if numclicks <= 30:
+            if numclicks <= 36:
                 grade = 100
-            elif numclicks <= 36:
+            elif numclicks <= 40:
                 grade = 75
-            elif numclicks <= 42:
+            elif numclicks <= 46:
                 grade = 50
-            elif numclicks <= 48:
+            elif numclicks <= 52:
                 grade = 25
             else:
                 grade = 0
@@ -1468,11 +1471,11 @@ def CacluateGradeLevel1(succesess, numclicks, userlevel):
         else:
             if numclicks <= 48:
                 grade = 100
-            elif numclicks <= 52:
+            elif numclicks <= 56:
                 grade = 75
-            elif numclicks <= 58:
-                grade = 50
             elif numclicks <= 64:
+                grade = 50
+            elif numclicks <= 70:
                 grade = 25
             else:
                 grade = 0
@@ -1480,13 +1483,13 @@ def CacluateGradeLevel1(succesess, numclicks, userlevel):
         if succesess < 10:
             grade = 0
         else:
-            if numclicks <= 52:
+            if numclicks <= 60:
                 grade = 100
-            elif numclicks <= 58:
-                grade = 75
-            elif numclicks <= 64:
-                grade = 50
             elif numclicks <= 70:
+                grade = 75
+            elif numclicks <= 80:
+                grade = 50
+            elif numclicks <= 90:
                 grade = 25
             else:
                 grade = 0
@@ -2255,7 +2258,7 @@ def Level2(user, userlevel, attempt , grade1):
     TitleImage()
     # instructions bar
     Label_ins = Label(root, bg='#17331b', fg='white',
-                      text="בשלב זה יופיעו מספרים על המסך ותצטרכו לזכור ולרשום אותהם בתיבות למטה  ")
+                      text="בשלב זה יופיעו מספרים על המסך ותצטרכו לזכור ולרשום אותם בתיבות למטה  ")
     Label_ins.config(font=("Ariel", 12))
     Label_ins.place(x=250, y=220, width=700, height=50)
 
@@ -2442,7 +2445,6 @@ def Level3(user, userlevel,attempt , grade1, grade2):
     # generate random numbers list
     number_list = list(range(1, 17))
     random_list = list(random.sample(number_list, difflevel))
-    print(random_list)
 
     def SubmitButton():
 

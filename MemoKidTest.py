@@ -40,7 +40,7 @@ class TestMemoKid(TKinterTestCase):
         with self.assertRaises(TypeError):
             M.LevelClass(111)
         try:
-            M.LevelClass(315848820)
+            M.LevelClass(22222)
         except TypeError:
             self.fail("TypeError LevelClass with valid user")
 
@@ -49,12 +49,12 @@ class TestMemoKid(TKinterTestCase):
         M = MemoKid
         self.pump_events()
         with patch.object(M, 'Level1A') as mock:
-            M.LevelClass(123456789)
+            M.LevelClass(11112)
             self.pump_events()
-        mock.assert_called_once_with(123456789)
+        mock.assert_called_once_with(11112)
         self.pump_events()
         with patch.object(M, 'Level1A') as mock2:
-            M.LevelClass(316432137)
+            M.LevelClass(33332)
             self.pump_events()
         mock2.assert_not_called()
 
@@ -62,12 +62,12 @@ class TestMemoKid(TKinterTestCase):
         M = MemoKid
         self.pump_events()
         with patch.object(M, 'Level1B') as mock:
-            M.LevelClass(316432137)
+            M.LevelClass(33331)
             self.pump_events()
-        mock.assert_called_once_with(316432137)
+        mock.assert_called_once_with(33331)
         self.pump_events()
         with patch.object(M, 'Level1B') as mock2:
-            M.LevelClass(555)
+            M.LevelClass(11111)
             self.pump_events()
         mock2.assert_not_called()
 
@@ -75,12 +75,12 @@ class TestMemoKid(TKinterTestCase):
         M = MemoKid
         self.pump_events()
         with patch.object(M, 'Level1C') as mock:
-            M.LevelClass(555)
+            M.LevelClass(66661)
             self.pump_events()
-        mock.assert_called_once_with(555)
+        mock.assert_called_once_with(66661)
         self.pump_events()
         with patch.object(M, 'Level1C') as mock2:
-            M.LevelClass(316432137)
+            M.LevelClass(44441)
             self.pump_events()
         mock2.assert_not_called()
 
@@ -98,9 +98,9 @@ class TestMemoKid(TKinterTestCase):
         M = MemoKid
         self.pump_events()
         with patch.object(M, 'MenuPageStudent') as mock:
-            M.CheckUserType(316432137)
+            M.CheckUserType(22222)
             self.pump_events()
-        mock.assert_called_once_with(316432137)
+        mock.assert_called_once_with(22222)
         self.pump_events()
         with patch.object(M, 'MenuPageStudent') as mock2:
             M.CheckUserType(315848820)
@@ -126,12 +126,12 @@ class TestMemoKid(TKinterTestCase):
         M = MemoKid
         self.pump_events()
         with patch.object(M, 'MenuPageResearch') as mock:
-            M.CheckUserType(1020304050)
+            M.CheckUserType(316432137)
             self.pump_events()
         mock.assert_called_once()
         self.pump_events()
         with patch.object(M, 'MenuPageResearch') as mock2:
-            M.CheckUserType(316432137)
+            M.CheckUserType(11111)
             self.pump_events()
         mock2.assert_not_called()
         self.pump_events()
@@ -196,26 +196,26 @@ class TestMemoKid(TKinterTestCase):
         self.assertEqual(M.CacluateGradeLevel1(5, 42, 1), 0)
         self.assertNotEqual(M.CacluateGradeLevel1(5, 42, 1), 75)
         self.assertEqual(M.CacluateGradeLevel1(6, 26, 1), 100)
-        self.assertEqual(M.CacluateGradeLevel1(6, 34, 1), 75)
-        self.assertEqual(M.CacluateGradeLevel1(6, 40, 1), 50)
-        self.assertEqual(M.CacluateGradeLevel1(6, 46, 1), 25)
-        self.assertEqual(M.CacluateGradeLevel1(6, 50, 1), 0)
+        self.assertEqual(M.CacluateGradeLevel1(6, 38, 1), 75)
+        self.assertEqual(M.CacluateGradeLevel1(6, 44, 1), 50)
+        self.assertEqual(M.CacluateGradeLevel1(6, 50, 1), 25)
+        self.assertEqual(M.CacluateGradeLevel1(6, 60, 1), 0)
 
         self.assertEqual(M.CacluateGradeLevel1(7, 44, 2), 0)
         self.assertNotEqual(M.CacluateGradeLevel1(7, 44, 2), 100)
         self.assertEqual(M.CacluateGradeLevel1(8, 46, 2), 100)
         self.assertEqual(M.CacluateGradeLevel1(8, 50, 2), 75)
-        self.assertEqual(M.CacluateGradeLevel1(8, 56, 2), 50)
-        self.assertEqual(M.CacluateGradeLevel1(8, 60, 2), 25)
-        self.assertEqual(M.CacluateGradeLevel1(8, 68, 2), 0)
+        self.assertEqual(M.CacluateGradeLevel1(8, 60, 2), 50)
+        self.assertEqual(M.CacluateGradeLevel1(8, 66, 2), 25)
+        self.assertEqual(M.CacluateGradeLevel1(8, 72, 2), 0)
 
         self.assertEqual(M.CacluateGradeLevel1(9, 44, 3), 0)
         self.assertNotEqual(M.CacluateGradeLevel1(9, 44, 3), 100)
-        self.assertEqual(M.CacluateGradeLevel1(10, 46, 3), 100)
-        self.assertEqual(M.CacluateGradeLevel1(10, 54, 3), 75)
-        self.assertEqual(M.CacluateGradeLevel1(10, 60, 3), 50)
-        self.assertEqual(M.CacluateGradeLevel1(10, 68, 3), 25)
-        self.assertEqual(M.CacluateGradeLevel1(10, 76, 3), 0)
+        self.assertEqual(M.CacluateGradeLevel1(10, 56, 3), 100)
+        self.assertEqual(M.CacluateGradeLevel1(10, 64, 3), 75)
+        self.assertEqual(M.CacluateGradeLevel1(10, 72, 3), 50)
+        self.assertEqual(M.CacluateGradeLevel1(10, 88, 3), 25)
+        self.assertEqual(M.CacluateGradeLevel1(10, 96, 3), 0)
 
     def test_CalculateGradeLevel2(self):
         M = MemoKid
@@ -229,7 +229,7 @@ class TestMemoKid(TKinterTestCase):
         self.assertEqual(M.CalculateGradeLevel2(4, 10), 40)
         self.assertEqual(M.CalculateGradeLevel2(7, 10), 70)
 
-    def test_CalculateGradeLevel2(self):
+    def test_CalculateGradeLevel3(self):
         M = MemoKid
         self.pump_events()
         self.assertEqual(M.CalculateGradeLevel3(0, 4), 0)
