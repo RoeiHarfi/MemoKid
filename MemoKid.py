@@ -548,7 +548,6 @@ def MenuPageResearch():
 def MenuPageStudent(user):
     # Game instructions Button
     def GameInstructionButton():
-        #################--------------SHAI WORK-------------
         D_Message.pack(side="right", fill="both", expand=True)
 
     # Start Game Button
@@ -615,8 +614,13 @@ def MenuPageStudent(user):
     # Frame for detailed instructions
     InstructionsFrame = tk.Frame(root, bg="#17331b")
     InstructionsFrame.pack()
-    InstructionsFrame.place(x=900, y=220, width=320)
-    dinstruct = "הוראות מורחבות"
+    InstructionsFrame.place(x=820, y=220, width=419)
+    dinstruct = "תלמידים יקרים" + "\n" + "לפניכם משחק בין שלושה שלבים" + "\n" + "בשלב הראשון תצטרכו למצוא צמדים של מספרים זהים"
+    dinstruct += "\n"+"בכדי לחשוף את המספרים יש ללחוץ על הקוביות" + "\n" + "במידה והצמד לא זהה המספרים יעלמו בשנית" + "\n"
+    dinstruct += "\n" + "בשלב השני תופיע רשימה של מספרים שעליכם לזכור לאחר מספר שניות הרשימה תעלם ועליכם להכניס \n את המספרים שזכרתם בתיבות שיופיעו על המסך"
+    dinstruct += "\n\n" + "בשלב השלישי יופיעו קוביות ממוספרות על המסך\nלאחר כמה רגעים חלק מהקוביות יוארו למספר שניות"
+    dinstruct += "\n" + "ועליכם להכניס את מספרי הקוביות שהוארו לריבועים המתאימים" + "\n"
+    dinstruct += "\n" + "שימו לב! לאורך כל המשחק פועל שעון עצר בפינה\n השמאלית העליונה של המסך ובמידה\nונגמר לכם הזמן השלב יסתיים וציונכם יהיה אפס"
     D_Message = tk.Message(InstructionsFrame, text=dinstruct,
                            bg='#17331b',fg="white" , justify="right", width=400 , font=("Ariel", 14), anchor=NE)
 
