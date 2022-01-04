@@ -7,11 +7,7 @@ from PIL import Image, ImageTk
 import sqlite3
 import random
 from tkinter import messagebox
-import emoji
 import threading
-import multiprocessing
-
-from sqlite3 import Error
 import time
 
 # connect to db
@@ -1419,17 +1415,29 @@ answer_dict = {}
 answer_list = []
 
 
-# Function that from DB - what grade the user is and send it to Level A/B/C
+def GetDifficultyFromClass(userClass):
+
+    if userClass == 'א' or userClass == 'ב':
+        userLevel = 1
+    if userClass == 'ג' or userClass == 'ד':
+        userLevel = 2
+    if userClass == 'ה' or userClass == 'ו':
+        userLevel = 3
+    return userLevel
+
+
+# Function that from DB - what grade the user is and send it to proper level
 def LevelClass(user):
     sql_select_class = "SELECT class from userslist WHERE id = ? "
     idlist = (user,)
     cursor.execute(sql_select_class, idlist)
     userClass = cursor.fetchone()
-    if userClass[0] == 'א' or userClass[0] == 'ב':
+    userLevel = GetDifficultyFromClass(userClass[0])
+    if userLevel == 1:
         Level1A(user)
-    if userClass[0] == 'ג' or userClass[0] == 'ד':
+    if userLevel == 2:
         Level1B(user)
-    if userClass[0] == 'ה' or userClass[0] == 'ו':
+    if userLevel == 3:
         Level1C(user)
 
 
@@ -1438,11 +1446,6 @@ def Level1A(user):
     global clicks, succesess
     clicks = 0
     succesess = 0
-    gradeLevel1 = 0
-    sql_select_class = "SELECT class from userslist WHERE id = ? "
-    idlist = (user,)
-    cursor.execute(sql_select_class, idlist)
-    userClass = cursor.fetchone()
 
     # Timer on the left side of the screen
     # Declaration of variables
@@ -1630,14 +1633,9 @@ def Level1A(user):
 
 # Function of Level 1 grade ג\ד
 def Level1B(user):
-    global clicks, succesess, flagtimer
+    global clicks, succesess
     clicks = 0
     succesess = 0
-    gradeLevel1 = 0
-    sql_select_class = "SELECT class from userslist WHERE id = ? "
-    idlist = (user,)
-    cursor.execute(sql_select_class, idlist)
-    userClass = cursor.fetchone()
 
     # Timer on the left side of the screen
     # Declaration of variables
@@ -1839,11 +1837,6 @@ def Level1C(user):
     global clicks, succesess
     clicks = 0
     succesess = 0
-    gradeLevel1 = 0
-    sql_select_class = "SELECT class from userslist WHERE id = ? "
-    idlist = (user,)
-    cursor.execute(sql_select_class, idlist)
-    userClass = cursor.fetchone()
 
     # Timer on the left side of the screen
     # Declaration of variables
@@ -2051,22 +2044,30 @@ def Level1C(user):
     b18.grid(row=2, column=4)
     b19.grid(row=3, column=4)
 
-# Function for level 2
-def Level2(user, userlevel, attempt , grade1):
-    # get difficulty level
+
+# Check if value is in list
+def SearchInList(list, value):
+    for i in range(len(list)):
+        if list[i] == value:
+            return True
+        return False
+
+
+# Function to get difficulty for level 2
+def GetDifficultyLevel2(userlevel):
     if userlevel == 1:
         difflevel = 5
     elif userlevel == 2:
         difflevel = 7
     elif userlevel == 3:
         difflevel = 10
+    return difflevel
 
-    # Check if value is in list
-    def SearchInList(list, value):
-        for i in range(len(list)):
-            if list[i] == value:
-                return True
-        return False
+
+# Function for level 2
+def Level2(user, userlevel, attempt , grade1):
+    # get difficulty level
+    difflevel= GetDifficultyLevel2(userlevel)
 
     # frame for level 2
     level2_frame = tk.Frame(root, bg='#17331b')
@@ -2269,16 +2270,20 @@ def Level2(user, userlevel, attempt , grade1):
     stopTimer2.setDaemon(True)
 
 
-# Function for level 3
-def Level3(user,userlevel,attempt , grade1, grade2):
-
-    # get difficulty level
+def GetDifficultyLevel3(userlevel):
     if userlevel == 1:
         difflevel = 4
     elif userlevel == 2:
         difflevel = 6
     elif userlevel == 3:
         difflevel = 8
+    return difflevel
+
+# Function for level 3
+def Level3(user, userlevel,attempt , grade1, grade2):
+
+    # get difficulty level
+    difflevel = GetDifficultyLevel3(userlevel)
 
     # Check if value is in list
     def SearchInList(list, value):
@@ -2671,7 +2676,7 @@ def ExitScreen(user, grade1, grade2, grade3, avg):
     # Screen title
     TitleImage()
     Headline = Label(root, bg='#17331b', fg='white',
-                   text="מזל טוב סיימת את המשחק!!! נתוניך הם")
+                   text="מזל טוב סיימת את המשחק!!! ציונך הם")
     Headline.config(font=("Ariel", 14))
     Headline.place(x=250, y=220, width=700, height=50)
 
@@ -2684,7 +2689,7 @@ def ExitScreen(user, grade1, grade2, grade3, avg):
     Level1Grade = "ציון שלב 1 : " + str(grade1)
     Level2Grade = "ציון שלב 2 : " + str(grade2)
     Level3Grade = "ציון שלב 3 : " + str(grade3)
-    AVG = "ממוצע : " + str(avg)
+    AVG = "ממוצע עדכני : " + str(avg)
 
 
 
