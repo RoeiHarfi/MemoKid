@@ -190,6 +190,56 @@ class TestMemoKid(TKinterTestCase):
         self.assertEqual(M.GetDifficultyLevel3(3), 8)
         self.assertNotEqual(M.GetDifficultyLevel3(3), 6)
 
+    def test_CalculateGradeLevel1(self):
+        M = MemoKid
+        self.pump_events()
+        self.assertEqual(M.CacluateGradeLevel1(5, 42, 1), 0)
+        self.assertNotEqual(M.CacluateGradeLevel1(5, 42, 1), 75)
+        self.assertEqual(M.CacluateGradeLevel1(6, 26, 1), 100)
+        self.assertEqual(M.CacluateGradeLevel1(6, 34, 1), 75)
+        self.assertEqual(M.CacluateGradeLevel1(6, 40, 1), 50)
+        self.assertEqual(M.CacluateGradeLevel1(6, 46, 1), 25)
+        self.assertEqual(M.CacluateGradeLevel1(6, 50, 1), 0)
+
+        self.assertEqual(M.CacluateGradeLevel1(7, 44, 2), 0)
+        self.assertNotEqual(M.CacluateGradeLevel1(7, 44, 2), 100)
+        self.assertEqual(M.CacluateGradeLevel1(8, 46, 2), 100)
+        self.assertEqual(M.CacluateGradeLevel1(8, 50, 2), 75)
+        self.assertEqual(M.CacluateGradeLevel1(8, 56, 2), 50)
+        self.assertEqual(M.CacluateGradeLevel1(8, 60, 2), 25)
+        self.assertEqual(M.CacluateGradeLevel1(8, 68, 2), 0)
+
+        self.assertEqual(M.CacluateGradeLevel1(9, 44, 3), 0)
+        self.assertNotEqual(M.CacluateGradeLevel1(9, 44, 3), 100)
+        self.assertEqual(M.CacluateGradeLevel1(10, 46, 3), 100)
+        self.assertEqual(M.CacluateGradeLevel1(10, 54, 3), 75)
+        self.assertEqual(M.CacluateGradeLevel1(10, 60, 3), 50)
+        self.assertEqual(M.CacluateGradeLevel1(10, 68, 3), 25)
+        self.assertEqual(M.CacluateGradeLevel1(10, 76, 3), 0)
+
+    def test_CalculateGradeLevel2(self):
+        M = MemoKid
+        self.pump_events()
+        self.assertEqual(M.CalculateGradeLevel2(0, 5), 0)
+        self.assertNotEqual(M.CalculateGradeLevel2(2, 5), 100)
+        self.assertEqual(M.CalculateGradeLevel2(4, 5), 80)
+        self.assertEqual(M.CalculateGradeLevel2(2, 5), 40)
+        self.assertEqual(M.CalculateGradeLevel2(6, 7), 86)
+        self.assertEqual(M.CalculateGradeLevel2(4, 7), 58)
+        self.assertEqual(M.CalculateGradeLevel2(4, 10), 40)
+        self.assertEqual(M.CalculateGradeLevel2(7, 10), 70)
+
+    def test_CalculateGradeLevel2(self):
+        M = MemoKid
+        self.pump_events()
+        self.assertEqual(M.CalculateGradeLevel3(0, 4), 0)
+        self.assertNotEqual(M.CalculateGradeLevel3(2, 6), 100)
+        self.assertEqual(M.CalculateGradeLevel3(4, 4), 100)
+        self.assertEqual(M.CalculateGradeLevel3(2, 4), 50)
+        self.assertEqual(M.CalculateGradeLevel3(4, 6), 68)
+        self.assertEqual(M.CalculateGradeLevel3(2, 6), 36)
+        self.assertEqual(M.CalculateGradeLevel3(7, 8), 88)
+        self.assertEqual(M.CalculateGradeLevel3(3, 8), 40)
 
 if __name__ == '__main__':
     import unittest

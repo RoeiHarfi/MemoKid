@@ -1441,6 +1441,54 @@ def LevelClass(user):
         Level1C(user)
 
 
+# Function for calculating grades for level1
+def CacluateGradeLevel1(succesess, numclicks, userlevel):
+    # Calculate grade
+    if userlevel == 1:
+        if succesess < 6:
+            grade = 0
+        else:
+            if numclicks <= 30:
+                grade = 100
+            elif numclicks <= 36:
+                grade = 75
+            elif numclicks <= 42:
+                grade = 50
+            elif numclicks <= 48:
+                grade = 25
+            else:
+                grade = 0
+    if userlevel == 2:
+        if succesess < 8:
+            grade = 0
+        else:
+            if numclicks <= 48:
+                grade = 100
+            elif numclicks <= 52:
+                grade = 75
+            elif numclicks <= 58:
+                grade = 50
+            elif numclicks <= 64:
+                grade = 25
+            else:
+                grade = 0
+    if userlevel == 3:
+        if succesess < 10:
+            grade = 0
+        else:
+            if numclicks <= 52:
+                grade = 100
+            elif numclicks <= 58:
+                grade = 75
+            elif numclicks <= 64:
+                grade = 50
+            elif numclicks <= 70:
+                grade = 25
+            else:
+                grade = 0
+    return grade
+
+
 # Function of Level 1 grade א\ב
 def Level1A(user):
     global clicks, succesess
@@ -1513,21 +1561,7 @@ def Level1A(user):
         secondEntry.destroy()
         TimerLabel.destroy()
 
-
-        # Calculate grade
-        if succesess < 6:
-            gradeLevel1 = 0
-        else:
-            if clicks <= 30:
-                gradeLevel1 = 100
-            elif clicks <= 36:
-                gradeLevel1 = 75
-            elif clicks <= 42:
-                gradeLevel1 = 50
-            elif clicks <= 48:
-                gradeLevel1 = 25
-            else:
-                gradeLevel1 = 0
+        gradeLevel1 = CacluateGradeLevel1(succesess, clicks, 1)
 
         # Get today's date
         game_date = datetime.today().strftime('%Y-%m-%d')
@@ -1703,20 +1737,7 @@ def Level1B(user):
         TimerLabel.destroy()
 
         # Calculate grade
-        if succesess < 8:
-            gradeLevel1 = 0
-        else:
-            if clicks <= 48:
-                gradeLevel1 = 100
-            elif clicks <= 52:
-                gradeLevel1 = 75
-            elif clicks <= 58:
-                gradeLevel1 = 50
-            elif clicks <= 64:
-                gradeLevel1 = 25
-            else:
-                gradeLevel1 = 0
-
+        gradeLevel1 = CacluateGradeLevel1(succesess, clicks, 2)
         # Get today's date
         game_date = datetime.today().strftime('%Y-%m-%d')
 
@@ -1903,19 +1924,7 @@ def Level1C(user):
         TimerLabel.destroy()
 
         # Calculate grade
-        if succesess < 10:
-            gradeLevel1 = 0
-        else:
-            if clicks <= 52:
-                gradeLevel1 = 100
-            elif clicks <= 58:
-                gradeLevel1 = 75
-            elif clicks <= 64:
-                gradeLevel1 = 50
-            elif clicks <= 70:
-                gradeLevel1 = 25
-            else:
-                gradeLevel1 = 0
+        gradeLevel1 = CacluateGradeLevel1(succesess, clicks, 3)
 
         # Get today's date
         game_date = datetime.today().strftime('%Y-%m-%d')
@@ -2050,7 +2059,7 @@ def SearchInList(list, value):
     for i in range(len(list)):
         if list[i] == value:
             return True
-        return False
+    return False
 
 
 # Function to get difficulty for level 2
@@ -2062,6 +2071,18 @@ def GetDifficultyLevel2(userlevel):
     elif userlevel == 3:
         difflevel = 10
     return difflevel
+
+
+# Function to calculate grade level 2
+def CalculateGradeLevel2(counter, difflevel):
+    user_grade = 0
+    if difflevel == 5:
+        user_grade = counter * 20
+    elif difflevel == 7:
+        user_grade = counter * 14 + 2
+    elif difflevel == 10:
+        user_grade = counter * 10
+    return user_grade
 
 
 # Function for level 2
@@ -2155,13 +2176,7 @@ def Level2(user, userlevel, attempt , grade1):
             counter += 1
 
         # calculate grade
-        user_grade = 0
-        if difflevel == 5:
-            user_grade = counter * 20
-        elif difflevel == 7:
-            user_grade = counter * 14 + 2
-        elif difflevel == 10:
-            user_grade = counter * 10
+        user_grade = CalculateGradeLevel2(counter , difflevel)
 
         # update database
         sql_update = "UPDATE usergrades SET level2 = ? WHERE userID = ? AND attempts = ?"
@@ -2270,6 +2285,7 @@ def Level2(user, userlevel, attempt , grade1):
     stopTimer2.setDaemon(True)
 
 
+# Function to get Difficulty for level 3
 def GetDifficultyLevel3(userlevel):
     if userlevel == 1:
         difflevel = 4
@@ -2279,18 +2295,24 @@ def GetDifficultyLevel3(userlevel):
         difflevel = 8
     return difflevel
 
+
+# Function to calculate grade for level 3
+def CalculateGradeLevel3(counter, difflevel):
+    user_grade = 0
+    if difflevel == 4:
+        user_grade = counter * 25
+    elif difflevel == 6:
+        user_grade = counter * 16 + 4
+    elif difflevel == 8:
+        user_grade = counter * 12 + 4
+    return user_grade
+
+
 # Function for level 3
 def Level3(user, userlevel,attempt , grade1, grade2):
 
     # get difficulty level
     difflevel = GetDifficultyLevel3(userlevel)
-
-    # Check if value is in list
-    def SearchInList(list, value):
-        for i in range(len(list)):
-            if list[i] == value:
-                return True
-        return False
 
     def FlashNumbers():
         if SearchInList(random_list, 1):
@@ -2414,8 +2436,9 @@ def Level3(user, userlevel,attempt , grade1, grade2):
     Level3Table.place(relx=0.500, rely=0.650, anchor=CENTER)
 
     # generate random numbers list
-    number_list = list(range(1,17))
+    number_list = list(range(1, 17))
     random_list = list(random.sample(number_list, difflevel))
+    print(random_list)
 
     def SubmitButton():
 
@@ -2468,13 +2491,7 @@ def Level3(user, userlevel,attempt , grade1, grade2):
             counter += 1
 
         # calculate grade
-        user_grade = 0
-        if difflevel == 4:
-            user_grade = counter * 25
-        elif difflevel == 6:
-            user_grade = counter * 16 + 4
-        elif difflevel == 8:
-            user_grade = counter * 12 + 4
+        user_grade = CalculateGradeLevel3()
 
         # update games database
         sql_update = "UPDATE usergrades SET level3 = ? WHERE userID = ? AND attempts = ?"
