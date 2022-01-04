@@ -1537,8 +1537,8 @@ def Level1A(user):
 
     def timer(killcondition):
         while not killcondition.is_set():
-            for i in range(180):
-                second.set(str(180-i))
+            for i in range(600):
+                second.set(str(600-i))
                 secondEntry.update()
                 time.sleep(1)
             messagebox.showinfo("", "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
@@ -1713,8 +1713,8 @@ def Level1B(user):
 
     def timer(killcondition):
         while not killcondition.is_set():
-            for i in range(180):
-                second.set(str(180-i))
+            for i in range(600):
+                second.set(str(600-i))
                 secondEntry.update()
                 time.sleep(1)
             messagebox.showinfo("", "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
@@ -1901,8 +1901,8 @@ def Level1C(user):
 
     def timer(killcondition):
         while not killcondition.is_set():
-            for i in range(180):
-                second.set(str(180-i))
+            for i in range(600):
+                second.set(str(600-i))
                 secondEntry.update()
                 time.sleep(1)
             messagebox.showinfo("", "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
@@ -2267,8 +2267,8 @@ def Level2(user, userlevel, attempt , grade1):
     # Timer on the left side of the screen
     def timer(killcondition):
         while not killcondition.is_set():
-            for i in range(120):
-                second.set(str(120 - i))
+            for i in range(600):
+                second.set(str(600 - i))
                 secondEntry.update()
                 time.sleep(1)
             messagebox.showinfo("", "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
@@ -2670,8 +2670,8 @@ def Level3(user, userlevel,attempt , grade1, grade2):
     # Timer on the left side of the screen
     def timer(killcondition):
         while not killcondition.is_set():
-            for i in range(60):
-                second.set(str(60 - i))
+            for i in range(600):
+                second.set(str(600 - i))
                 secondEntry.update()
                 time.sleep(1)
             messagebox.showinfo("", "תם הזמן המוקצב לשלב זה, עובר לשלב הבא. ")
